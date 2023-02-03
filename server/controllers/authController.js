@@ -13,7 +13,7 @@ const register = async (req, res) => {
   const userExist = await User.findOne({ email });
   //if email exist then throw the error
   if (userExist) {
-    throw new BadRequestError('User already exist');
+    throw new BadRequestError('Email is already in use');
   }
 
   //create user
