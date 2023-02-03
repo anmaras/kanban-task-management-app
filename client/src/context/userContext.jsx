@@ -34,6 +34,7 @@ export const UserProvider = ({ children }) => {
     }, 3000);
   };
 
+  //register user
   const registerUser = async (currentUser) => {
     dispatch({ type: REGISTER_USER_BEGIN });
     try {
@@ -41,6 +42,7 @@ export const UserProvider = ({ children }) => {
       const { user, token } = response.data;
       dispatch({ type: REGISTER_USER_SUCCESS, payload: { user, token } });
     } catch (error) {
+      //use the error msg from auth register controller
       dispatch({
         type: REGISTER_USER_ERROR,
         payload: { msg: error.response.data.msg },
@@ -48,8 +50,6 @@ export const UserProvider = ({ children }) => {
     }
     clearAlert();
   };
-
-  console.log(state);
 
   return (
     <UserContext.Provider
@@ -63,7 +63,7 @@ export const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
-
+//export a small hook for convenient when destructuring on components
 export const useUserContext = () => {
   return useContext(UserContext);
 };
