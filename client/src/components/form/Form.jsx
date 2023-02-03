@@ -1,4 +1,5 @@
 import React from 'react';
+import { formInputs } from '../../utils/constants';
 import PropTypes from 'prop-types';
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
@@ -23,40 +24,45 @@ const validationSchema = yup.object({
 });
 
 const onSubmit = (values) => console.log(values);
+const onSubmit2 = (values) => console.log(values, 'Test');
 
-const Form = ({ type, path, axiosFunc }) => {
+const Form = ({ formType, path }) => {
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={onSubmit}
+      //check the prop and use the corresponding function
+      onSubmit={formType === 'register' ? onSubmit : onSubmit2}
     >
       <FormikForm className="form">
-        <div className="form-control">
-          <label htmlFor="name">Name</label>
-          <Field type="text" name="name" id="name" />
-          <ErrorMessage name="name" component="div" className="error" />
-        </div>
-        <div className="form-control">
-          <label htmlFor="email">Email</label>
-          <Field type="email" name="email" id="email" />
-          <ErrorMessage name="email" component="div" className="error" />
-        </div>
-        <div className="form-control">
-          <label htmlFor="password">Password</label>
-          <Field type="password" name="password" id="password" />
-          <ErrorMessage name="password" component="div" className="error" />
-        </div>
+        {formInputs
+          .map((input) => {
+            const { name, label, type } = input;
+            return (
+              <div key={name} className="form-control">
+                <label htmlFor={name}>{label}</label>
+                <Field type={type} name={name} id={name} />
+                <ErrorMessage name={name} component="div" className="error" />
+              </div>
+            );
+          })
+          .filter((input) => {
+            /* If the formType is register then return the form input array
+           as it is, if not then filter it so it return only the email and password */
+            if (formType === 'register') {
+              return input;
+            }
+            return input.key !== 'name';
+          })}
         <button type="submit">submit</button>
       </FormikForm>
     </Formik>
   );
 };
 
-// Form.propTypes = {
-//   type: PropTypes.string.isRequired,
-//   path: PropTypes.string.isRequired,
-//   axiosFunc: PropTypes.func.isRequired,
-// };
+Form.propTypes = {
+  formType: PropTypes.string.isRequired,
+  // path: PropTypes.string.isRequired,
+};
 
 export default Form;
