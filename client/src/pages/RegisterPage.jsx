@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from '../components';
 
 const RegisterPage = () => {
-  return <Form type="register" path="/register" />;
+  return <Form formType="register" />;
 };
 
 export default RegisterPage;
