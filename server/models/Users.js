@@ -42,4 +42,10 @@ UserSchema.methods.createJWT = function () {
   });
 };
 
+//compare user password and hashed password if they match
+UserSchema.methods.comparePassword = async function (loginPassword) {
+  const isMatch = await bcrypt.compare(loginPassword, this.password);
+  return isMatch;
+};
+
 export default mongoose.model('User', UserSchema);
