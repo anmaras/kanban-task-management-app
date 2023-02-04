@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { formInputs } from '../../utils/constants';
 import PropTypes from 'prop-types';
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
+import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { useUserContext } from '../../context/userContext';
 
@@ -11,9 +12,10 @@ const initialValues = {
   password: '',
 };
 
-const validationSchema = yup.object({
+const validationSchemaRegister = yup.object({
   name: yup
     .string()
+    .trim()
     .min(3, 'Name need to be at least 3 chars')
     .max(20, 'Name cant be more than 20 chars')
     .required('Required'),
@@ -24,10 +26,18 @@ const validationSchema = yup.object({
     .required('Required'),
 });
 
-const onSubmit2 = (values) => console.log(values, 'Test');
+const validationSchemaLogin = yup.object({
+  name: yup.string().notRequired(),
+  email: yup.string().email('Invalid email format').required('Required'),
+  password: yup
+    .string()
+    .min(6, 'Password need to be at least 6 chars')
+    .required('Required'),
+});
 
 const Form = ({ formType }) => {
-  const { registerUser, showAlert, alertText } = useUserContext();
+  const { registerUser, showAlert, alertText, loginUser } = useUserContext();
+
   //create form from formInput array check constants.jsx
   return (
     <div>
@@ -36,13 +46,24 @@ const Form = ({ formType }) => {
 
       <Formik
         initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={formType === 'register' ? registerUser : onSubmit2}
-        touched
+        validationSchema={
+          formType === 'register'
+            ? validationSchemaRegister
+            : validationSchemaLogin
+        }
+        onSubmit={formType === 'register' ? registerUser : loginUser}
       >
         {({ touched, errors }) => (
           <FormikForm className="form">
             {formInputs
+              .filter((input) => {
+                /* If the formType is register then return the form input array
+           as it is, if not then filter it so it return only the email and password input */
+                if (formType === 'register') {
+                  return input;
+                }
+                return input.name !== 'name';
+              })
               .map((input) => {
                 const { name, label, type } = input;
                 return (
@@ -63,19 +84,14 @@ const Form = ({ formType }) => {
                     />
                   </div>
                 );
-              })
-              .filter((input) => {
-                /* If the formType is register then return the form input array
-           as it is, if not then filter it so it return only the email and password input */
-                if (formType === 'register') {
-                  return input;
-                }
-                return input.key !== 'name';
               })}
             <button type="submit">submit</button>
           </FormikForm>
         )}
       </Formik>
+      <Link to={formType === 'register' ? '/login' : '/register'}>
+        {formType === 'register' ? 'login' : 'register'}
+      </Link>
     </div>
   );
 };
