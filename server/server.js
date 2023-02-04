@@ -1,4 +1,3 @@
-import cors from 'cors';
 import express from 'express';
 import dotenv from 'dotenv';
 const app = express();
@@ -7,6 +6,9 @@ dotenv.config();
 //library that handle async try catch
 // so no need to write try catch for every async controller
 import 'express-async-errors';
+
+//library that handle logs
+import morgan from 'morgan';
 
 //db and authenticateUser
 import connectDB from './db/connect.js';
@@ -22,7 +24,11 @@ app.get('/', (req, res) => {
   res.send('Welcome');
 });
 
-app.use(cors());
+//show the logs
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
+
 app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
