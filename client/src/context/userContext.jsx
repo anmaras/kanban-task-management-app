@@ -9,13 +9,16 @@ import {
   CLEAR_ALERT,
 } from '../utils/actions';
 
+const user = localStorage.getItem('user');
+const token = localStorage.getItem('token');
+
 const initialState = {
   isLoading: false,
   showAlert: false,
   alertText: '',
   alertType: '',
-  user: null,
-  token: null,
+  user: user ? JSON.parse(user) : null,
+  token: token || null,
 };
 
 const UserContext = React.createContext();
@@ -34,6 +37,16 @@ export const UserProvider = ({ children }) => {
     }, 3000);
   };
 
+  const saveUserAtStorage = ({ user, token }) => {
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', token);
+  };
+
+  const removeUserStorage = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+  };
+
   //register user
   const registerUser = async (currentUser) => {
     dispatch({ type: REGISTER_USER_BEGIN });
@@ -41,6 +54,7 @@ export const UserProvider = ({ children }) => {
       const response = await axios.post('/api/v1/auth/register', currentUser);
       const { user, token } = response.data;
       dispatch({ type: REGISTER_USER_SUCCESS, payload: { user, token } });
+      saveUserAtStorage({ user, token });
     } catch (error) {
       //use the error msg from auth register controller
       dispatch({
