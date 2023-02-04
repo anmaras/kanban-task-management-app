@@ -5,7 +5,9 @@ import {
   REGISTER_USER_BEGIN,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_ERROR,
-  DISPLAY_ALERT,
+  LOGIN_USER_BEGIN,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
   CLEAR_ALERT,
 } from '../utils/actions';
 
@@ -25,11 +27,6 @@ const UserContext = React.createContext();
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  const displayAlert = () => {
-    dispatch({ type: DISPLAY_ALERT });
-    clearAlert();
-  };
 
   const clearAlert = () => {
     setTimeout(() => {
@@ -65,12 +62,29 @@ export const UserProvider = ({ children }) => {
     clearAlert();
   };
 
+  const loginUser = async (currentUser) => {
+    dispatch({ type: LOGIN_USER_BEGIN });
+    try {
+      const response = await axios.post('/api/v1/auth/login', currentUser);
+      const { user, token } = response.data;
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
+      saveUserAtStorage({ user, token });
+    } catch (error) {
+      //use the error msg from auth login controller
+      dispatch({
+        type: LOGIN_USER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
   return (
     <UserContext.Provider
       value={{
         ...state,
         registerUser,
-        displayAlert,
+        loginUser,
       }}
     >
       {children}
