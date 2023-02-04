@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 
 const errorHandlerMiddleware = (err, req, res, next) => {
-  console.log(err);
+  // console.log(err);
   const defaultError = {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
     //err.message comes from throw at authController
@@ -25,6 +25,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     )} already exist`;
   }
 
+  //error will be send to the front as obj with msg property
   res.status(defaultError.statusCode).json({ msg: defaultError.msg });
 };
 
