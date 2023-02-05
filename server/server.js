@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import path from 'path';
 const app = express();
 dotenv.config();
 
@@ -20,16 +21,20 @@ import authRouter from './routes/authRoutes.js';
 import errorHandlerMiddleware from './middleware/error-handler.js';
 import notFoundMiddleware from './middleware/not-found.js';
 
-app.get('/', (req, res) => {
-  res.send('Welcome');
-});
-
 //show the logs
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
 app.use(express.json());
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('../client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve('../client', 'build', 'index.html'));
+  });
+}
 
 app.use('/api/v1/auth', authRouter);
 
