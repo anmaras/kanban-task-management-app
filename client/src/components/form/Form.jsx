@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { formInputs } from '../../utils/constants';
 import PropTypes from 'prop-types';
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useUserContext } from '../../context/userContext';
 
@@ -11,7 +11,7 @@ const initialValues = {
   email: '',
   password: '',
 };
-
+//schema for register
 const validationSchemaRegister = yup.object({
   name: yup
     .string()
@@ -26,6 +26,7 @@ const validationSchemaRegister = yup.object({
     .required('Required'),
 });
 
+//schema for login
 const validationSchemaLogin = yup.object({
   name: yup.string().notRequired(),
   email: yup.string().email('Invalid email format').required('Required'),
@@ -36,7 +37,16 @@ const validationSchemaLogin = yup.object({
 });
 
 const Form = ({ formType }) => {
-  const { registerUser, showAlert, alertText, loginUser } = useUserContext();
+  const { registerUser, showAlert, alertText, loginUser, user } =
+    useUserContext();
+  const navigate = useNavigate();
+
+  //after user register or login navigate to the dashboard
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   //create form from formInput array check constants.jsx
   return (
