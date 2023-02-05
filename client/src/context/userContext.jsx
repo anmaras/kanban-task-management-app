@@ -1,6 +1,7 @@
 import React, { useContext, useReducer } from 'react';
 import reducer from '../reducers/userReducer';
 import axios from 'axios';
+// import { toast } from 'react-toastify';
 import {
   REGISTER_USER_BEGIN,
   REGISTER_USER_SUCCESS,
@@ -27,11 +28,10 @@ const UserContext = React.createContext();
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  // const notify = (text) => toast.success(text);
 
   const clearAlert = () => {
-    setTimeout(() => {
-      dispatch({ type: CLEAR_ALERT });
-    }, 3000);
+    dispatch({ type: CLEAR_ALERT });
   };
 
   const saveUserAtStorage = ({ user, token }) => {
@@ -69,6 +69,7 @@ export const UserProvider = ({ children }) => {
       const { user, token } = response.data;
       dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
       saveUserAtStorage({ user, token });
+      // notify('login');
     } catch (error) {
       //use the error msg from auth login controller
       dispatch({
