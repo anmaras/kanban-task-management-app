@@ -16,10 +16,12 @@ import connectDB from './db/connect.js';
 
 //routers
 import authRouter from './routes/authRoutes.js';
+import boardRouter from './routes/boardRoutes.js';
 
 //middleware
 import errorHandlerMiddleware from './middleware/error-handler.js';
 import notFoundMiddleware from './middleware/not-found.js';
+import authenticateUser from './middleware/auth.js';
 
 //show the logs
 if (process.env.NODE_ENV !== 'production') {
@@ -37,6 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/boards', authenticateUser, boardRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
