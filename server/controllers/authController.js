@@ -1,10 +1,6 @@
 import User from '../models/Users.js';
 import { StatusCodes } from 'http-status-codes';
-import {
-  BadRequestError,
-  NotFoundError,
-  UnauthenticatedError,
-} from '../errors/index.js';
+import { BadRequestError, UnauthenticatedError } from '../errors/index.js';
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -64,7 +60,25 @@ const login = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  res.send('update user');
+  const { name, email } = req.body;
+
+  if (!name || !email) {
+    throw new BadRequestError('All values needed');
+  }
+  //find user req.user.userId comes from middleware auth
+  const user = await User.findOne({ _id: req.user.userId });
+
+  //add the new properties
+  user.name = name;
+  user.email = email;
+
+  //save the user
+  await user.save();
+
+  //create new token to avoid messing with old data
+  const token = user.createJWT();
+
+  res.status(StatusCodes.OK).json({ user, token });
 };
 
 export { register, login, updateUser };
