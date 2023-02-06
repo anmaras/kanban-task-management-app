@@ -5,6 +5,7 @@ import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useUserContext } from '../../context/userContext';
+import { PulseLoader } from 'react-spinners';
 
 const initialValues = {
   name: '',
@@ -37,8 +38,7 @@ const validationSchemaLogin = yup.object({
 });
 
 const Form = ({ formType }) => {
-  const { registerUser, showAlert, alertText, loginUser, user } =
-    useUserContext();
+  const { registerUser, loginUser, user, isLoading } = useUserContext();
   const navigate = useNavigate();
 
   //after user register or login navigate to the dashboard
@@ -51,9 +51,7 @@ const Form = ({ formType }) => {
   //create form from formInput array check constants.jsx
   return (
     <div>
-      <h2>{formType === 'register' ? 'Register' : 'Login'}</h2>
-      {showAlert ? <div className="alert-message">{alertText}</div> : null}
-
+      <h2>{formType}</h2>
       <Formik
         initialValues={initialValues}
         validationSchema={
@@ -95,12 +93,14 @@ const Form = ({ formType }) => {
                   </div>
                 );
               })}
-            <button type="submit">submit</button>
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? <PulseLoader size={5} /> : formType}
+            </button>
           </FormikForm>
         )}
       </Formik>
       <Link to={formType === 'register' ? '/login' : '/register'}>
-        {formType === 'register' ? 'login' : 'register'}
+        {formType}
       </Link>
     </div>
   );
