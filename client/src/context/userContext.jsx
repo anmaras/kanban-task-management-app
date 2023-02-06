@@ -10,12 +10,13 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   CLEAR_ALERT,
+  LOGOUT_USER,
 } from '../utils/actions';
 
 const user = localStorage.getItem('user');
 const token = localStorage.getItem('token');
 
-const initialState = {
+export const initialState = {
   isLoading: false,
   showAlert: false,
   alertText: '',
@@ -80,12 +81,18 @@ export const UserProvider = ({ children }) => {
     clearAlert();
   };
 
+  const logoutUser = () => {
+    dispatch({ type: LOGOUT_USER });
+    removeUserStorage();
+  };
+
   return (
     <UserContext.Provider
       value={{
         ...state,
         registerUser,
         loginUser,
+        logoutUser,
       }}
     >
       {children}
