@@ -1,0 +1,26 @@
+@use '../../../styles/utils/' as *;
+
+.layout {
+  min-height: inherit;
+  display: grid;
+  grid-template-rows: auto 1fr;
+
+  &__header {
+    background-color: var(--dark-grey);
+    padding-inline: rem(16);
+    padding-block: rem(20);
+    border-bottom: 2px solid var(--lines-dark);
+  }
+
+  &__title {
+    color: var(--white);
+    font-size: rem(28);
+  }
+
+  &__main {
+    overflow-x: hidden;
+    display: grid;
+    align-items: center;
+    background-color: var(--very-dark-grey);
+  }
+}
