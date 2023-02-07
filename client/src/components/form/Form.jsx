@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
-import { formInputs } from '../../utils/constants';
 import PropTypes from 'prop-types';
+import { formInputs } from '../../utils/constants';
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useUserContext } from '../../context/userContext';
 import { PulseLoader } from 'react-spinners';
+import style from './Form.module.scss';
+import { motion } from 'framer-motion';
 
 const initialValues = {
   name: '',
@@ -50,8 +52,14 @@ const Form = ({ formType }) => {
 
   //create form from formInput array check constants.jsx
   return (
-    <div>
-      <h2>{formType}</h2>
+    <motion.article
+      initial={{ x: '100%' }}
+      animate={{ x: 0 }}
+      className={style.formContainer}
+    >
+      <h2 className={[style['formContainer__title']].join(' ')}>
+        {formType === 'register' ? 'Register to Kanban' : 'Login to Kanban'}
+      </h2>
       <Formik
         initialValues={initialValues}
         validationSchema={
@@ -62,7 +70,7 @@ const Form = ({ formType }) => {
         onSubmit={formType === 'register' ? registerUser : loginUser}
       >
         {({ touched, errors }) => (
-          <FormikForm className="form">
+          <FormikForm className={style['formContainer__form']}>
             {formInputs
               .filter((input) => {
                 /* If the formType is register then return the form input array
@@ -73,36 +81,59 @@ const Form = ({ formType }) => {
                 return input.name !== 'name';
               })
               .map((input) => {
-                const { name, label, type } = input;
+                const { name, label, type, placeholder } = input;
                 return (
-                  <div key={name} className="form-control">
-                    <label htmlFor={name}>{label}</label>
+                  <div
+                    key={name}
+                    className={style['formContainer__form-control']}
+                  >
+                    <label
+                      className={style['formContainer__label']}
+                      htmlFor={name}
+                    >
+                      {label}
+                    </label>
                     <Field
+                      placeholder={placeholder}
                       type={type}
                       name={name}
                       id={name}
                       className={
-                        touched[name] && errors[name] ? 'not-valid' : 'valid'
+                        touched[name] && errors[name]
+                          ? style['formContainer__input--invalid']
+                          : style['formContainer__input']
                       }
                     />
-                    <ErrorMessage
-                      name={name}
-                      component="div"
-                      className="error"
-                    />
+                    <div className={style['formContainer__error']}>
+                      <ErrorMessage name={name} component="div" />
+                    </div>
                   </div>
                 );
               })}
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? <PulseLoader size={5} /> : formType}
+            <button
+              className="button button--auth"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? <PulseLoader color="#ffffff" size={5} /> : formType}
             </button>
           </FormikForm>
         )}
       </Formik>
-      <Link to={formType === 'register' ? '/login' : '/register'}>
-        {formType}
-      </Link>
-    </div>
+      <div className={style['formContainer__redirect-container']}>
+        <p className={style['formContainer__redirect-text']}>
+          {formType === 'register'
+            ? 'Already have an account?'
+            : 'Need an account?'}
+        </p>
+        <Link
+          to={formType === 'register' ? '/login' : '/register'}
+          className={style['formContainer__redirect-link']}
+        >
+          {formType === 'register' ? 'Login' : 'Register'}
+        </Link>
+      </div>
+    </motion.article>
   );
 };
 
