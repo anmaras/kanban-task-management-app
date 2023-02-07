@@ -1,8 +1,12 @@
 import React from 'react';
-import { Form } from '../components';
+import { Form, AuthLayout } from '../components';
 
 const LoginPage = () => {
-  return <Form formType="login" />;
+  return (
+    <AuthLayout>
+      <Form formType="login" />
+    </AuthLayout>
+  );
 };
 
 export default LoginPage;
