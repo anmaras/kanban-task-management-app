@@ -1,9 +1,10 @@
 import {
-  Homepage,
+  LandingPage,
   RegisterPage,
   LoginPage,
   DashboardPage,
   ProtectedRoute,
+  ProfilePage,
 } from './pages';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -26,17 +27,17 @@ function App() {
       />
       <Router>
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route path="/" element={<LandingPage />} />
           <Route
-            path="/dashboard"
+            path="dashboard"
             element={
               <ProtectedRoute>
                 <DashboardPage />
               </ProtectedRoute>
             }
           />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
         </Routes>
       </Router>
     </>
