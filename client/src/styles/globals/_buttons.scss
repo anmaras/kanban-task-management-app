@@ -4,9 +4,12 @@
   display: block;
   width: 100%;
   padding-block: rem(14);
+  padding-inline: rem(24);
   border: 0;
   border-radius: var(--auth-button);
   color: var(--white);
+  text-align: center;
+  text-decoration: none;
 
   cursor: pointer;
   transition: all 0.25s;
