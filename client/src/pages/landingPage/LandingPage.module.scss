@@ -1,0 +1,34 @@
+@use '../../styles/utils/' as *;
+
+.landingPage {
+  display: grid;
+  gap: rem(32);
+  padding-inline: rem(32);
+  // width: min(100%, 900px);
+  max-width: 800px;
+  margin-inline: auto;
+
+  &__title {
+    text-align: left;
+    div {
+      display: inline-block;
+    }
+    div > span:last-child {
+      color: var(--main-color);
+    }
+  }
+
+  &__typingText {
+    color: red;
+  }
+
+  &__subtitle {
+    color: var(--white);
+    line-height: 1.8;
+    max-width: 400px;
+  }
+
+  a {
+    width: fit-content;
+  }
+}
