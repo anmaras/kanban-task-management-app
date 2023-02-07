@@ -7,6 +7,20 @@ body {
   font-family: $font;
 }
 
+.heading-XXL {
+  font-size: rem(28);
+  color: var(--white);
+  line-height: 1.35;
+
+  @include breakpoint(medium) {
+    font-size: rem(40);
+  }
+
+  @include breakpoint(large) {
+    font-size: rem(60);
+  }
+}
+
 .heading-XL {
   font-size: rem(24);
   font-weight: 700;
