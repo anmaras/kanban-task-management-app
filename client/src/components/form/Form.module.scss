@@ -1,8 +1,10 @@
 @use '../../styles/utils/' as *;
 
 $gap: rem(32);
+$transition: 0.25s;
 
 .formContainer {
+  padding-block: rem(32);
   display: grid;
   gap: $gap;
   width: min(100% - rem(32), 384px);
@@ -43,6 +45,8 @@ $gap: rem(32);
     font-weight: 500;
     font-size: rem(14);
 
+    transition: $transition;
+
     &:focus {
       outline: thin solid var(--main-color);
     }
@@ -70,6 +74,7 @@ $gap: rem(32);
 
   &__redirect-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 16px;
     align-items: center;
@@ -82,10 +87,11 @@ $gap: rem(32);
   &__redirect-link {
     text-decoration: none;
     color: var(--white);
-    border: thin solid var(--white);
+    outline: thin solid var(--white);
     padding: rem(8);
     border-radius: var(--form-input);
-    transition: 0.25s;
+    border: 0;
+    transition: $transition;
 
     &:hover {
       transform: scale(1.05);
@@ -93,6 +99,10 @@ $gap: rem(32);
 
     &:active {
       transform: scale(0.98);
+    }
+
+    &:focus {
+      outline-color: var(--main-color);
     }
   }
 }
