@@ -1,0 +1,32 @@
+@use '../utils/' as *;
+
+.button {
+  display: block;
+  width: 100%;
+  padding-block: rem(14);
+  border: 0;
+  border-radius: var(--auth-button);
+  color: var(--white);
+
+  cursor: pointer;
+  transition: all 0.25s;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus {
+    outline: thin solid var(--white);
+  }
+}
+
+.button--auth {
+  background-color: var(--main-color);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 700;
+
+  &:hover {
+    background-color: var(--main-color-hover);
+  }
+}
