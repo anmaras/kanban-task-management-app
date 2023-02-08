@@ -3,8 +3,8 @@
 .button {
   display: block;
   width: 100%;
-  padding-block: rem(14);
-  padding-inline: rem(24);
+  padding-block: rem(10);
+  padding-inline: rem(18);
   border: 0;
   border-radius: var(--auth-button);
   color: var(--white);
@@ -12,14 +12,18 @@
   text-decoration: none;
 
   cursor: pointer;
-  transition: all 0.25s;
+  transition: var(--generic-transition);
 
   &:active {
-    transform: scale(0.98);
+    transform: scale(0.95);
   }
 
   &:focus {
     outline: thin solid var(--white);
+  }
+
+  &:hover {
+    background-color: var(--main-color-hover);
   }
 }
 
@@ -28,8 +32,21 @@
   text-transform: uppercase;
   letter-spacing: 3px;
   font-weight: 700;
+}
 
-  &:hover {
-    background-color: var(--main-color-hover);
+.button--primary-L {
+  font-size: rem(18);
+  background-color: var(--main-color);
+  width: fit-content;
+  font-weight: 700;
+}
+
+.button-sideNav {
+  position: fixed;
+  bottom: 100px;
+  z-index: 3;
+
+  @include breakpoint-down(medium) {
+    display: none;
   }
 }
