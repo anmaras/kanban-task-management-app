@@ -1,0 +1,14 @@
+@use '../../../styles/utils/' as *;
+
+.board {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  transform: translateX(rem(300));
+  transition: var(--sidebar-transition);
+}
+
+.board--move {
+  @extend .board;
+  transform: translate(0);
+}

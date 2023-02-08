@@ -1,0 +1,81 @@
+@use '../../../styles/utils/' as *;
+
+.header {
+  display: flex;
+  align-items: center;
+  background-color: var(--dark-grey);
+  border-bottom: thin solid var(--lines-dark);
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: rem(16);
+    padding-left: rem(16);
+
+    @include breakpoint(medium) {
+      min-width: rem(300);
+      padding-left: rem(32);
+    }
+  }
+
+  &__appTitle {
+    display: none;
+
+    @include breakpoint(medium) {
+      display: block;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    gap: rem(18);
+    padding: rem(16);
+
+    @include breakpoint(medium) {
+      border-left: thin solid var(--lines-dark);
+      padding: rem(28);
+    }
+  }
+
+  &__boardTitle {
+    display: none;
+    max-width: rem(256);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @include breakpoint(medium) {
+      display: block;
+    }
+  }
+
+  &__boardBtn {
+    display: flex;
+    align-items: center;
+    gap: rem(6);
+    border: 0;
+    background-color: transparent;
+    color: var(--white);
+    cursor: pointer;
+
+    span {
+      text-transform: capitalize;
+      max-width: rem(128);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @include breakpoint(medium) {
+      display: none;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    gap: rem(16);
+  }
+}
