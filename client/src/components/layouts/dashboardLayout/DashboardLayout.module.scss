@@ -1,0 +1,15 @@
+@use '../../../styles/utils/' as *;
+
+.layout {
+  min-height: inherit;
+  display: grid;
+  grid-template-rows: auto 1fr;
+
+  &__main {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+
+    background-color: var(--very-dark-grey);
+  }
+}
