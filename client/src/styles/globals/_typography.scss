@@ -5,6 +5,7 @@ $font: 'Plus Jakarta Sans', sans-serif;
 
 body {
   font-family: $font;
+  color: var(--white);
 }
 
 .heading-XXL {
@@ -29,6 +30,8 @@ body {
 
 .heading-L {
   font-size: rem(18);
+  font-weight: 700;
+  line-height: 1.23;
 }
 
 input:-webkit-autofill,
