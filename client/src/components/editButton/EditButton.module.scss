@@ -1,0 +1,51 @@
+@use '../../styles/utils/' as *;
+
+.editButton {
+  position: relative;
+  transition: var(--generic-transition);
+
+  &__dots-container {
+    padding: rem(8);
+    cursor: pointer;
+    border-radius: 10px;
+    &:hover {
+      background-color: var(--very-dark-grey);
+    }
+  }
+
+  &__dropdown-container {
+    position: absolute;
+    right: 0;
+    top: 130%;
+    background-color: var(--very-dark-grey);
+    width: rem(180);
+    display: grid;
+    gap: rem(16);
+    padding: rem(18);
+    border-radius: var(--edit-button-border-radius);
+    box-shadow: 0px 0px 2px rgba(255, 255, 255, 0.111);
+  }
+
+  &__button {
+    width: fit-content;
+    border: 0;
+    background-color: transparent;
+    color: var(--medium-grey);
+    padding-bottom: rem(8);
+    cursor: pointer;
+    transition: var(--generic-transition);
+
+    &:hover,
+    &:active {
+      color: var(--lines-dark);
+    }
+  }
+
+  &__button:last-child {
+    color: var(--warning-color);
+    &:hover,
+    &:active {
+      color: var(--warning-color-hover);
+    }
+  }
+}
