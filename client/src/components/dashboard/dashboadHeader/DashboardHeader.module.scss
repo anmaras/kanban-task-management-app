@@ -12,6 +12,12 @@
     gap: rem(16);
     padding-left: rem(16);
 
+    svg {
+      g {
+        fill: var(--main-color);
+      }
+    }
+
     @include breakpoint(medium) {
       min-width: rem(300);
       padding-left: rem(32);
