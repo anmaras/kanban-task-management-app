@@ -9,5 +9,6 @@
     position: relative;
     overflow-x: scroll;
     background-color: var(--very-dark-grey);
+    @include customScrollBar;
   }
 }
