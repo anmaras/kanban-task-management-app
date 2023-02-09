@@ -6,7 +6,10 @@ import DashboardHeader from './dashboard/dashboadHeader/DashboardHeader';
 import EditButton from './editButton/EditButton';
 import DashboardSide from './dashboard/dashboardSide/DashboardSide';
 import DashboardMain from './dashboard/dashboardMain/DashboardMain';
+import DashboardSideBoards from './dashboard/dashboardSide/DashboardSideBoards';
+import Modal from './modal/Modal';
 export {
+  DashboardSideBoards,
   DashboardHeader,
   DashboardLayout,
   DashboardSide,
@@ -15,4 +18,5 @@ export {
   EditButton,
   AuthLayout,
   HomeLayout,
+  Modal,
 };
