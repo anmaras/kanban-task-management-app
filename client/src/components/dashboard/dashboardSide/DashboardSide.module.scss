@@ -7,14 +7,34 @@
   position: fixed;
   z-index: 3;
   left: 0;
-  display: grid;
-  grid-template-rows: 1fr auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: rem(32);
 
   background-color: var(--dark-grey);
   border-right: thin solid var(--lines-dark);
 
   transform: translateX(0);
   transition: var(--sidebar-transition);
+
+  &__hideBtn {
+    display: flex;
+    gap: rem(16);
+    padding: rem(16);
+    padding-left: rem(32);
+    border: 0;
+    background-color: transparent;
+    color: var(--medium-grey);
+    cursor: pointer;
+    transition: var(--generic-transition);
+
+    &:hover,
+    &:hover path {
+      color: var(--lines-dark);
+      fill: var(--lines-dark);
+    }
+  }
 
   @include breakpoint-down(medium) {
     transform: translateX(-100%);
