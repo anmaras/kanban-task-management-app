@@ -6,10 +6,8 @@
   grid-template-rows: auto 1fr;
 
   &__main {
-    display: flex;
     position: relative;
-    overflow: hidden;
-
+    overflow-x: scroll;
     background-color: var(--very-dark-grey);
   }
 }
