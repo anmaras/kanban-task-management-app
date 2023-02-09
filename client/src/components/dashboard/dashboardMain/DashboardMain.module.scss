@@ -2,13 +2,20 @@
 
 .board {
   position: absolute;
+  width: inherit;
   height: 100%;
-  width: 100%;
+  // background-color: violet;
+  display: grid;
+  gap: rem(16);
+  grid-auto-flow: column;
   transform: translateX(rem(300));
   transition: var(--sidebar-transition);
 
   @include breakpoint-down(medium) {
     transform: translateX(0);
+  }
+
+  &__addWrapper {
   }
 }
 
