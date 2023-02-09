@@ -15,6 +15,7 @@
 
   &__dropdown-container {
     position: absolute;
+    z-index: 3;
     right: 0;
     top: 130%;
     background-color: var(--very-dark-grey);
