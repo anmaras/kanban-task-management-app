@@ -39,12 +39,37 @@
   background-color: var(--main-color);
   width: fit-content;
   font-weight: 700;
+
+  &:disabled {
+    filter: brightness(0.5) saturate(0.4);
+    cursor: default;
+    transform: unset;
+  }
+
+  &:disabled:hover {
+    background-color: var(--main-color);
+  }
 }
 
-.button-sideNav {
+.button-showSide {
   position: fixed;
-  bottom: 100px;
+  bottom: 50px;
   z-index: 3;
+  padding: rem(16);
+  padding-left: rem(20);
+  background-color: var(--main-color);
+  border-top-right-radius: var(--auth-button);
+  border-bottom-right-radius: var(--auth-button);
+  cursor: pointer;
+  transition: var(--generic-transition);
+
+  path {
+    fill: var(--white);
+  }
+
+  &:hover {
+    background-color: var(--main-color-hover);
+  }
 
   @include breakpoint-down(medium) {
     display: none;
