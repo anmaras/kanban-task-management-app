@@ -10,7 +10,6 @@ body {
 
 .heading-XXL {
   font-size: rem(28);
-  color: var(--white);
   line-height: 1.35;
 
   @include breakpoint(medium) {
@@ -32,6 +31,13 @@ body {
   font-size: rem(18);
   font-weight: 700;
   line-height: 1.23;
+}
+
+.heading-S {
+  font-size: rem(12);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: 2.4px;
 }
 
 input:-webkit-autofill,
