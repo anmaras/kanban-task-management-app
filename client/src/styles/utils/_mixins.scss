@@ -1,0 +1,18 @@
+$scrollBarSize: 8px;
+
+@mixin customScrollBar {
+  &::-webkit-scrollbar {
+    width: $scrollBarSize;
+    height: $scrollBarSize;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--lines-dark);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+}
