@@ -5,6 +5,8 @@ import {
   DashboardMain,
   DashboardSide,
 } from '../../components';
+import { ReactComponent as Eye } from '../../assets/icon-show-sidebar.svg';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const DashboardPage = () => {
   const { logoutUser, user } = useUserContext();
@@ -23,11 +25,20 @@ const DashboardPage = () => {
         <h2>{user.name}</h2>
         <button onClick={logoutUser}>Logout</button>
       </div> */}
-      {!isVisible && (
-        <button onClick={setVisibility} className="button-sideNav">
-          show side
-        </button>
-      )}
+      <AnimatePresence>
+        {!isVisible && (
+          <motion.button
+            onClick={setVisibility}
+            className="button-showSide"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.1 }}
+          >
+            <Eye />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </DashboardLayout>
   );
 };
