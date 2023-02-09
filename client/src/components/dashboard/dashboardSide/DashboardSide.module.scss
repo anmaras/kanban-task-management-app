@@ -1,9 +1,14 @@
 @use '../../../styles/utils/' as *;
 
 .side {
-  height: 100%;
+  //height calculated by remove the header height
+  height: calc(100% - rem(95));
+  //fixed so boards can pass behind and animation to work
   position: fixed;
-  z-index: 2;
+  z-index: 3;
+  left: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
 
   background-color: var(--dark-grey);
   border-right: thin solid var(--lines-dark);
