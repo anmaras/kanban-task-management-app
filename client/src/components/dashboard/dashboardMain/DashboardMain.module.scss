@@ -6,6 +6,10 @@
   width: 100%;
   transform: translateX(rem(300));
   transition: var(--sidebar-transition);
+
+  @include breakpoint-down(medium) {
+    transform: translateX(0);
+  }
 }
 
 .board--move {
