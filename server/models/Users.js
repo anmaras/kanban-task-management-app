@@ -31,6 +31,7 @@ const UserSchema = new mongoose.Schema({
 
 // hash the password, the only reason the function is here is to keep controller as thin as possible
 UserSchema.pre('save', async function () {
+  //important or edit user controller will throw error
   if (!this.isModified('password')) return;
 
   const salt = await bcrypt.genSalt(10);
