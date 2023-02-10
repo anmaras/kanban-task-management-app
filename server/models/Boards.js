@@ -20,8 +20,8 @@ const ColumnSchema = new mongoose.Schema({
 const BoardSchema = new mongoose.Schema({
   name: { type: String, require: true, trim: true },
   columns: [ColumnSchema],
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
+  userId: {
+    type: mongoose.Types.ObjectId,
     ref: 'User',
     require: true,
   },
