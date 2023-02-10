@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
-import { createBoard } from '../controllers/boardController.js';
+import { createBoard, getAllBoards } from '../controllers/boardController.js';
 
-router.route('/').post(createBoard);
+router.route('/create-board').post(createBoard);
 
 export default router;
