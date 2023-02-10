@@ -39,6 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use('/api/v1/auth', authRouter);
+//authentication pass from here
 app.use('/api/v1/boards', authenticateUser, boardRouter);
 
 app.use(notFoundMiddleware);
