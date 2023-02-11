@@ -1,15 +1,21 @@
 import React from 'react';
 import DashboardSideBoards from '../dashboard/dashboardSide/DashboardSideBoards';
-import style from './Modal.module.scss';
-import { useBoardContext } from '../../context/boardsContext';
+import { Backdrop, BoardModals } from './index';
 
 const Modal = ({ type }) => {
-  const { closeModal } = useBoardContext();
-  if (type === 'showAllBoards') {
+  if (type === 'sideBoardsModal') {
     return (
-      <div className={style.backdrop} onClick={closeModal}>
+      <Backdrop>
         <DashboardSideBoards />
-      </div>
+      </Backdrop>
+    );
+  }
+
+  if (type === 'createBoardModal') {
+    return (
+      <Backdrop>
+        <BoardModals />
+      </Backdrop>
     );
   }
 };
