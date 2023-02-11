@@ -27,4 +27,9 @@ const BoardSchema = new mongoose.Schema({
   },
 });
 
+// const MainSchema = new mongoose.Schema({
+//   boards: [BoardSchema],
+//   activeBoard: { type: String, require: true },
+// });
+
 export default mongoose.model('Board', BoardSchema);
