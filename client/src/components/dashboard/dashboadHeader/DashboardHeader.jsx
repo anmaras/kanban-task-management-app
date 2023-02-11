@@ -12,12 +12,14 @@ import { useEffect } from 'react';
 const DashboardHeader = () => {
   const { width } = useWindowSize();
   const {
+    deleteModalVisible,
     handleSideBoardModal,
     sideBoardModalVisible,
     createBoardVisible,
     activeBoardId,
     boards,
     getUserBoards,
+    editBoardVisible,
   } = useBoardContext();
 
   const activeBoard = boards?.boards?.find(
@@ -30,11 +32,12 @@ const DashboardHeader = () => {
 
   return (
     <>
-      {/* may need to fix that condition */}
+      {deleteModalVisible && <Modal type="deleteBoardModal" />}
       {sideBoardModalVisible && width <= 768 && (
         <Modal type="sideBoardsModal" />
       )}
       {createBoardVisible && <Modal type="createBoardModal" />}
+      {editBoardVisible && <Modal type="editBoardModal" />}
       <header className={style.header}>
         <div className={style['header__logo']}>
           <Logo />
@@ -43,14 +46,16 @@ const DashboardHeader = () => {
 
         <div className={style['header__controls']}>
           <h2 className={[style['header__boardTitle'], 'heading-L'].join(' ')}>
-            {activeBoard?.name}
+            {activeBoard?.name || 'Board List Is Empty'}
           </h2>
 
           <button
             className={style['header__boardBtn']}
             onClick={handleSideBoardModal}
           >
-            <span className="heading-L">{activeBoard?.name}</span>
+            <span className="heading-L">
+              {activeBoard?.name || 'Board List Is Empty'}
+            </span>
             <CevronDown />
           </button>
           <div className={style['header__buttons']}>
