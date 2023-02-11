@@ -1,4 +1,5 @@
 import React, { useContext, useReducer } from 'react';
+import { useUserContext } from './userContext';
 import reducer from '../reducers/boardsReducer';
 import axios from 'axios';
 
@@ -7,23 +8,31 @@ import {
   CREATE_BOARD_SUCCESS,
   CREATE_BOARD_ERROR,
   SIDE_CREATE_MODAL_TOGGLE,
+  CREATE_NEW_BOARD_MODAL_TOGGLE,
   CLOSE_MODAL,
+  GET_USER_BOARD_BEGIN,
+  GET_USER_BOARD_SUCCESS,
+  GET_USER_BOARD_ERROR,
+  GET_USER_BOARD_COLUMN_SUCCESS,
 } from '../utils/actions';
 
 export const initialState = {
   isLoading: false,
   boards: [],
+  totalBoards: 0,
   createBoardVisible: false,
   sideBoardModalVisible: false,
+  activeBoardId: '',
 };
 
 const BoardContext = React.createContext();
 
 export const BoardProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { token, logoutUser } = useUserContext();
 
   const handleCreateBoardModal = () => {
-    console.log('toggle create board modal');
+    dispatch({ type: CREATE_NEW_BOARD_MODAL_TOGGLE });
   };
 
   const handleSideBoardModal = () => {
@@ -34,12 +43,40 @@ export const BoardProvider = ({ children }) => {
     dispatch({ type: CLOSE_MODAL });
   };
 
-  const createBoard = async () => {
-    // dispatch({ type: CREATE_BOARD_BEGIN });
-    console.log('create board');
-    // try {
-    //   // const response = await axios.post('/api/v1/auth/boards/create-board');
-    // } catch (error) {}
+  const createBoard = async (values) => {
+    dispatch({ type: CREATE_BOARD_BEGIN });
+
+    try {
+      const { data } = await axios.post('/api/v1/boards/create-board', values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch({ type: CREATE_BOARD_SUCCESS, payload: data });
+      getUserBoards();
+    } catch (error) {
+      dispatch({ type: CREATE_BOARD_ERROR });
+      console.log(error);
+    }
+  };
+
+  const getUserBoards = async () => {
+    dispatch({ type: GET_USER_BOARD_BEGIN });
+    try {
+      const { data } = await axios.get('/api/v1/boards/get-user-boards', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch({ type: GET_USER_BOARD_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: GET_USER_BOARD_ERROR });
+      console.log(error);
+    }
+  };
+
+  const getBoardColumns = async (activeBoardId) => {
+    dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: activeBoardId });
   };
 
   return (
@@ -50,6 +87,8 @@ export const BoardProvider = ({ children }) => {
         handleCreateBoardModal,
         handleSideBoardModal,
         closeModal,
+        getUserBoards,
+        getBoardColumns,
       }}
     >
       {children}
