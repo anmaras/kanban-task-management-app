@@ -9,11 +9,19 @@ import {
   CREATE_BOARD_ERROR,
   SIDE_CREATE_MODAL_TOGGLE,
   CREATE_NEW_BOARD_MODAL_TOGGLE,
+  DELETE_MODAL_TOGGLE,
   CLOSE_MODAL,
   GET_USER_BOARD_BEGIN,
   GET_USER_BOARD_SUCCESS,
   GET_USER_BOARD_ERROR,
   GET_USER_BOARD_COLUMN_SUCCESS,
+  DELETE_BOARD_BEGIN,
+  DELETE_BOARD_SUCCESS,
+  DELETE_BOARD_ERROR,
+  EDIT_BOARD_BEGIN,
+  EDIT_BOARD_SUCCESS,
+  EDIT_BOARD_ERROR,
+  EDIT_BOARD_MODAL_TOGGLE,
 } from '../utils/actions';
 
 export const initialState = {
@@ -22,6 +30,8 @@ export const initialState = {
   totalBoards: 0,
   createBoardVisible: false,
   sideBoardModalVisible: false,
+  deleteModalVisible: false,
+  editBoardVisible: false,
   activeBoardId: '',
   activeBoard: {},
 };
@@ -36,8 +46,16 @@ export const BoardProvider = ({ children }) => {
     dispatch({ type: CREATE_NEW_BOARD_MODAL_TOGGLE });
   };
 
+  const handleEditBoardModal = () => {
+    dispatch({ type: EDIT_BOARD_MODAL_TOGGLE });
+  };
+
   const handleSideBoardModal = () => {
     dispatch({ type: SIDE_CREATE_MODAL_TOGGLE });
+  };
+
+  const handleDeleteModal = () => {
+    dispatch({ type: DELETE_MODAL_TOGGLE });
   };
 
   const closeModal = () => {
@@ -53,8 +71,9 @@ export const BoardProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      dispatch({ type: CREATE_BOARD_SUCCESS, payload: data });
       getUserBoards();
+      dispatch({ type: CREATE_BOARD_SUCCESS, payload: data });
+      closeModal();
     } catch (error) {
       dispatch({ type: CREATE_BOARD_ERROR });
       console.log(error);
@@ -77,7 +96,59 @@ export const BoardProvider = ({ children }) => {
   };
 
   const getBoardColumns = async (activeBoardId) => {
+    // try {
+    //   await axios.patch(
+    //     `/api/v1/boards/get-user-boards/${state.activeBoardId}`,
+    //     { isActive: true },
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     }
+    //   );
     dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: activeBoardId });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  };
+
+  const deleteBoard = async () => {
+    dispatch({ type: DELETE_BOARD_BEGIN });
+    try {
+      await axios.delete(
+        `/api/v1/boards/get-user-boards/${state.activeBoardId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      getUserBoards();
+      dispatch({ type: DELETE_BOARD_SUCCESS });
+      closeModal();
+    } catch (error) {
+      dispatch({ type: DELETE_BOARD_ERROR });
+    }
+  };
+
+  const editBoard = async (values) => {
+    dispatch({ type: EDIT_BOARD_BEGIN });
+    try {
+      await axios.patch(
+        `/api/v1/boards/get-user-boards/${state.activeBoardId}`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch({ type: EDIT_BOARD_SUCCESS });
+      getUserBoards();
+      closeModal();
+    } catch (error) {
+      dispatch({ type: EDIT_BOARD_ERROR });
+    }
   };
 
   return (
@@ -90,6 +161,10 @@ export const BoardProvider = ({ children }) => {
         closeModal,
         getUserBoards,
         getBoardColumns,
+        handleDeleteModal,
+        deleteBoard,
+        editBoard,
+        handleEditBoardModal,
       }}
     >
       {children}
