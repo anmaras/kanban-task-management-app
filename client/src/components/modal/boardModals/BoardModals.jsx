@@ -8,6 +8,7 @@ import {
 } from 'formik';
 import { useBoardContext } from '../../../context/boardsContext';
 import * as yup from 'yup';
+import Spinner from '../../spinner/Spinner';
 
 const initialValues = {
   name: '',
@@ -23,16 +24,21 @@ const validationCreateBoard = yup.object({
   ),
 });
 
-const BoardModals = () => {
-  const { createBoard } = useBoardContext();
+const BoardModals = ({ type }) => {
+  const { createBoard, isLoading, activeBoard, editBoard } = useBoardContext();
+
+  const valueEdit = {
+    name: activeBoard?.name,
+    columns: activeBoard?.columns,
+  };
 
   return (
     <article>
-      <h2>Add New Board</h2>
+      <h2>{type === 'create' ? 'Add New Board' : 'Edit Board'}</h2>
       <Formik
-        initialValues={initialValues}
+        initialValues={type === 'create' ? initialValues : valueEdit}
         validationSchema={validationCreateBoard}
-        onSubmit={createBoard}
+        onSubmit={type === 'create' ? createBoard : editBoard}
       >
         {({ touched, errors, values }) => (
           <FormikForm>
@@ -76,7 +82,15 @@ const BoardModals = () => {
               )}
             />
 
-            <button type="submit">Create New Board</button>
+            <button type="submit">
+              {isLoading ? (
+                <Spinner />
+              ) : type === 'create' ? (
+                'Create New Board'
+              ) : (
+                'Save Changes'
+              )}
+            </button>
           </FormikForm>
         )}
       </Formik>
