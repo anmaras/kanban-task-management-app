@@ -66,7 +66,15 @@ const boardReducer = (state, action) => {
   }
 
   if (action.type === GET_USER_BOARD_COLUMN_SUCCESS) {
-    return { ...state, isLoading: false, activeBoardId: action.payload };
+    const activeBoard = state.boards.boards.find(
+      (board) => board._id === action.payload
+    );
+
+    return {
+      ...state,
+      activeBoardId: action.payload,
+      activeBoard,
+    };
   }
 
   throw new Error(`No Matching "${action.type}" - action type`);
