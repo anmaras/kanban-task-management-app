@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 import DashboardSideBoards from '../dashboard/dashboardSide/DashboardSideBoards';
-import { Backdrop, BoardModals } from './index';
+import { Backdrop, BoardModals, DeleteModal } from './index';
 
 const Modal = ({ type }) => {
   if (type === 'sideBoardsModal') {
@@ -14,10 +14,34 @@ const Modal = ({ type }) => {
   if (type === 'createBoardModal') {
     return (
       <Backdrop>
-        <BoardModals />
+        <BoardModals type="create" />
+      </Backdrop>
+    );
+  }
+
+  if (type === 'editBoardModal') {
+    return (
+      <Backdrop>
+        <BoardModals type="edit" />
+      </Backdrop>
+    );
+  }
+
+  if (type === 'deleteBoardModal') {
+    return (
+      <Backdrop>
+        <DeleteModal type="board" />
+      </Backdrop>
+    );
+  }
+
+  if (type === 'deleteTaskModal') {
+    return (
+      <Backdrop>
+        <DeleteModal type="task" />
       </Backdrop>
     );
   }
 };
 
-export default Modal;
+export default memo(Modal);
