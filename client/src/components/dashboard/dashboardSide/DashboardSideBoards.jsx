@@ -4,8 +4,13 @@ import { ReactComponent as BoardIcon } from '../../../assets/icon-board.svg';
 import { useBoardContext } from '../../../context/boardsContext';
 
 const DashboardSideBoards = () => {
-  const { handleCreateBoardModal, boards, getBoardColumns, activeBoardId } =
-    useBoardContext();
+  const {
+    handleCreateBoardModal,
+    boards,
+    getBoardColumns,
+    activeBoardId,
+    closeModal,
+  } = useBoardContext();
   const { boards: boardsList, totalBoards } = boards;
 
   return (
@@ -24,7 +29,10 @@ const DashboardSideBoards = () => {
                   : style['boards__item']
               }
               key={id}
-              onClick={() => getBoardColumns(id)}
+              onClick={() => {
+                getBoardColumns(id);
+                closeModal();
+              }}
             >
               <BoardIcon />
               <h4 className="heading-M">{name}</h4>
