@@ -7,18 +7,34 @@ import style from './DashboardHeader.module.scss';
 import EditButton from '../../editButton/EditButton';
 import { useBoardContext } from '../../../context/boardsContext';
 import { Modal } from '../../index';
+import { useEffect } from 'react';
 
 //moke up array to test button
 const testArray = [1];
 
 const DashboardHeader = () => {
   const { width } = useWindowSize();
-  const { handleSideBoardModal, sideBoardModalVisible: isVisible } =
-    useBoardContext();
+  const {
+    handleSideBoardModal,
+    sideBoardModalVisible,
+    createBoardVisible,
+    closeModal,
+  } = useBoardContext();
+
+  useEffect(() => {
+    // if (width >= 768) {
+    //   closeModal();
+    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [width]);
 
   return (
     <>
-      {isVisible && <Modal type="showAllBoards" />}
+      {/* may need to fix that condition */}
+      {sideBoardModalVisible && width <= 768 && (
+        <Modal type="sideBoardsModal" />
+      )}
+      {createBoardVisible && <Modal type="createBoardModal" />}
       <header className={style.header}>
         <div className={style['header__logo']}>
           <Logo />
