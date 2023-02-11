@@ -1,4 +1,5 @@
 import BoardModals from './boardModals/BoardModals';
 import Backdrop from './backdrop/Backdrop';
+import DeleteModal from './deleteModal/DeleteModal';
 
-export { BoardModals, Backdrop };
+export { DeleteModal, BoardModals, Backdrop };
