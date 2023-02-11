@@ -37,6 +37,23 @@ $padding: rem(16);
 
     &:hover,
     &:hover path {
+      background-color: var(--white);
+      color: var(--main-color);
+      fill: var(--main-color);
+    }
+  }
+
+  &__item--active {
+    @extend .boards__item;
+
+    background-color: var(--main-color);
+    color: var(--white);
+    path {
+      fill: var(--white);
+    }
+
+    &:hover,
+    &:hover path {
       background-color: var(--main-color-hover);
       color: var(--white);
       fill: var(--white);
