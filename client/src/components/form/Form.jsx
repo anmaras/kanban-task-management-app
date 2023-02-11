@@ -5,7 +5,7 @@ import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useUserContext } from '../../context/userContext';
-import { PulseLoader } from 'react-spinners';
+import { Spinner } from '../index';
 import style from './Form.module.scss';
 import { motion } from 'framer-motion';
 
@@ -14,6 +14,7 @@ const initialValues = {
   email: '',
   password: '',
 };
+
 //schema for register
 const validationSchemaRegister = yup.object({
   name: yup
@@ -115,7 +116,7 @@ const Form = ({ formType }) => {
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? <PulseLoader color="#ffffff" size={5} /> : formType}
+              {isLoading ? <Spinner /> : formType}
             </button>
           </FormikForm>
         )}
