@@ -1,53 +1,42 @@
 import React from 'react';
 import style from './DashboardSideBoards.module.scss';
 import { ReactComponent as BoardIcon } from '../../../assets/icon-board.svg';
-const mokup = [
-  'App Launch',
-  'Marketing Plan',
-  'RoadMap',
-  'App Launch',
-  'Marketing Plan',
-  'RoadMap',
-  'App Launch',
-  'Marketing Plan',
-  'RoadMap',
-  'App Launch',
-  'Marketing Plan',
-  'RoadMap',
-  'App Launch',
-  'Marketing Plan',
-  'RoadMap',
-  'App Launch',
-  'Marketing Plan',
-  'RoadMap',
-  'App Launch',
-  'Marketing Plan',
-  'RoadMap',
-  'App Launch',
-  'Marketing Plan',
-  'RoadMap',
-];
-
-/* one function for when user select a board 
-and another one when user need to create a new board */
+import { useBoardContext } from '../../../context/boardsContext';
+import { useEffect } from 'react';
 
 const DashboardSideBoards = () => {
+  const { handleCreateBoardModal, boards, getUserBoards, getBoardColumns } =
+    useBoardContext();
+  const { boards: boardsList, totalBoards, activeBoardId } = boards;
+
+  useEffect(() => {
+    getUserBoards();
+  }, []);
+
   return (
     <div className={style.boards}>
       <h3 className={[style['boards__title'], 'heading-S'].join(' ')}>
-        ALL BOARDS (3)
+        ALL BOARDS ({totalBoards})
       </h3>
       <ul className={style['boards__list']}>
-        {mokup.map((board, index) => {
+        {boardsList?.map((board) => {
+          const { name, _id: id } = board;
           return (
-            <li className={style['boards__item']} key={index}>
+            <li
+              className={style['boards__item']}
+              key={id}
+              onClick={() => getBoardColumns(id)}
+            >
               <BoardIcon />
-              <h4 className="heading-M">{board}</h4>
+              <h4 className="heading-M">{name}</h4>
             </li>
           );
         })}
       </ul>
-      <button className={[style['boards__addNewBtn'], 'heading-M'].join(' ')}>
+      <button
+        className={[style['boards__addNewBtn'], 'heading-M'].join(' ')}
+        onClick={handleCreateBoardModal}
+      >
         <BoardIcon />
         <span>Create New Board</span>
       </button>
