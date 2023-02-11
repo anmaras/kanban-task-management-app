@@ -8,6 +8,7 @@ import DashboardSide from './dashboard/dashboardSide/DashboardSide';
 import DashboardMain from './dashboard/dashboardMain/DashboardMain';
 import DashboardSideBoards from './dashboard/dashboardSide/DashboardSideBoards';
 import Modal from './modal/Modal';
+import Spinner from './spinner/Spinner';
 export {
   DashboardSideBoards,
   DashboardHeader,
@@ -19,4 +20,5 @@ export {
   AuthLayout,
   HomeLayout,
   Modal,
+  Spinner,
 };
