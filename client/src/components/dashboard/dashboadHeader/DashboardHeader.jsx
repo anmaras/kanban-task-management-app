@@ -9,24 +9,24 @@ import { useBoardContext } from '../../../context/boardsContext';
 import { Modal } from '../../index';
 import { useEffect } from 'react';
 
-//moke up array to test button
-const testArray = [1];
-
 const DashboardHeader = () => {
   const { width } = useWindowSize();
   const {
     handleSideBoardModal,
     sideBoardModalVisible,
     createBoardVisible,
-    closeModal,
+    activeBoardId,
+    boards,
+    getUserBoards,
   } = useBoardContext();
 
+  const activeBoard = boards?.boards?.find(
+    (board) => board._id === activeBoardId
+  );
+
   useEffect(() => {
-    // if (width >= 768) {
-    //   closeModal();
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width]);
+    getUserBoards();
+  }, []);
 
   return (
     <>
@@ -43,21 +43,20 @@ const DashboardHeader = () => {
 
         <div className={style['header__controls']}>
           <h2 className={[style['header__boardTitle'], 'heading-L'].join(' ')}>
-            board title
+            {activeBoard?.name}
           </h2>
 
           <button
             className={style['header__boardBtn']}
             onClick={handleSideBoardModal}
           >
-            <span className="heading-L">board title</span>
+            <span className="heading-L">{activeBoard?.name}</span>
             <CevronDown />
           </button>
           <div className={style['header__buttons']}>
             <button
               className="button button--primary-L"
-              disabled={!testArray.length ? true : false}
-              onClick={() => console.log('test')}
+              disabled={!boards?.boards?.length ? true : false}
             >
               {width < 768 ? <AddTaskIcon /> : 'Add New Task'}
             </button>
