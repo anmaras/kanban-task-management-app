@@ -2,16 +2,11 @@ import React from 'react';
 import style from './DashboardSideBoards.module.scss';
 import { ReactComponent as BoardIcon } from '../../../assets/icon-board.svg';
 import { useBoardContext } from '../../../context/boardsContext';
-import { useEffect } from 'react';
 
 const DashboardSideBoards = () => {
-  const { handleCreateBoardModal, boards, getUserBoards, getBoardColumns } =
+  const { handleCreateBoardModal, boards, getBoardColumns, activeBoardId } =
     useBoardContext();
-  const { boards: boardsList, totalBoards, activeBoardId } = boards;
-
-  useEffect(() => {
-    getUserBoards();
-  }, []);
+  const { boards: boardsList, totalBoards } = boards;
 
   return (
     <div className={style.boards}>
@@ -23,7 +18,11 @@ const DashboardSideBoards = () => {
           const { name, _id: id } = board;
           return (
             <li
-              className={style['boards__item']}
+              className={
+                id === activeBoardId
+                  ? style['boards__item--active']
+                  : style['boards__item']
+              }
               key={id}
               onClick={() => getBoardColumns(id)}
             >
