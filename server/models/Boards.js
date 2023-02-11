@@ -25,6 +25,7 @@ const BoardSchema = new mongoose.Schema({
     ref: 'User',
     require: true,
   },
+  isActive: { type: Boolean, default: false },
 });
 
 // const MainSchema = new mongoose.Schema({
