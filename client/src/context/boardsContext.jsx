@@ -23,13 +23,14 @@ export const initialState = {
   createBoardVisible: false,
   sideBoardModalVisible: false,
   activeBoardId: '',
+  activeBoard: {},
 };
 
 const BoardContext = React.createContext();
 
 export const BoardProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { token, logoutUser } = useUserContext();
+  const { token } = useUserContext();
 
   const handleCreateBoardModal = () => {
     dispatch({ type: CREATE_NEW_BOARD_MODAL_TOGGLE });
