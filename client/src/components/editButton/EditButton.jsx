@@ -24,7 +24,7 @@ const EditButton = ({ type }) => {
       >
         <Dots />
       </div>
-      <AnimatePresence key="edit-btn">
+      <AnimatePresence>
         {state && (
           <motion.div
             className={style['editButton__dropdown-container']}
