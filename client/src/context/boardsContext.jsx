@@ -95,21 +95,21 @@ export const BoardProvider = ({ children }) => {
     }
   };
 
-  const getBoardColumns = async (activeBoardId) => {
-    // try {
-    //   await axios.patch(
-    //     `/api/v1/boards/get-user-boards/${state.activeBoardId}`,
-    //     { isActive: true },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     }
-    //   );
-    dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: activeBoardId });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const getActiveBoardId = async (activeBoardId) => {
+    try {
+      await axios.patch(
+        `/api/v1/boards/get-user-boards/active/${activeBoardId}`,
+        { isActive: true },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: activeBoardId });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const deleteBoard = async () => {
@@ -160,7 +160,7 @@ export const BoardProvider = ({ children }) => {
         handleSideBoardModal,
         closeModal,
         getUserBoards,
-        getBoardColumns,
+        getActiveBoardId,
         handleDeleteModal,
         deleteBoard,
         editBoard,
