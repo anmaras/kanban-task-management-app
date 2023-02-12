@@ -25,12 +25,7 @@ const BoardSchema = new mongoose.Schema({
     ref: 'User',
     require: true,
   },
-  isActive: { type: Boolean, default: false },
+  isActive: { type: Boolean },
 });
-
-// const MainSchema = new mongoose.Schema({
-//   boards: [BoardSchema],
-//   activeBoard: { type: String, require: true },
-// });
 
 export default mongoose.model('Board', BoardSchema);
