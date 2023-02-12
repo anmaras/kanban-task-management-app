@@ -8,6 +8,7 @@ import EditButton from '../../editButton/EditButton';
 import { useBoardContext } from '../../../context/boardsContext';
 import { Modal } from '../../index';
 import { useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 
 const DashboardHeader = () => {
   const { width } = useWindowSize();
@@ -32,12 +33,14 @@ const DashboardHeader = () => {
 
   return (
     <>
-      {deleteModalVisible && <Modal type="deleteBoardModal" />}
-      {sideBoardModalVisible && width <= 768 && (
-        <Modal type="sideBoardsModal" />
-      )}
-      {createBoardVisible && <Modal type="createBoardModal" />}
-      {editBoardVisible && <Modal type="editBoardModal" />}
+      <AnimatePresence>
+        {deleteModalVisible && <Modal type="deleteBoardModal" />}
+        {sideBoardModalVisible && width <= 768 && (
+          <Modal type="sideBoardsModal" />
+        )}
+        {createBoardVisible && <Modal type="createBoardModal" />}
+        {editBoardVisible && <Modal type="editBoardModal" />}
+      </AnimatePresence>
       <header className={style.header}>
         <div className={style['header__logo']}>
           <Logo />
