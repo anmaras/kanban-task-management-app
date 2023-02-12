@@ -16,3 +16,12 @@ $scrollBarSize: 8px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   }
 }
+
+@mixin modalGlobalContainerStyle {
+  background-color: var(--dark-grey);
+  border-radius: var(--form-input);
+  width: min(100% - 1rem, 480px);
+
+  padding-inline: 1.5rem;
+  padding-block: 2rem;
+}
