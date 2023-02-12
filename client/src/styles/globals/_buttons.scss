@@ -3,7 +3,7 @@
 .button {
   display: block;
   width: 100%;
-  padding-block: rem(10);
+  padding-block: rem(16);
   padding-inline: rem(18);
   border: 0;
   border-radius: var(--auth-button);
@@ -34,10 +34,32 @@
   font-weight: 700;
 }
 
+.button--del-icon {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  min-width: 15px;
+
+  &:focus {
+    outline: 0;
+    g {
+      fill: var(--warning-color);
+    }
+  }
+
+  &:active {
+    outline: 0;
+  }
+
+  &:hover g {
+    fill: var(--warning-color);
+  }
+}
+
 .button--primary-L {
   font-size: rem(18);
   background-color: var(--main-color);
-  width: fit-content;
+  // width: fit-content;
   font-weight: 700;
 
   &:disabled {
@@ -48,6 +70,36 @@
 
   &:disabled:hover {
     background-color: var(--main-color);
+  }
+}
+
+.button--primary-S {
+  @extend .button--primary-L;
+  font-size: rem(13);
+}
+
+.button--secondary {
+  font-size: rem(13);
+  font-weight: 700;
+  background-color: var(--white);
+  color: var(--main-color);
+  text-transform: capitalize;
+  transition: var(--generic-transition);
+
+  &:hover {
+    background-color: var(--white);
+    color: var(--main-color-hover);
+  }
+}
+
+.button--secondary--delete {
+  @extend .button--secondary;
+  background-color: var(--warning-color);
+  color: var(--white);
+
+  &:hover {
+    background-color: var(--warning-color-hover);
+    color: var(--white);
   }
 }
 
