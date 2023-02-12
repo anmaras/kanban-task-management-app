@@ -7,7 +7,7 @@ const DashboardSideBoards = () => {
   const {
     handleCreateBoardModal,
     boards,
-    getBoardColumns,
+    getActiveBoardId,
     activeBoardId,
     closeModal,
   } = useBoardContext();
@@ -30,7 +30,7 @@ const DashboardSideBoards = () => {
               }
               key={id}
               onClick={() => {
-                getBoardColumns(id);
+                getActiveBoardId(id);
                 closeModal();
               }}
             >
