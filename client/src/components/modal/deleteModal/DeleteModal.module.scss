@@ -1,0 +1,27 @@
+@use '../../../styles/utils/' as *;
+
+.modal {
+  @include modalGlobalContainerStyle;
+  display: grid;
+  gap: rem(32);
+
+  &__title {
+    color: var(--warning-color);
+  }
+
+  &__subtitle {
+    color: var(--medium-grey);
+    b {
+      color: var(--warning-color);
+    }
+  }
+
+  &__btns-container {
+    display: flex;
+    flex-direction: column;
+    gap: rem(16);
+    @include breakpoint(medium) {
+      flex-direction: row;
+    }
+  }
+}
