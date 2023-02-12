@@ -1,0 +1,87 @@
+@use '../../../styles/utils/' as *;
+
+$labelListBtnGap: rem(14);
+$inputPadding: rem(12);
+
+.modal {
+  @include modalGlobalContainerStyle;
+
+  &__title {
+    margin-bottom: rem(30);
+  }
+
+  &__form {
+    display: grid;
+    gap: rem(24);
+  }
+
+  &__controller {
+    display: grid;
+    position: relative;
+    gap: $labelListBtnGap;
+  }
+
+  &__input {
+    width: 100%;
+    border: 0;
+    outline: thin solid var(--lines-dark);
+    background-color: transparent;
+    padding: $inputPadding;
+    border-radius: var(--form-input);
+
+    &:focus {
+      outline-color: var(--main-color);
+    }
+  }
+
+  &__input--error {
+    @extend .modal__input;
+    outline-color: var(--warning-color);
+
+    &:focus {
+      outline-color: var(--warning-color);
+    }
+  }
+
+  &__error-container {
+    position: absolute;
+    //depend the input padding
+    bottom: $inputPadding;
+    right: $inputPadding;
+  }
+
+  &__list-section {
+    display: grid;
+    gap: $labelListBtnGap;
+  }
+
+  &__list-container {
+    display: grid;
+    gap: $labelListBtnGap;
+  }
+
+  &__list-item {
+    display: flex;
+    gap: rem(16);
+  }
+
+  &__list-item-controller {
+    position: relative;
+    flex: 1;
+  }
+
+  &__list-item-input {
+    @extend .modal__input;
+  }
+
+  &__list-item-input--error {
+    @extend .modal__input--error;
+  }
+
+  &__list-item-error-container {
+    position: absolute;
+    right: $inputPadding;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
