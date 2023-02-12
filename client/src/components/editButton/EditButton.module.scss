@@ -3,9 +3,16 @@
 .editButton {
   position: relative;
   transition: var(--generic-transition);
+  display: flex;
+  align-items: center;
 
   &__dots-container {
     padding: rem(8);
+    svg {
+      min-width: 5px;
+      max-height: 20px;
+    }
+
     cursor: pointer;
     border-radius: 10px;
     &:hover {
