@@ -21,6 +21,7 @@ const DashboardHeader = () => {
     boards,
     getUserBoards,
     editBoardVisible,
+    addColumnModalVisible,
   } = useBoardContext();
 
   const activeBoard = boards?.boards?.find(
@@ -40,6 +41,7 @@ const DashboardHeader = () => {
         )}
         {createBoardVisible && <Modal type="createBoardModal" />}
         {editBoardVisible && <Modal type="editBoardModal" />}
+        {addColumnModalVisible && <Modal type="addNewColumn" />}
       </AnimatePresence>
       <header className={style.header}>
         <div className={style['header__logo']}>
