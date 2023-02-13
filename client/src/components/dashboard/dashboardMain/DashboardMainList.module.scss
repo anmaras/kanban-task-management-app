@@ -1,0 +1,36 @@
+@use '../../../styles/utils/' as *;
+
+.list {
+  display: grid;
+  grid-auto-columns: 280px;
+  grid-auto-flow: column;
+  height: 100%;
+  gap: rem(16);
+  padding-inline: rem(16);
+  padding-block: rem(24);
+
+  &__item {
+    color: black;
+    height: inherit;
+    border-radius: var(--form-input);
+    border: 1px solid var(--lines-dark);
+  }
+
+  &__title-container {
+    display: flex;
+    gap: rem(12);
+    align-items: center;
+    background-color: aqua;
+  }
+
+  &__color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: blue;
+  }
+
+  &__name {
+    text-transform: uppercase;
+  }
+}
