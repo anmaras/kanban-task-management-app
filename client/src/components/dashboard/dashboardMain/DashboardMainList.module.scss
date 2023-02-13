@@ -1,4 +1,22 @@
 @use '../../../styles/utils/' as *;
+$red: #fc5545;
+$pink: #fcccd1;
+$green: #005e61;
+$greenLight: #42ba80;
+$yellow: #ffcf6f;
+$orange: #f57859;
+$orangeLight: #fabd91;
+$greyLight: #ebebeb;
+$blue: #29a8bf;
+$blueLight: #b8e3eb;
+
+$colors: $pink, $green, $greenLight, $yellow, $orange, $orangeLight, $blue,
+  $blueLight;
+
+$key: random(length($colors));
+$nth: nth($colors, $key);
+
+$random: $nth !default;
 
 .list {
   display: grid;
@@ -9,28 +27,42 @@
   padding-inline: rem(16);
   padding-block: rem(24);
 
-  &__item {
-    color: black;
+  &__item:last-child {
     height: inherit;
-    border-radius: var(--form-input);
-    border: 1px solid var(--lines-dark);
+    div > div {
+      background-color: transparent;
+    }
+  }
+
+  &__item {
+    height: inherit;
+    display: grid;
+    grid-template-rows: auto 1fr;
   }
 
   &__title-container {
     display: flex;
     gap: rem(12);
     align-items: center;
-    background-color: aqua;
+    margin-bottom: rem(16);
   }
 
   &__color {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: blue;
+    background-color: $random;
   }
 
   &__name {
     text-transform: uppercase;
+    color: var(--medium-grey);
+  }
+
+  &__btn-container {
+    background: linear-gradient(var(--dark-grey), var(--very-dark-grey));
+    display: grid;
+    place-content: center;
+    border-radius: var(--form-input);
   }
 }

@@ -15,15 +15,25 @@ const DashboardMainList = () => {
             <div className={style['list__title-container']}>
               <div className={style['list__color']}></div>
               <div className={[style['list__name'], 'heading-S'].join(' ')}>
-                {column.name} (0)
+                {column.name} ({column.tasks.length})
               </div>
             </div>
             <DashboardMainListTasks tasks={column.tasks} />
           </li>
         );
       })}
-      <li>
-        <button onClick={handleAddColumnModal}>add new column</button>
+      <li className={style['list__item']}>
+        <div className={style['list__title-container']}>
+          <div className={style['list__color']}></div>
+        </div>
+        <div className={style['list__btn-container']}>
+          <button
+            className="button heading-XL button-addColumn"
+            onClick={handleAddColumnModal}
+          >
+            add new column
+          </button>
+        </div>
       </li>
     </ul>
   );
