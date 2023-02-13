@@ -11,15 +11,14 @@ const DashboardSideBoards = () => {
     activeBoardId,
     closeModal,
   } = useBoardContext();
-  const { boards: boardsList, totalBoards } = boards;
 
   return (
     <div className={style.boards}>
       <h3 className={[style['boards__title'], 'heading-S'].join(' ')}>
-        ALL BOARDS ({totalBoards})
+        ALL BOARDS ({boards.length})
       </h3>
       <ul className={style['boards__list']}>
-        {boardsList?.map((board) => {
+        {boards.map((board) => {
           const { name, _id: id } = board;
           return (
             <li

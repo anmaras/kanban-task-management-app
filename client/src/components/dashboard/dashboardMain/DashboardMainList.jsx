@@ -5,17 +5,11 @@ import style from './DashboardMainList.module.scss';
 import DashboardMainListTasks from './DashboardMainListTasks';
 
 const DashboardMainList = () => {
-  const {
-    boards: userBoards,
-    activeBoardId,
-    handleAddColumnModal,
-  } = useBoardContext();
-
-  const board = userBoards.boards?.find((board) => board._id === activeBoardId);
+  const { activeBoard, handleAddColumnModal } = useBoardContext();
 
   return (
     <ul className={style.list}>
-      {board?.columns.map((column) => {
+      {activeBoard.columns.map((column) => {
         return (
           <li className={style['list__item']} key={column._id}>
             <div className={style['list__title-container']}>

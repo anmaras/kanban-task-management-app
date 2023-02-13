@@ -19,7 +19,7 @@ const EditButton = ({ type }) => {
   return (
     <div className={style.editButton} ref={editRef}>
       <div
-        onClick={boards?.boards?.length > 0 ? handleState : null}
+        onClick={boards.length > 0 ? handleState : null}
         className={style['editButton__dots-container']}
       >
         <Dots />

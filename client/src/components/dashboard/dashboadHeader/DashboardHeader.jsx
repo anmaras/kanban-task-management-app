@@ -7,7 +7,6 @@ import style from './DashboardHeader.module.scss';
 import EditButton from '../../editButton/EditButton';
 import { useBoardContext } from '../../../context/boardsContext';
 import { Modal } from '../../index';
-import { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 const DashboardHeader = () => {
@@ -17,20 +16,11 @@ const DashboardHeader = () => {
     handleSideBoardModal,
     sideBoardModalVisible,
     createBoardVisible,
-    activeBoardId,
     boards,
-    getUserBoards,
     editBoardVisible,
     addColumnModalVisible,
+    activeBoard,
   } = useBoardContext();
-
-  const activeBoard = boards?.boards?.find(
-    (board) => board._id === activeBoardId
-  );
-
-  useEffect(() => {
-    getUserBoards();
-  }, []);
 
   return (
     <>
@@ -51,7 +41,7 @@ const DashboardHeader = () => {
 
         <div className={style['header__controls']}>
           <h2 className={[style['header__boardTitle'], 'heading-L'].join(' ')}>
-            {activeBoard?.name || 'Board List Is Empty'}
+            {activeBoard.name || 'Board List Is Empty'}
           </h2>
 
           <button
@@ -59,14 +49,14 @@ const DashboardHeader = () => {
             onClick={handleSideBoardModal}
           >
             <span className="heading-L">
-              {activeBoard?.name || 'Board List Is Empty'}
+              {activeBoard.name || 'Board List Is Empty'}
             </span>
             <CevronDown />
           </button>
           <div className={style['header__buttons']}>
             <button
               className="button button--primary-L"
-              disabled={!boards?.boards?.length ? true : false}
+              disabled={!boards.length ? true : false}
             >
               {width < 768 ? <AddTaskIcon /> : 'Add New Task'}
             </button>
