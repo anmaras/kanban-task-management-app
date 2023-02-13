@@ -35,6 +35,14 @@ const Modal = ({ type }) => {
     );
   }
 
+  if (type === 'addNewColumn') {
+    return (
+      <Backdrop>
+        <BoardModals type="addColumn" />
+      </Backdrop>
+    );
+  }
+
   if (type === 'deleteTaskModal') {
     return (
       <Backdrop>
