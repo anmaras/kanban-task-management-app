@@ -27,6 +27,17 @@
   }
 }
 
+.button-addColumn {
+  color: var(--medium-grey);
+  text-transform: capitalize;
+  background-color: unset;
+
+  &:hover {
+    color: var(--main-color);
+    background-color: unset;
+  }
+}
+
 .button--auth {
   background-color: var(--main-color);
   text-transform: uppercase;
