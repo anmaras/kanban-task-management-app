@@ -1,0 +1,7 @@
+@use '../../../styles/utils/' as *;
+
+.tasksList {
+  height: 100%;
+  border-radius: var(--form-input);
+  border: thin solid var(--lines-dark);
+}
