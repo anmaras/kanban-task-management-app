@@ -17,6 +17,7 @@ import {
   EDIT_BOARD_SUCCESS,
   EDIT_BOARD_ERROR,
   EDIT_BOARD_MODAL_TOGGLE,
+  ADD_COLUMN_MODAL_TOGGLE,
 } from '../utils/actions';
 
 const boardReducer = (state, action) => {
@@ -42,6 +43,10 @@ const boardReducer = (state, action) => {
     return { ...state, deleteModalVisible: !state.deleteModalVisible };
   }
 
+  if (action.type === ADD_COLUMN_MODAL_TOGGLE) {
+    return { ...state, addColumnModalVisible: !state.addColumnModalVisible };
+  }
+
   if (action.type === CLOSE_MODAL) {
     return {
       ...state,
@@ -49,6 +54,7 @@ const boardReducer = (state, action) => {
       sideBoardModalVisible: false,
       deleteModalVisible: false,
       editBoardVisible: false,
+      addColumnModalVisible: false,
     };
   }
 

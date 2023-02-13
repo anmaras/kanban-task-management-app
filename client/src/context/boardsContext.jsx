@@ -22,6 +22,7 @@ import {
   EDIT_BOARD_SUCCESS,
   EDIT_BOARD_ERROR,
   EDIT_BOARD_MODAL_TOGGLE,
+  ADD_COLUMN_MODAL_TOGGLE,
 } from '../utils/actions';
 
 export const initialState = {
@@ -32,6 +33,7 @@ export const initialState = {
   sideBoardModalVisible: false,
   deleteModalVisible: false,
   editBoardVisible: false,
+  addColumnModalVisible: false,
   activeBoardId: '',
   activeBoard: {},
 };
@@ -56,6 +58,10 @@ export const BoardProvider = ({ children }) => {
 
   const handleDeleteModal = () => {
     dispatch({ type: DELETE_MODAL_TOGGLE });
+  };
+
+  const handleAddColumnModal = () => {
+    dispatch({ type: ADD_COLUMN_MODAL_TOGGLE });
   };
 
   const closeModal = () => {
@@ -165,6 +171,7 @@ export const BoardProvider = ({ children }) => {
         deleteBoard,
         editBoard,
         handleEditBoardModal,
+        handleAddColumnModal,
       }}
     >
       {children}
