@@ -68,7 +68,7 @@ const deleteBoard = async (req, res) => {
     throw new NotFoundError(`No board with id${id}`);
   }
 
-  res.status(StatusCodes.OK).send('Board Deleted');
+  res.status(StatusCodes.OK).send(board);
 };
 
 //UPDATE BOARD AND COLUMNS NAMES
