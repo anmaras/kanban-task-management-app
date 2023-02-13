@@ -44,17 +44,30 @@ const getAllBoards = async (req, res) => {
 const deleteBoard = async (req, res) => {
   const { id } = req.params;
 
-  const board = await Board.findByIdAndDelete({ _id: id });
-
+  //find current next and previous boards
+  const board = await Board.findOne({ _id: id });
   const nextBoard = await Board.findOne({ _id: { $gt: id } });
+  const previousBoard = await Board.findOne({ _id: { $lt: id } }).sort({
+    _id: -1,
+  });
 
+  //delete selected board
+  await board.remove();
+
+  //when current board is deleted check if there is one after to set it active.
+  //if there is not a next one set active the previous one.
   if (nextBoard) {
     nextBoard.isActive = true;
+    await nextBoard.save();
+  } else if (previousBoard) {
+    previousBoard.isActive = true;
+    await previousBoard.save();
   }
 
   if (!board) {
     throw new NotFoundError(`No board with id${id}`);
   }
+
   res.status(StatusCodes.OK).send('Board Deleted');
 };
 
