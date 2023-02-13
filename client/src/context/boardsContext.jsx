@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext, useReducer, useEffect } from 'react';
 import { useUserContext } from './userContext';
 import reducer from '../reducers/boardsReducer';
 import axios from 'axios';
@@ -77,7 +77,6 @@ export const BoardProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      getUserBoards();
       dispatch({ type: CREATE_BOARD_SUCCESS, payload: data });
       closeModal();
     } catch (error) {
@@ -102,6 +101,7 @@ export const BoardProvider = ({ children }) => {
   };
 
   const getActiveBoardId = async (activeBoardId) => {
+    dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: activeBoardId });
     try {
       await axios.patch(
         `/api/v1/boards/get-user-boards/active/${activeBoardId}`,
@@ -112,7 +112,6 @@ export const BoardProvider = ({ children }) => {
           },
         }
       );
-      dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: activeBoardId });
     } catch (error) {
       console.log(error);
     }
@@ -121,7 +120,7 @@ export const BoardProvider = ({ children }) => {
   const deleteBoard = async () => {
     dispatch({ type: DELETE_BOARD_BEGIN });
     try {
-      await axios.delete(
+      const { data } = await axios.delete(
         `/api/v1/boards/get-user-boards/${state.activeBoardId}`,
         {
           headers: {
@@ -129,8 +128,7 @@ export const BoardProvider = ({ children }) => {
           },
         }
       );
-      getUserBoards();
-      dispatch({ type: DELETE_BOARD_SUCCESS });
+      dispatch({ type: DELETE_BOARD_SUCCESS, payload: data });
       closeModal();
     } catch (error) {
       dispatch({ type: DELETE_BOARD_ERROR });
@@ -140,7 +138,7 @@ export const BoardProvider = ({ children }) => {
   const editBoard = async (values) => {
     dispatch({ type: EDIT_BOARD_BEGIN });
     try {
-      await axios.patch(
+      const { data } = await axios.patch(
         `/api/v1/boards/get-user-boards/${state.activeBoardId}`,
         values,
         {
@@ -149,13 +147,17 @@ export const BoardProvider = ({ children }) => {
           },
         }
       );
-      dispatch({ type: EDIT_BOARD_SUCCESS });
-      getUserBoards();
+      dispatch({ type: EDIT_BOARD_SUCCESS, payload: data });
       closeModal();
     } catch (error) {
       dispatch({ type: EDIT_BOARD_ERROR });
     }
   };
+
+  useEffect(() => {
+    getUserBoards();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <BoardContext.Provider
