@@ -2,19 +2,13 @@
 
 .board {
   position: absolute;
-  width: inherit;
+  min-width: 100%;
   height: 100%;
-  display: grid;
-  gap: rem(16);
-  grid-auto-flow: column;
   transform: translateX(rem(300));
   transition: var(--sidebar-transition);
 
   @include breakpoint-down(medium) {
     transform: translateX(0);
-  }
-
-  &__addWrapper {
   }
 }
 
