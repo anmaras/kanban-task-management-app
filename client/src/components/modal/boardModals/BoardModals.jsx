@@ -37,7 +37,11 @@ const BoardModals = ({ type }) => {
   return (
     <article className={style.modal}>
       <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
-        {type === 'create' ? 'Add New Board' : 'Edit Board'}
+        {type === 'create'
+          ? 'Add New Board'
+          : type === 'addColumn'
+          ? 'Add New Column'
+          : 'Edit Board'}
       </h2>
 
       <Formik
@@ -47,36 +51,38 @@ const BoardModals = ({ type }) => {
       >
         {({ touched, errors, values }) => (
           <FormikForm className={style['modal__form']}>
-            <div className={style['modal__controller']}>
-              <label
-                className={[style['modal__label'], 'body-M '].join(' ')}
-                htmlFor="name"
-              >
-                Board Name
-              </label>
-              <Field
-                className={[
-                  style[
-                    touched.name && errors.name
-                      ? 'modal__input--error'
-                      : 'modal__input'
-                  ],
-                  'body-L-dark',
-                ].join(' ')}
-                type="text"
-                name="name"
-                id="name"
-                placeholder="e.g Web Design"
-              />
-              <div
-                className={[
-                  style['modal__error-container'],
-                  'body-L-dark--error',
-                ].join(' ')}
-              >
-                <ErrorMessage name="name" component="div" />
+            {type === 'addColumn' ? null : (
+              <div className={style['modal__controller']}>
+                <label
+                  className={[style['modal__label'], 'body-M '].join(' ')}
+                  htmlFor="name"
+                >
+                  Board Name
+                </label>
+                <Field
+                  className={[
+                    style[
+                      touched.name && errors.name
+                        ? 'modal__input--error'
+                        : 'modal__input'
+                    ],
+                    'body-L-dark',
+                  ].join(' ')}
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="e.g Web Design"
+                />
+                <div
+                  className={[
+                    style['modal__error-container'],
+                    'body-L-dark--error',
+                  ].join(' ')}
+                >
+                  <ErrorMessage name="name" component="div" />
+                </div>
               </div>
-            </div>
+            )}
 
             <FieldArray
               name="columns"
