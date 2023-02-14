@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useEffect } from 'react';
+import React, { useContext, useReducer, useEffect, useState } from 'react';
 import { useUserContext } from './userContext';
 import reducer from '../reducers/boardsReducer';
 import axios from 'axios';
@@ -42,7 +42,7 @@ const BoardContext = React.createContext();
 
 export const BoardProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { token } = useUserContext();
+  const { token, user } = useUserContext();
 
   const handleCreateBoardModal = () => {
     dispatch({ type: CREATE_NEW_BOARD_MODAL_TOGGLE });
@@ -101,10 +101,9 @@ export const BoardProvider = ({ children }) => {
   };
 
   const getActiveBoardId = async (activeBoardId) => {
-    dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: activeBoardId });
     try {
-      await axios.patch(
-        `/api/v1/boards/get-user-boards/active/${activeBoardId}`,
+      const { data } = await axios.patch(
+        `/api/v1/boards/get-user-boards/active/board/${activeBoardId}`,
         { isActive: true },
         {
           headers: {
@@ -112,6 +111,7 @@ export const BoardProvider = ({ children }) => {
           },
         }
       );
+      dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: data });
     } catch (error) {
       console.log(error);
     }
@@ -121,7 +121,7 @@ export const BoardProvider = ({ children }) => {
     dispatch({ type: DELETE_BOARD_BEGIN });
     try {
       const { data } = await axios.delete(
-        `/api/v1/boards/get-user-boards/${state.activeBoardId}`,
+        `/api/v1/boards/get-user-boards/board/${state.activeBoardId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -139,7 +139,7 @@ export const BoardProvider = ({ children }) => {
     dispatch({ type: EDIT_BOARD_BEGIN });
     try {
       const { data } = await axios.patch(
-        `/api/v1/boards/get-user-boards/${state.activeBoardId}`,
+        `/api/v1/boards/get-user-boards/board/${state.activeBoardId}`,
         values,
         {
           headers: {
@@ -155,9 +155,11 @@ export const BoardProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getUserBoards();
+    if (user && token) {
+      getUserBoards();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user, token]);
 
   return (
     <BoardContext.Provider
