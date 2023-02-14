@@ -51,7 +51,11 @@ const deleteBoard = async (req, res) => {
     _id: -1,
   });
 
+  if (!board) {
+    throw new NotFoundError(`No board with id${id}`);
+  }
   //delete selected board
+
   await board.remove();
 
   //when current board is deleted check if there is one after to set it active.
@@ -64,11 +68,7 @@ const deleteBoard = async (req, res) => {
     await previousBoard.save();
   }
 
-  if (!board) {
-    throw new NotFoundError(`No board with id${id}`);
-  }
-
-  res.status(StatusCodes.OK).send(board);
+  res.status(StatusCodes.OK).send({ board, nextBoard, previousBoard });
 };
 
 //UPDATE BOARD AND COLUMNS NAMES
@@ -111,4 +111,49 @@ const selectActive = async (req, res) => {
   res.status(StatusCodes.OK).json(updatedBoard);
 };
 
-export { createBoard, getAllBoards, deleteBoard, updateBoard, selectActive };
+const createBoardTask = async (req, res) => {
+  const { id, columnId } = req.params;
+  const { title, description, status, subtasks } = req.body;
+
+  //find the board
+  const board = await Board.findOne({ _id: id });
+
+  //check if board exist
+  if (!board) {
+    throw new NotFoundError(`No board with id ${id}`);
+  }
+
+  //find the column
+  const column = board.columns.find(
+    (column) => column._id.toString() === columnId
+  );
+  //check if column exist
+  if (!column) {
+    throw new NotFoundError(`No column with id ${id}`);
+  }
+
+  //create task
+  const task = {
+    title,
+    description,
+    status,
+    subtasks,
+  };
+
+  //put the task in the column
+  column.tasks.push(task);
+
+  //save the board
+  await board.save();
+
+  res.status(StatusCodes.CREATED).send(task);
+};
+
+export {
+  createBoard,
+  getAllBoards,
+  deleteBoard,
+  updateBoard,
+  selectActive,
+  createBoardTask,
+};
