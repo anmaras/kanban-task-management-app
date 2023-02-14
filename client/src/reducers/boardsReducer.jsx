@@ -165,7 +165,13 @@ const boardReducer = (state, action) => {
       return board;
     });
 
-    return { ...state, isLoading: false, boards: tempBoardArray };
+    return {
+      ...state,
+      isLoading: false,
+      boards: tempBoardArray,
+      activeBoardId: action.payload._id,
+      activeBoard: action.payload,
+    };
   }
 
   if (action.type === EDIT_BOARD_ERROR) {
