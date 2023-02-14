@@ -43,6 +43,12 @@ $inputPadding: rem(12);
     }
   }
 
+  &__textarea {
+    @extend .modal__input;
+    resize: none;
+    @include customScrollBar;
+  }
+
   &__error-container {
     position: absolute;
     //depend the input padding
