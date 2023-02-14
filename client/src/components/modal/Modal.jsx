@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import DashboardSideBoards from '../dashboard/dashboardSide/DashboardSideBoards';
-import { Backdrop, BoardModals, DeleteModal } from './index';
+import { Backdrop, BoardModals, DeleteModal, TaskModal } from './index';
 
 const Modal = ({ type }) => {
   if (type === 'sideBoardsModal') {
@@ -43,10 +43,10 @@ const Modal = ({ type }) => {
     );
   }
 
-  if (type === 'deleteTaskModal') {
+  if (type === 'addTaskModal') {
     return (
       <Backdrop>
-        <DeleteModal type="task" />
+        <TaskModal type="add" />
       </Backdrop>
     );
   }
