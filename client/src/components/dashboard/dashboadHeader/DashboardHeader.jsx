@@ -20,6 +20,8 @@ const DashboardHeader = () => {
     editBoardVisible,
     addColumnModalVisible,
     activeBoard,
+    handleAddTaskModal,
+    addTaskModalVisible,
   } = useBoardContext();
 
   return (
@@ -32,6 +34,7 @@ const DashboardHeader = () => {
         {createBoardVisible && <Modal type="createBoardModal" />}
         {editBoardVisible && <Modal type="editBoardModal" />}
         {addColumnModalVisible && <Modal type="addNewColumn" />}
+        {addTaskModalVisible && <Modal type="addTaskModal" />}
       </AnimatePresence>
       <header className={style.header}>
         <div className={style['header__logo']}>
@@ -55,6 +58,7 @@ const DashboardHeader = () => {
           </button>
           <div className={style['header__buttons']}>
             <button
+              onClick={handleAddTaskModal}
               className="button button--primary-L"
               disabled={!boards?.length ? true : false}
             >
