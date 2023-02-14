@@ -70,6 +70,8 @@ const boardReducer = (state, action) => {
       ...state,
       isLoading: false,
       boards: [...state.boards, action.payload],
+      activeBoardId: action.payload._id,
+      activeBoard: action.payload,
     };
   }
 
@@ -83,15 +85,13 @@ const boardReducer = (state, action) => {
   }
 
   if (action.type === GET_USER_BOARD_SUCCESS) {
-    const activeBoard = action.payload.boards.find(
-      (board) => board._id === action.payload.activeBoardId
-    );
+    const activeBoard = action.payload.boards.find((board) => board.isActive);
 
     return {
       ...state,
       isLoading: false,
       boards: action.payload.boards,
-      activeBoardId: action.payload.activeBoardId,
+      activeBoardId: activeBoard?._id,
       activeBoard,
     };
   }
@@ -103,14 +103,10 @@ const boardReducer = (state, action) => {
   /* GET ACTIVE BOARD */
 
   if (action.type === GET_USER_BOARD_COLUMN_SUCCESS) {
-    const activeBoard = state.boards.find(
-      (board) => board._id === action.payload
-    );
-
     return {
       ...state,
-      activeBoardId: action.payload,
-      activeBoard,
+      activeBoardId: action.payload?._id,
+      activeBoard: action.payload,
     };
   }
 
@@ -121,7 +117,7 @@ const boardReducer = (state, action) => {
   }
 
   if (action.type === DELETE_BOARD_SUCCESS) {
-    const boardItem = action.payload;
+    const boardItem = action.payload.board;
 
     const boardsList = state.boards;
 
@@ -129,7 +125,14 @@ const boardReducer = (state, action) => {
       (board) => board._id !== boardItem._id
     );
 
-    return { ...state, isLoading: false, boards: newBoardList };
+    return {
+      ...state,
+      isLoading: false,
+      boards: newBoardList,
+      activeBoard: action.payload.nextBoard || action.payload.previousBoard,
+      activeBoardId:
+        action.payload.nextBoard?._id || action.payload.previousBoard?._id,
+    };
   }
 
   if (action.type === DELETE_BOARD_ERROR) {
