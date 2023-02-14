@@ -90,4 +90,53 @@ $inputPadding: rem(12);
     top: 50%;
     transform: translateY(-50%);
   }
+
+  &__dropdown-container {
+    position: relative;
+  }
+
+  &__arrowUp {
+    transform: rotate(180deg);
+    transition: var(--generic-transition);
+  }
+
+  &__arrowDown {
+    transition: var(--generic-transition);
+    transform: rotate(0);
+  }
+
+  &__select-input {
+    @extend .modal__input;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:focus {
+      outline-color: var(--main-color);
+    }
+  }
+
+  &__select-list {
+    position: absolute;
+    top: calc(100% + $labelListBtnGap);
+    width: 100%;
+    background-color: var(--very-dark-grey);
+    // padding-inline: rem(16);
+    padding-block: rem(24);
+    border-radius: var(--form-input);
+  }
+
+  &__option {
+    padding-inline: rem(16);
+    padding-block: rem(16);
+    color: var(--medium-grey);
+    cursor: pointer;
+    transition: var(--generic-transition);
+
+    &:hover {
+      background-color: var(--dark-grey);
+      color: var(--white);
+    }
+  }
 }
