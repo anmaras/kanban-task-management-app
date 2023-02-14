@@ -18,6 +18,7 @@ import {
   EDIT_BOARD_ERROR,
   EDIT_BOARD_MODAL_TOGGLE,
   ADD_COLUMN_MODAL_TOGGLE,
+  ADD_TASK_MODAL_TOGGLE,
 } from '../utils/actions';
 
 const boardReducer = (state, action) => {
@@ -47,6 +48,10 @@ const boardReducer = (state, action) => {
     return { ...state, addColumnModalVisible: !state.addColumnModalVisible };
   }
 
+  if (action.type === ADD_TASK_MODAL_TOGGLE) {
+    return { ...state, addTaskModalVisible: !state.addTaskModalVisible };
+  }
+
   if (action.type === CLOSE_MODAL) {
     return {
       ...state,
@@ -55,6 +60,7 @@ const boardReducer = (state, action) => {
       deleteModalVisible: false,
       editBoardVisible: false,
       addColumnModalVisible: false,
+      addTaskModalVisible: false,
     };
   }
 
@@ -165,6 +171,8 @@ const boardReducer = (state, action) => {
   if (action.type === EDIT_BOARD_ERROR) {
     return { ...state, isLoading: false };
   }
+
+  //CRUD BOARD TASKS
 
   throw new Error(`No Matching "${action.type}" - action type`);
 };

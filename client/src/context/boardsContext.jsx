@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useEffect, useState } from 'react';
+import React, { useContext, useReducer, useEffect } from 'react';
 import { useUserContext } from './userContext';
 import reducer from '../reducers/boardsReducer';
 import axios from 'axios';
@@ -23,6 +23,7 @@ import {
   EDIT_BOARD_ERROR,
   EDIT_BOARD_MODAL_TOGGLE,
   ADD_COLUMN_MODAL_TOGGLE,
+  ADD_TASK_MODAL_TOGGLE,
 } from '../utils/actions';
 
 export const initialState = {
@@ -34,6 +35,7 @@ export const initialState = {
   deleteModalVisible: false,
   editBoardVisible: false,
   addColumnModalVisible: false,
+  addTaskModalVisible: false,
   activeBoardId: '',
   activeBoard: {},
 };
@@ -62,6 +64,10 @@ export const BoardProvider = ({ children }) => {
 
   const handleAddColumnModal = () => {
     dispatch({ type: ADD_COLUMN_MODAL_TOGGLE });
+  };
+
+  const handleAddTaskModal = () => {
+    dispatch({ type: ADD_TASK_MODAL_TOGGLE });
   };
 
   const closeModal = () => {
@@ -176,6 +182,7 @@ export const BoardProvider = ({ children }) => {
         editBoard,
         handleEditBoardModal,
         handleAddColumnModal,
+        handleAddTaskModal,
       }}
     >
       {children}
