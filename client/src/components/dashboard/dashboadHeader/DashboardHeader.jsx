@@ -41,7 +41,7 @@ const DashboardHeader = () => {
 
         <div className={style['header__controls']}>
           <h2 className={[style['header__boardTitle'], 'heading-L'].join(' ')}>
-            {activeBoard.name || 'Board List Is Empty'}
+            {activeBoard?.name || 'Board List Is Empty'}
           </h2>
 
           <button
@@ -49,14 +49,14 @@ const DashboardHeader = () => {
             onClick={handleSideBoardModal}
           >
             <span className="heading-L">
-              {activeBoard.name || 'Board List Is Empty'}
+              {activeBoard?.name || 'Board List Is Empty'}
             </span>
             <CevronDown />
           </button>
           <div className={style['header__buttons']}>
             <button
               className="button button--primary-L"
-              disabled={!boards.length ? true : false}
+              disabled={!boards?.length ? true : false}
             >
               {width < 768 ? <AddTaskIcon /> : 'Add New Task'}
             </button>

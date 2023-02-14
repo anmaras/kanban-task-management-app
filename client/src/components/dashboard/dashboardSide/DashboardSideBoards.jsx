@@ -15,10 +15,10 @@ const DashboardSideBoards = () => {
   return (
     <div className={style.boards}>
       <h3 className={[style['boards__title'], 'heading-S'].join(' ')}>
-        ALL BOARDS ({boards.length})
+        ALL BOARDS ({boards?.length})
       </h3>
       <ul className={style['boards__list']}>
-        {boards.map((board) => {
+        {boards?.map((board) => {
           const { name, _id: id } = board;
           return (
             <li

@@ -7,7 +7,7 @@ import DashboardMainList from './DashboardMainList';
 const DashboardMain = ({ isVisible }) => {
   const { boards } = useBoardContext();
 
-  if (!boards.length) {
+  if (!boards?.length) {
     return <DashboardMainOptions isVisible={isVisible} />;
   }
 
