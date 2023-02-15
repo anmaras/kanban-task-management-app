@@ -146,7 +146,7 @@ const createBoardTask = async (req, res) => {
   //save the board
   await board.save();
 
-  res.status(StatusCodes.CREATED).send(task);
+  res.status(StatusCodes.CREATED).json(board);
 };
 
 export {
