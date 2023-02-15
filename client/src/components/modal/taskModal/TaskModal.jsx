@@ -31,7 +31,7 @@ const BoardModals = ({ type }) => {
     title: '',
     description: '',
     subtasks: [{ title: '' }],
-    status: status,
+    // status: status,
     columnId: activeBoard?.columns[0]._id,
   };
 
@@ -224,7 +224,7 @@ const BoardModals = ({ type }) => {
                           onClick={() => {
                             setValues({
                               ...values,
-                              status: name,
+                              // status: name,
                               columnId: _id,
                             });
                             setStatus(name);
