@@ -22,10 +22,8 @@ const validationCreateBoard = yup.object({
   ),
 });
 
-const submit = (values) => console.log(values);
-
 const BoardModals = ({ type }) => {
-  const { isLoading, activeBoard } = useBoardContext();
+  const { isLoading, activeBoard, addNewTask } = useBoardContext();
   const [selectListVisible, setSelectVisible] = useState(false);
   const [status, setStatus] = useState(activeBoard?.columns[0].name);
 
@@ -33,16 +31,14 @@ const BoardModals = ({ type }) => {
     title: '',
     description: '',
     subtasks: [{ title: '' }],
-    status: '',
+    status: status,
+    columnId: activeBoard?.columns[0]._id,
   };
+
+  // Toggle custom options list visibility
 
   const handleSelectList = () => {
     setSelectVisible(!selectListVisible);
-  };
-
-  const setStatusValue = (value) => {
-    setStatus(value);
-    handleSelectList();
   };
 
   // const valuesForEdit = {
@@ -52,6 +48,8 @@ const BoardModals = ({ type }) => {
 
   return (
     <article className={style.modal}>
+      {/* MODAL TITLE */}
+
       <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
         Add New Task
       </h2>
@@ -59,62 +57,69 @@ const BoardModals = ({ type }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationCreateBoard}
-        onSubmit={submit}
+        onSubmit={addNewTask}
       >
-        {({ touched, errors, values, setFieldValue }) => (
+        {/*TITLE AND DESCRIPTION FIELDS  */}
+
+        {({ touched, errors, values, setValues }) => (
           <FormikForm className={style['modal__form']}>
-            {type === 'addTask' ? null : (
-              <>
-                <div className={style['modal__controller']}>
-                  <label
-                    className={[style['modal__label'], 'body-M '].join(' ')}
-                    htmlFor="title"
-                  >
-                    Title
-                  </label>
-                  <Field
-                    className={[
-                      style[
-                        touched.title && errors.title
-                          ? 'modal__input--error'
-                          : 'modal__input'
-                      ],
-                      'body-L-dark',
-                    ].join(' ')}
-                    type="text"
-                    name="title"
-                    id="title"
-                    placeholder="e.g Take a coffee break"
-                  />
-                  <div
-                    className={[
-                      style['modal__error-container'],
-                      'body-L-dark--error',
-                    ].join(' ')}
-                  >
-                    <ErrorMessage name="title" component="div" />
-                  </div>
+            {/* TITLE FIELD */}
+
+            <>
+              <div className={style['modal__controller']}>
+                <label
+                  className={[style['modal__label'], 'body-M '].join(' ')}
+                  htmlFor="title"
+                >
+                  Title
+                </label>
+                <Field
+                  className={[
+                    style[
+                      touched.title && errors.title
+                        ? 'modal__input--error'
+                        : 'modal__input'
+                    ],
+                    'body-L-dark',
+                  ].join(' ')}
+                  type="text"
+                  name="title"
+                  id="title"
+                  placeholder="e.g Take a coffee break"
+                />
+                <div
+                  className={[
+                    style['modal__error-container'],
+                    'body-L-dark--error',
+                  ].join(' ')}
+                >
+                  <ErrorMessage name="title" component="div" />
                 </div>
-                <div className={style['modal__controller']}>
-                  <label
-                    className={[style['modal__label'], 'body-M '].join(' ')}
-                    htmlFor="description"
-                  >
-                    Description
-                  </label>
-                  <Field
-                    component="textarea"
-                    className={[style['modal__textarea'], 'body-L-dark'].join(
-                      ' '
-                    )}
-                    type="text"
-                    name="description"
-                    id="description"
-                    rows="3"
-                  />
-                </div>
-              </>
-            )}
+              </div>
+
+              {/* TEXTAREA */}
+
+              <div className={style['modal__controller']}>
+                <label
+                  className={[style['modal__label'], 'body-M '].join(' ')}
+                  htmlFor="description"
+                >
+                  Description
+                </label>
+                <Field
+                  component="textarea"
+                  className={[style['modal__textarea'], 'body-L-dark'].join(
+                    ' '
+                  )}
+                  type="text"
+                  name="description"
+                  id="description"
+                  rows="3"
+                />
+              </div>
+            </>
+
+            {/* SUBTASKS ARRAY FIELDS */}
 
             <FieldArray
               name="subtasks"
@@ -177,6 +182,8 @@ const BoardModals = ({ type }) => {
               )}
             />
 
+            {/* DROPDOWN  SELECT*/}
+
             <section className={style['modal__dropdown-container']}>
               <div className={style['modal__controller']}>
                 <label
@@ -185,7 +192,7 @@ const BoardModals = ({ type }) => {
                 >
                   Status
                 </label>
-                {/* <div
+                <div
                   onClick={handleSelectList}
                   tabIndex="0"
                   className={[style['modal__select-input'], 'body-L-dark'].join(
@@ -202,8 +209,9 @@ const BoardModals = ({ type }) => {
                   >
                     <ArrowUp />
                   </span>
-                </div> */}
-                <Field type="text" name="status" onClick={handleSelectList} />
+                </div>
+
+                {/* DROPDOWN  OPTION LIST*/}
 
                 {selectListVisible ? (
                   <ul className={style['modal__select-list']}>
@@ -211,9 +219,16 @@ const BoardModals = ({ type }) => {
                       const { name, _id } = column;
                       return (
                         <li
+                          //field values are passed through formik setValues
+                          //otherwise status field cannot be updated with custom select and options
                           onClick={() => {
-                            setStatusValue(name);
-                            setFieldValue('status', status);
+                            setValues({
+                              ...values,
+                              status: name,
+                              columnId: _id,
+                            });
+                            setStatus(name);
+                            handleSelectList();
                           }}
                           className={style['modal__option']}
                           key={_id}
@@ -226,26 +241,14 @@ const BoardModals = ({ type }) => {
                 ) : null}
               </div>
             </section>
-            {/* <Field component="select" name="status" id="status">
-              {activeBoard?.columns.map((column) => {
-                const { name, _id } = column;
-                return (
-                  <option
-                    className={style['modal__option']}
-                    key={_id}
-                    value={name}
-                  >
-                    {name}
-                  </option>
-                );
-              })}
-            </Field> */}
+
+            {/* SUBMIT BUTTON */}
 
             <button className="button button--primary-S" type="submit">
               {isLoading ? (
                 <Spinner />
-              ) : type === 'create' ? (
-                'Create New Board'
+              ) : type === 'addTask' ? (
+                'Create New Task'
               ) : (
                 'Save Changes'
               )}
