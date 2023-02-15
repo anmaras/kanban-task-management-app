@@ -21,6 +21,9 @@ import {
   EDIT_BOARD_BEGIN,
   EDIT_BOARD_SUCCESS,
   EDIT_BOARD_ERROR,
+  CREATE_COLUMN_TASK_BEGIN,
+  CREATE_COLUMN_TASK_SUCCESS,
+  CREATE_COLUMN_TASK_ERROR,
   EDIT_BOARD_MODAL_TOGGLE,
   ADD_COLUMN_MODAL_TOGGLE,
   ADD_TASK_MODAL_TOGGLE,
@@ -160,6 +163,30 @@ export const BoardProvider = ({ children }) => {
     }
   };
 
+  const addNewTask = async (values) => {
+    const { columnId } = values;
+
+    dispatch({ type: CREATE_COLUMN_TASK_BEGIN });
+    try {
+      const { data } = await axios.post(
+        `/api/v1/boards/get-user-boards/board/${state.activeBoardId}/column/${columnId}`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch({
+        type: CREATE_COLUMN_TASK_SUCCESS,
+        payload: data,
+      });
+      closeModal();
+    } catch (error) {
+      dispatch({ type: CREATE_COLUMN_TASK_ERROR });
+    }
+  };
+
   useEffect(() => {
     if (user && token) {
       getUserBoards();
@@ -183,6 +210,7 @@ export const BoardProvider = ({ children }) => {
         handleEditBoardModal,
         handleAddColumnModal,
         handleAddTaskModal,
+        addNewTask,
       }}
     >
       {children}

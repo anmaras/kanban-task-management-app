@@ -16,6 +16,9 @@ import {
   EDIT_BOARD_BEGIN,
   EDIT_BOARD_SUCCESS,
   EDIT_BOARD_ERROR,
+  CREATE_COLUMN_TASK_BEGIN,
+  CREATE_COLUMN_TASK_SUCCESS,
+  CREATE_COLUMN_TASK_ERROR,
   EDIT_BOARD_MODAL_TOGGLE,
   ADD_COLUMN_MODAL_TOGGLE,
   ADD_TASK_MODAL_TOGGLE,
@@ -178,7 +181,33 @@ const boardReducer = (state, action) => {
     return { ...state, isLoading: false };
   }
 
-  //CRUD BOARD TASKS
+  /* CREATE NEW TASK */
+  if (action.type === CREATE_COLUMN_TASK_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === CREATE_COLUMN_TASK_SUCCESS) {
+    const { _id, columns } = action.payload;
+
+    const tempBoardArray = state.boards.map((board) => {
+      if (board._id === _id) {
+        board.columns = columns;
+        return board;
+      }
+      return board;
+    });
+
+    return {
+      ...state,
+      isLoading: false,
+      boards: tempBoardArray,
+      activeBoardId: action.payload._id,
+      activeBoard: action.payload,
+    };
+  }
+  if (action.type === CREATE_COLUMN_TASK_ERROR) {
+    return { ...state, isLoading: false };
+  }
 
   throw new Error(`No Matching "${action.type}" - action type`);
 };
