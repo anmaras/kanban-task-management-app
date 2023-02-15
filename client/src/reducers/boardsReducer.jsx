@@ -22,6 +22,8 @@ import {
   EDIT_BOARD_MODAL_TOGGLE,
   ADD_COLUMN_MODAL_TOGGLE,
   ADD_TASK_MODAL_TOGGLE,
+  VIEW_TASK_MODAL_TOGGLE,
+  GET_CURRENT_TASK,
 } from '../utils/actions';
 
 const boardReducer = (state, action) => {
@@ -55,6 +57,10 @@ const boardReducer = (state, action) => {
     return { ...state, addTaskModalVisible: !state.addTaskModalVisible };
   }
 
+  if (action.type === VIEW_TASK_MODAL_TOGGLE) {
+    return { ...state, viewTaskModalVisible: !state.viewTaskModalVisible };
+  }
+
   if (action.type === CLOSE_MODAL) {
     return {
       ...state,
@@ -64,6 +70,7 @@ const boardReducer = (state, action) => {
       editBoardVisible: false,
       addColumnModalVisible: false,
       addTaskModalVisible: false,
+      viewTaskModalVisible: false,
     };
   }
 
@@ -207,6 +214,10 @@ const boardReducer = (state, action) => {
   }
   if (action.type === CREATE_COLUMN_TASK_ERROR) {
     return { ...state, isLoading: false };
+  }
+
+  if (action.type === GET_CURRENT_TASK) {
+    return { ...state, task: action.payload };
   }
 
   throw new Error(`No Matching "${action.type}" - action type`);
