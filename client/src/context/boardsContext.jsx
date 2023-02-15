@@ -27,6 +27,8 @@ import {
   EDIT_BOARD_MODAL_TOGGLE,
   ADD_COLUMN_MODAL_TOGGLE,
   ADD_TASK_MODAL_TOGGLE,
+  VIEW_TASK_MODAL_TOGGLE,
+  GET_CURRENT_TASK,
 } from '../utils/actions';
 
 export const initialState = {
@@ -39,8 +41,10 @@ export const initialState = {
   editBoardVisible: false,
   addColumnModalVisible: false,
   addTaskModalVisible: false,
+  viewTaskModalVisible: false,
   activeBoardId: '',
   activeBoard: {},
+  task: {},
 };
 
 const BoardContext = React.createContext();
@@ -71,6 +75,10 @@ export const BoardProvider = ({ children }) => {
 
   const handleAddTaskModal = () => {
     dispatch({ type: ADD_TASK_MODAL_TOGGLE });
+  };
+
+  const handleViewTaskModal = () => {
+    dispatch({ type: VIEW_TASK_MODAL_TOGGLE });
   };
 
   const closeModal = () => {
@@ -187,6 +195,10 @@ export const BoardProvider = ({ children }) => {
     }
   };
 
+  const getCurrentTask = (task) => {
+    dispatch({ type: GET_CURRENT_TASK, payload: task });
+  };
+
   useEffect(() => {
     if (user && token) {
       getUserBoards();
@@ -211,6 +223,8 @@ export const BoardProvider = ({ children }) => {
         handleAddColumnModal,
         handleAddTaskModal,
         addNewTask,
+        handleViewTaskModal,
+        getCurrentTask,
       }}
     >
       {children}
