@@ -3,5 +3,33 @@
 .tasksList {
   height: 100%;
   border-radius: var(--form-input);
-  border: thin solid var(--lines-dark);
+  display: grid;
+  gap: rem(20);
+  grid-auto-rows: minmax(107px, min-content);
+
+  &__item {
+    background-color: var(--dark-grey);
+    border-radius: var(--form-input);
+    padding-block: rem(28);
+    padding-inline: rem(17);
+    cursor: pointer;
+    transition: var(--generic-transition);
+
+    &:hover {
+      filter: brightness(0.85);
+      transform: scale(1.02);
+    }
+  }
+
+  &__title {
+    margin-bottom: rem(14);
+  }
+
+  &__subtitle {
+    color: var(--medium-grey);
+  }
+}
+.tasksList--empty {
+  @extend .tasksList;
+  outline: thin solid var(--lines-dark);
 }
