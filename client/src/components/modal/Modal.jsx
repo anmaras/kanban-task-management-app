@@ -46,7 +46,7 @@ const Modal = ({ type }) => {
   if (type === 'addTaskModal') {
     return (
       <Backdrop>
-        <TaskModal type="add" />
+        <TaskModal type="addTask" />
       </Backdrop>
     );
   }
