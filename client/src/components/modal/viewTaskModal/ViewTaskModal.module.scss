@@ -1,0 +1,104 @@
+@use '../../../styles/utils/' as *;
+
+$labelListBtnGap: rem(14);
+$inputPadding: rem(12);
+
+.modal {
+  @include modalGlobalContainerStyle;
+  display: grid;
+  gap: rem(30);
+
+  &__description {
+    color: var(--medium-grey);
+  }
+
+  &__form {
+    display: grid;
+    gap: rem(24);
+  }
+
+  &__controller {
+    display: grid;
+    position: relative;
+    gap: $labelListBtnGap;
+  }
+
+  &__input {
+    width: 100%;
+    border: 0;
+    outline: thin solid var(--lines-dark);
+    background-color: transparent;
+    padding: $inputPadding;
+    border-radius: var(--form-input);
+
+    &:focus {
+      outline-color: var(--main-color);
+    }
+  }
+
+  &__list-container {
+    display: grid;
+    gap: $labelListBtnGap;
+  }
+
+  &__list-item {
+    display: flex;
+    gap: rem(16);
+    background-color: var(--very-dark-grey);
+    padding-block: rem(20);
+    padding-inline: rem(12);
+    border-radius: var(--form-input);
+  }
+
+  &__dropdown-container {
+    position: relative;
+  }
+
+  &__arrowUp {
+    path {
+      stroke: var(--main-color);
+    }
+    transform: rotate(180deg);
+    transition: var(--generic-transition);
+  }
+
+  &__arrowDown {
+    @extend .modal__arrowUp;
+    transform: rotate(0);
+    transition: var(--generic-transition);
+  }
+
+  &__select-input {
+    @extend .modal__input;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:focus {
+      outline-color: var(--main-color);
+    }
+  }
+
+  &__select-list {
+    position: absolute;
+    top: calc(100% + $labelListBtnGap);
+    width: 100%;
+    background-color: var(--very-dark-grey);
+    padding-block: rem(24);
+    border-radius: var(--form-input);
+  }
+
+  &__option {
+    padding-inline: rem(16);
+    padding-block: rem(16);
+    color: var(--medium-grey);
+    cursor: pointer;
+    transition: var(--generic-transition);
+
+    &:hover {
+      background-color: var(--dark-grey);
+      color: var(--white);
+    }
+  }
+}
