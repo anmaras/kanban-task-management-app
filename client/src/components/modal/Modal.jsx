@@ -1,6 +1,12 @@
 import React, { memo } from 'react';
 import DashboardSideBoards from '../dashboard/dashboardSide/DashboardSideBoards';
-import { Backdrop, BoardModals, DeleteModal, TaskModal } from './index';
+import {
+  Backdrop,
+  BoardModals,
+  DeleteModal,
+  TaskModal,
+  ViewTaskModal,
+} from './index';
 
 const Modal = ({ type }) => {
   if (type === 'sideBoardsModal') {
@@ -39,6 +45,14 @@ const Modal = ({ type }) => {
     return (
       <Backdrop>
         <BoardModals type="addColumn" />
+      </Backdrop>
+    );
+  }
+
+  if (type === 'viewTaskModal') {
+    return (
+      <Backdrop>
+        <ViewTaskModal />
       </Backdrop>
     );
   }
