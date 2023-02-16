@@ -8,6 +8,12 @@ $inputPadding: rem(12);
   display: grid;
   gap: rem(30);
 
+  &__title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   &__description {
     color: var(--medium-grey);
   }
@@ -48,6 +54,13 @@ $inputPadding: rem(12);
     padding-block: rem(20);
     padding-inline: rem(12);
     border-radius: var(--form-input);
+
+    input[type='checkbox'] {
+      width: 20px;
+      accent-color: var(--main-color);
+      color: red;
+      cursor: pointer;
+    }
   }
 
   &__dropdown-container {
