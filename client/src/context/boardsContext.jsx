@@ -29,6 +29,7 @@ import {
   ADD_TASK_MODAL_TOGGLE,
   VIEW_TASK_MODAL_TOGGLE,
   GET_CURRENT_TASK,
+  EDIT_SUBTASK,
 } from '../utils/actions';
 
 export const initialState = {
@@ -199,6 +200,39 @@ export const BoardProvider = ({ children }) => {
     dispatch({ type: GET_CURRENT_TASK, payload: task });
   };
 
+  const editSubTaskCheckBox = async (subtaskId, columnId) => {
+    try {
+      const { data } = await axios.patch(
+        `/api/v1/boards/board/${state.activeBoardId}/column/${columnId}/task/${state.task._id}/subtask/${subtaskId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch({ type: EDIT_SUBTASK, payload: data });
+      console.log(data);
+    } catch (error) {}
+  };
+
+  const moveTasks = async (from, columnId) => {
+    try {
+      const { data } = await axios.patch(
+        `/api/v1/boards/board/${state.activeBoardId}/column/${from}/task/${state.task._id}/move`,
+        { activeTask: state.task, toId: columnId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (user && token) {
       getUserBoards();
@@ -225,6 +259,8 @@ export const BoardProvider = ({ children }) => {
         addNewTask,
         handleViewTaskModal,
         getCurrentTask,
+        editSubTaskCheckBox,
+        moveTasks,
       }}
     >
       {children}
