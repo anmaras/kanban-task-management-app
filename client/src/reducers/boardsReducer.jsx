@@ -25,6 +25,7 @@ import {
   VIEW_TASK_MODAL_TOGGLE,
   GET_CURRENT_TASK,
   EDIT_SUBTASK,
+  MOVE_TASK,
 } from '../utils/actions';
 
 const boardReducer = (state, action) => {
@@ -228,6 +229,19 @@ const boardReducer = (state, action) => {
       activeBoard: action.payload.board,
       activeBoardId: action.payload.board._id,
     };
+  }
+
+  if (action.type === MOVE_TASK) {
+    const editedBoard = action.payload;
+    const boards = state.boards;
+    const editedBoards = boards.map((board) => {
+      if (board._id === editedBoard._id) {
+        return (board = editedBoard);
+      }
+      return board;
+    });
+
+    return { ...state, boards: editedBoards, activeBoard: action.payload };
   }
 
   throw new Error(`No Matching "${action.type}" - action type`);
