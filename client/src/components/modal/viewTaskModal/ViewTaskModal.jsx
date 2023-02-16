@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import style from './ViewTaskModal.module.scss';
 import { useBoardContext } from '../../../context/boardsContext';
 import { ReactComponent as ArrowUp } from '../../../assets/icon-chevron-down.svg';
+import { EditButton } from '../../index';
 
 const ViewTaskModal = () => {
   const { task, activeBoard, editSubTaskCheckBox, moveTasks } =
@@ -58,9 +59,12 @@ const ViewTaskModal = () => {
 
   return (
     <article className={style.modal}>
-      <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
-        {title}
-      </h2>
+      <div className={style['modal__title-container']}>
+        <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
+          {title}
+        </h2>
+        <EditButton type="task" />
+      </div>
       <p className={[style['modal__description'], 'body-L-dark'].join(' ')}>
         {description}
       </p>
