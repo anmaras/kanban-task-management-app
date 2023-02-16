@@ -190,6 +190,7 @@ const moveTask = async (req, res) => {
     throw new NotFoundError(`No column with id ${boardId}`);
   }
 
+  //find the task index
   const taskIndex = fromColumn.tasks.findIndex(
     (task) => task._id.toString() == taskId
   );
@@ -198,8 +199,10 @@ const moveTask = async (req, res) => {
     throw new NotFoundError(`No task with that index`);
   }
 
+  //remove the task from the fromColumn
   fromColumn.tasks.splice(taskIndex, 1)[0];
 
+  //find the toColumn that the task will go
   const toColumn = board.columns.find(
     (column) => column._id.toString() === toId
   );
@@ -207,7 +210,8 @@ const moveTask = async (req, res) => {
   //create different task id at the moved column
   // toColumn.tasks = [task, ...toColumn.tasks];
 
-  //keep the same task id
+  //keep the same task id and push it to toColumn
+  //--- might change that push the spliced task throw error for the moment
   toColumn.tasks.push(activeTask);
 
   await board.save();
