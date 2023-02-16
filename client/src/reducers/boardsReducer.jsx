@@ -24,6 +24,7 @@ import {
   ADD_TASK_MODAL_TOGGLE,
   VIEW_TASK_MODAL_TOGGLE,
   GET_CURRENT_TASK,
+  EDIT_SUBTASK,
 } from '../utils/actions';
 
 const boardReducer = (state, action) => {
@@ -218,6 +219,15 @@ const boardReducer = (state, action) => {
 
   if (action.type === GET_CURRENT_TASK) {
     return { ...state, task: action.payload };
+  }
+
+  if (action.type === EDIT_SUBTASK) {
+    return {
+      ...state,
+      task: action.payload.task,
+      activeBoard: action.payload.board,
+      activeBoardId: action.payload.board._id,
+    };
   }
 
   throw new Error(`No Matching "${action.type}" - action type`);
