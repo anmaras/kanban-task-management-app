@@ -30,6 +30,7 @@ import {
   VIEW_TASK_MODAL_TOGGLE,
   GET_CURRENT_TASK,
   EDIT_SUBTASK,
+  MOVE_TASK,
 } from '../utils/actions';
 
 export const initialState = {
@@ -212,7 +213,6 @@ export const BoardProvider = ({ children }) => {
         }
       );
       dispatch({ type: EDIT_SUBTASK, payload: data });
-      console.log(data);
     } catch (error) {}
   };
 
@@ -227,10 +227,8 @@ export const BoardProvider = ({ children }) => {
           },
         }
       );
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
+      dispatch({ type: MOVE_TASK, payload: data });
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -239,7 +237,7 @@ export const BoardProvider = ({ children }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, token]);
-
+  console.log(state.boards);
   return (
     <BoardContext.Provider
       value={{
