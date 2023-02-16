@@ -64,6 +64,14 @@ const Modal = ({ type }) => {
       </Backdrop>
     );
   }
+
+  if (type === 'deleteTaskModal') {
+    return (
+      <Backdrop>
+        <DeleteModal type="task" />
+      </Backdrop>
+    );
+  }
 };
 
 export default memo(Modal);
