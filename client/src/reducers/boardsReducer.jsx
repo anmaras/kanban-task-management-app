@@ -26,6 +26,10 @@ import {
   GET_CURRENT_TASK,
   EDIT_SUBTASK,
   MOVE_TASK,
+  DELETE_TASK_MODAL_TOGGLE,
+  DELETE_TASK_BEGIN,
+  DELETE_TASK_SUCCESS,
+  DELETE_TASK_ERROR,
 } from '../utils/actions';
 
 const boardReducer = (state, action) => {
@@ -63,6 +67,10 @@ const boardReducer = (state, action) => {
     return { ...state, viewTaskModalVisible: !state.viewTaskModalVisible };
   }
 
+  if (action.type === DELETE_TASK_MODAL_TOGGLE) {
+    return { ...state, deleteTaskModalVisible: !state.deleteTaskModalVisible };
+  }
+
   if (action.type === CLOSE_MODAL) {
     return {
       ...state,
@@ -73,6 +81,7 @@ const boardReducer = (state, action) => {
       addColumnModalVisible: false,
       addTaskModalVisible: false,
       viewTaskModalVisible: false,
+      deleteTaskModalVisible: false,
     };
   }
 
@@ -219,7 +228,11 @@ const boardReducer = (state, action) => {
   }
 
   if (action.type === GET_CURRENT_TASK) {
-    return { ...state, task: action.payload };
+    const activeColumn = state.activeBoard.columns
+      .filter((col) => col.tasks.includes(action.payload))
+      .pop();
+
+    return { ...state, task: action.payload, activeColumn, isLoading: false };
   }
 
   if (action.type === EDIT_SUBTASK) {
@@ -228,6 +241,7 @@ const boardReducer = (state, action) => {
       task: action.payload.task,
       activeBoard: action.payload.board,
       activeBoardId: action.payload.board._id,
+      isLoading: false,
     };
   }
 
@@ -241,7 +255,36 @@ const boardReducer = (state, action) => {
       return board;
     });
 
-    return { ...state, boards: editedBoards, activeBoard: action.payload };
+    return {
+      ...state,
+      boards: editedBoards,
+      activeBoard: action.payload,
+      isLoading: false,
+    };
+  }
+
+  if (action.type === DELETE_TASK_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === DELETE_TASK_SUCCESS) {
+    const editedBoards = state.boards.map((oldBoard) => {
+      if (oldBoard._id === action.payload._id) {
+        return (oldBoard = action.payload);
+      }
+      return oldBoard;
+    });
+
+    return {
+      ...state,
+      isLoading: false,
+      activeBoard: action.payload,
+      boards: editedBoards,
+    };
+  }
+
+  if (action.type === DELETE_TASK_ERROR) {
+    return { ...state, isLoading: false };
   }
 
   throw new Error(`No Matching "${action.type}" - action type`);

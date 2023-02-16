@@ -31,6 +31,10 @@ import {
   GET_CURRENT_TASK,
   EDIT_SUBTASK,
   MOVE_TASK,
+  DELETE_TASK_BEGIN,
+  DELETE_TASK_SUCCESS,
+  DELETE_TASK_ERROR,
+  DELETE_TASK_MODAL_TOGGLE,
 } from '../utils/actions';
 
 export const initialState = {
@@ -44,9 +48,11 @@ export const initialState = {
   addColumnModalVisible: false,
   addTaskModalVisible: false,
   viewTaskModalVisible: false,
+  deleteTaskModalVisible: false,
   activeBoardId: '',
   activeBoard: {},
   task: {},
+  activeColumn: [],
 };
 
 const BoardContext = React.createContext();
@@ -67,7 +73,7 @@ export const BoardProvider = ({ children }) => {
     dispatch({ type: SIDE_CREATE_MODAL_TOGGLE });
   };
 
-  const handleDeleteModal = () => {
+  const handleDeleteBoardModal = () => {
     dispatch({ type: DELETE_MODAL_TOGGLE });
   };
 
@@ -81,6 +87,10 @@ export const BoardProvider = ({ children }) => {
 
   const handleViewTaskModal = () => {
     dispatch({ type: VIEW_TASK_MODAL_TOGGLE });
+  };
+
+  const handleDeleteTaskModal = () => {
+    dispatch({ type: DELETE_TASK_MODAL_TOGGLE });
   };
 
   const closeModal = () => {
@@ -231,24 +241,46 @@ export const BoardProvider = ({ children }) => {
     } catch (error) {}
   };
 
+  const deleteTask = async () => {
+    const { activeBoardId, activeColumn, task } = state;
+
+    dispatch({ type: DELETE_TASK_BEGIN });
+    try {
+      const { data } = await axios.delete(
+        `api/v1/boards/board/${activeBoardId}/column/${activeColumn._id}/task/${task._id}/delete`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch({ type: DELETE_TASK_SUCCESS, payload: data });
+      closeModal();
+    } catch (error) {
+      dispatch({ type: DELETE_TASK_ERROR });
+    }
+  };
+
+  console.log(state);
+
   useEffect(() => {
     if (user && token) {
       getUserBoards();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, token]);
-  console.log(state.boards);
   return (
     <BoardContext.Provider
       value={{
         ...state,
         createBoard,
+        handleDeleteTaskModal,
         handleCreateBoardModal,
         handleSideBoardModal,
         closeModal,
         getUserBoards,
         getActiveBoardId,
-        handleDeleteModal,
+        handleDeleteBoardModal,
         deleteBoard,
         editBoard,
         handleEditBoardModal,
@@ -259,6 +291,7 @@ export const BoardProvider = ({ children }) => {
         getCurrentTask,
         editSubTaskCheckBox,
         moveTasks,
+        deleteTask,
       }}
     >
       {children}
