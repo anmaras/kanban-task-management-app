@@ -219,6 +219,24 @@ const moveTask = async (req, res) => {
   res.status(StatusCodes.OK).json(board);
 };
 
+const deleteTask = async (req, res) => {
+  const { boardId, columnId, taskId } = req.params;
+  //find board
+  const board = await Board.findOne({ _id: boardId });
+  //find column[]
+  const column = board.columns.find((col) => col._id.toString() === columnId);
+  //find taskIndex in column
+  const taskIndex = column.tasks.findIndex(
+    (task) => task._id.toString() === taskId
+  );
+  //remove task
+  column.tasks.splice(taskIndex, 1);
+
+  await board.save();
+
+  res.status(StatusCodes.OK).json(board);
+};
+
 export {
   createBoard,
   getAllBoards,
@@ -228,4 +246,5 @@ export {
   createBoardTask,
   editSubtask,
   moveTask,
+  deleteTask,
 };
