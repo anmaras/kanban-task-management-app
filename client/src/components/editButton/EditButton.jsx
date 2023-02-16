@@ -10,7 +10,13 @@ const EditButton = ({ type }) => {
   const [state, setState] = useState(false);
   const editRef = useRef(null);
   useCloseOnOutsideClick(editRef, setState);
-  const { handleDeleteModal, boards, handleEditBoardModal } = useBoardContext();
+  const {
+    handleDeleteBoardModal,
+    boards,
+    handleEditBoardModal,
+    handleViewTaskModal,
+    handleDeleteTaskModal,
+  } = useBoardContext();
 
   const handleState = () => {
     setState(!state);
@@ -36,13 +42,21 @@ const EditButton = ({ type }) => {
             <button
               className={style['editButton__button']}
               onClick={() => {
+                if (type === 'task') {
+                  handleViewTaskModal();
+                }
                 handleEditBoardModal();
                 setState(!state);
               }}
             >{`Edit ${type}`}</button>
             <button
               onClick={() => {
-                handleDeleteModal();
+                if (type === 'task') {
+                  handleViewTaskModal();
+                  handleDeleteTaskModal();
+                } else if (type === 'board') {
+                  handleDeleteBoardModal();
+                }
                 setState(!state);
               }}
               className={style['editButton__button']}
