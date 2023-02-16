@@ -4,10 +4,31 @@ import { useBoardContext } from '../../../context/boardsContext';
 import { ReactComponent as ArrowUp } from '../../../assets/icon-chevron-down.svg';
 
 const ViewTaskModal = () => {
-  const { task, activeBoard } = useBoardContext();
+  const { task, activeBoard, editSubTaskCheckBox, moveTasks } =
+    useBoardContext();
   const { title, description, subtasks, _id } = task;
   const [selectListVisible, setSelectVisible] = useState(false);
-  const [currentStatus, setCurrentStatus] = useState('');
+  const [currentColumn, setCurrentColumn] = useState({});
+  const [from, setFrom] = useState('');
+
+  //for changing the subtasks completed lengths
+  const isCompleted = task.subtasks.filter((subtask) => subtask.isCompleted);
+
+  //show columns option list
+  const handleSelectList = () => {
+    setSelectVisible(!selectListVisible);
+  };
+
+  //get column id
+  const getColumnId = (value) => {
+    const column = activeBoard.columns.find((col) => col.name === value);
+    return column._id;
+  };
+
+  //that function will help to send from and to ids for moving tasks.
+  const updateCurrentStatus = (value) => {
+    setCurrentColumn({ id: getColumnId(value), name: value });
+  };
 
   //get the name of current column contain the task
   const getCurrentColumn = () => {
@@ -27,19 +48,13 @@ const ViewTaskModal = () => {
       .filter((col) => col.tasks.includes(task))
       .pop();
 
-    setCurrentStatus(column.name);
+    setCurrentColumn({ name: column.name, id: column._id });
   };
 
   useEffect(() => {
     getCurrentColumn();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const isCompleted = task.subtasks.filter((subtask) => subtask.isCompleted);
-
-  const handleSelectList = () => {
-    setSelectVisible(!selectListVisible);
-  };
 
   return (
     <article className={style.modal}>
@@ -58,7 +73,13 @@ const ViewTaskModal = () => {
             const { title, _id, isCompleted } = subtask;
             return (
               <li className={style['modal__list-item']} key={_id}>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={isCompleted}
+                  onChange={() => {
+                    editSubTaskCheckBox(_id, currentColumn.id);
+                  }}
+                />
                 <p className="body-M">{title}</p>
               </li>
             );
@@ -76,12 +97,16 @@ const ViewTaskModal = () => {
           >
             Current Status
           </label>
+          {/* ON CLICK WILL KEEP TRACK THE ID THAT WILL BE USED AS FROM*/}
           <div
-            onClick={handleSelectList}
+            onClick={() => {
+              handleSelectList();
+              setFrom(currentColumn.id);
+            }}
             tabIndex="0"
             className={[style['modal__select-input'], 'body-L-dark'].join(' ')}
           >
-            {currentStatus}
+            {currentColumn.name}
             <span
               className={
                 selectListVisible
@@ -101,11 +126,10 @@ const ViewTaskModal = () => {
                 const { name, _id } = column;
                 return (
                   <li
-                    //field values are passed through formik setValues
-                    //otherwise status field cannot be updated with custom select and options
                     onClick={() => {
-                      // setCurrentStatus(name);
+                      updateCurrentStatus(name);
                       handleSelectList();
+                      moveTasks(from, _id);
                     }}
                     className={style['modal__option']}
                     key={_id}
