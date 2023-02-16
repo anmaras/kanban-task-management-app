@@ -9,6 +9,7 @@ import {
   createBoardTask,
   editSubtask,
   moveTask,
+  deleteTask,
 } from '../controllers/boardController.js';
 
 router.route('/create-board').post(createBoard);
@@ -28,5 +29,8 @@ router
 router
   .route('/board/:boardId/column/:fromId/task/:taskId/move')
   .patch(moveTask);
+router
+  .route('/board/:boardId/column/:columnId/task/:taskId/delete')
+  .delete(deleteTask);
 
 export default router;
