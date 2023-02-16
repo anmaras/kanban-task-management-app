@@ -149,6 +149,72 @@ const createBoardTask = async (req, res) => {
   res.status(StatusCodes.CREATED).json(board);
 };
 
+const editSubtask = async (req, res) => {
+  const { boardId, columnId, taskId, subId } = req.params;
+
+  const board = await Board.findOne({ _id: boardId });
+
+  if (!board) {
+    throw new NotFoundError(`No board with id ${boardId}`);
+  }
+
+  const column = board.columns.find((col) => col._id.toString() === columnId);
+  const task = column.tasks.find((task) => task._id.toString() === taskId);
+  const subtask = task.subtasks.find((sub) => sub._id.toString() === subId);
+
+  subtask.isCompleted = !subtask.isCompleted;
+
+  await board.save();
+
+  res.status(StatusCodes.OK).json({ task, board });
+};
+
+//MOVE TASKS
+const moveTask = async (req, res) => {
+  const { boardId, fromId, taskId } = req.params;
+  const { toId, activeTask } = req.body;
+
+  if (fromId === toId) {
+    return;
+  }
+
+  //find board
+  const board = await Board.findOne({ _id: boardId });
+  if (!board) {
+    throw new NotFoundError(`No board with id ${boardId}`);
+  }
+
+  //find the column that the task will move out
+  const fromColumn = board.columns.find((col) => col._id.toString() === fromId);
+  if (!fromColumn) {
+    throw new NotFoundError(`No column with id ${boardId}`);
+  }
+
+  const taskIndex = fromColumn.tasks.findIndex(
+    (task) => task._id.toString() == taskId
+  );
+
+  if (taskIndex < 0) {
+    throw new NotFoundError(`No task with that index`);
+  }
+
+  fromColumn.tasks.splice(taskIndex, 1)[0];
+
+  const toColumn = board.columns.find(
+    (column) => column._id.toString() === toId
+  );
+
+  //create different task id at the moved column
+  // toColumn.tasks = [task, ...toColumn.tasks];
+
+  //keep the same task id
+  toColumn.tasks.push(activeTask);
+
+  await board.save();
+
+  res.status(StatusCodes.OK).json(board);
+};
+
 export {
   createBoard,
   getAllBoards,
@@ -156,4 +222,6 @@ export {
   updateBoard,
   selectActive,
   createBoardTask,
+  editSubtask,
+  moveTask,
 };
