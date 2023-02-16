@@ -7,6 +7,8 @@ import {
   updateBoard,
   selectActive,
   createBoardTask,
+  editSubtask,
+  moveTask,
 } from '../controllers/boardController.js';
 
 router.route('/create-board').post(createBoard);
@@ -20,5 +22,11 @@ router
   .post(createBoardTask);
 
 router.route('/get-user-boards/active/board/:id').patch(selectActive);
+router
+  .route('/board/:boardId/column/:columnId/task/:taskId/subtask/:subId')
+  .patch(editSubtask);
+router
+  .route('/board/:boardId/column/:fromId/task/:taskId/move')
+  .patch(moveTask);
 
 export default router;
