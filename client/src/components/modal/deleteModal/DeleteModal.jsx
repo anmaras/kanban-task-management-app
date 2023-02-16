@@ -4,20 +4,29 @@ import Spinner from '../../spinner/Spinner';
 import style from './DeleteModal.module.scss';
 
 const DeleteModal = ({ type }) => {
-  const { activeBoard, deleteBoard, closeModal, isLoading } = useBoardContext();
+  const { activeBoard, deleteBoard, closeModal, isLoading, task, deleteTask } =
+    useBoardContext();
   return (
     <article className={style.modal}>
       <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
-        {type === 'boards' ? 'Delete this board?' : 'Delete this task?'}
+        {type === 'board' ? 'Delete this board?' : 'Delete this task?'}
       </h2>
-      <p className={[style['modal__subtitle'], 'body-L-dark'].join(' ')}>
-        Are you sure you want to delete the <b>{activeBoard?.name}</b> board?
-        This action will remove all columns and tasks and cannot be reversed.
-      </p>
+
+      {type === 'board' ? (
+        <p className={[style['modal__subtitle'], 'body-L-dark'].join(' ')}>
+          Are you sure you want to delete the <b>{activeBoard?.name}</b> board?
+          This action will remove all columns and tasks and cannot be reversed.
+        </p>
+      ) : (
+        <p className={[style['modal__subtitle'], 'body-L-dark'].join(' ')}>
+          Are you sure you want to delete the <b>{task?.title}</b> task and it's
+          subtasks? This action cannot be reversed.
+        </p>
+      )}
       <div className={style['modal__btns-container']}>
         <button
           className="button button--secondary--delete"
-          onClick={deleteBoard}
+          onClick={type === 'board' ? deleteBoard : deleteTask}
         >
           {isLoading ? <Spinner /> : 'Delete'}
         </button>
