@@ -23,6 +23,7 @@ const DashboardHeader = () => {
     handleAddTaskModal,
     addTaskModalVisible,
     viewTaskModalVisible,
+    deleteTaskModalVisible,
   } = useBoardContext();
 
   return (
@@ -37,6 +38,7 @@ const DashboardHeader = () => {
         {addColumnModalVisible && <Modal type="addNewColumn" />}
         {addTaskModalVisible && <Modal type="addTaskModal" />}
         {viewTaskModalVisible && <Modal type="viewTaskModal" />}
+        {deleteTaskModalVisible && <Modal type="deleteTaskModal" />}
       </AnimatePresence>
       <header className={style.header}>
         <div className={style['header__logo']}>
