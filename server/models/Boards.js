@@ -1,29 +1,28 @@
 import mongoose from 'mongoose';
 
 const SubTaskSchema = new mongoose.Schema({
-  title: { type: String },
+  title: { type: String, required: true },
   isCompleted: { type: Boolean, default: false },
 });
 
 const TaskSchema = new mongoose.Schema({
-  title: { type: String, require: true, trim: true },
+  title: { type: String, required: true, trim: true },
   description: { type: String },
-  status: { type: String, require: true },
   subtasks: [SubTaskSchema],
 });
 
 const ColumnSchema = new mongoose.Schema({
-  name: { type: String, require: true, trim: true },
+  name: { type: String, required: true, trim: true },
   tasks: [TaskSchema],
 });
 
 const BoardSchema = new mongoose.Schema({
-  name: { type: String, require: true, trim: true },
+  name: { type: String, required: true, trim: true },
   columns: [ColumnSchema],
   userId: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
-    require: true,
+    required: true,
   },
   isActive: { type: Boolean },
 });
