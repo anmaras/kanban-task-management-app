@@ -16,6 +16,7 @@ const EditButton = ({ type }) => {
     handleEditBoardModal,
     handleViewTaskModal,
     handleDeleteTaskModal,
+    handleEditTaskModal,
   } = useBoardContext();
 
   const handleState = () => {
@@ -44,8 +45,10 @@ const EditButton = ({ type }) => {
               onClick={() => {
                 if (type === 'task') {
                   handleViewTaskModal();
+                  handleEditTaskModal();
+                } else if (type === 'board') {
+                  handleEditBoardModal();
                 }
-                handleEditBoardModal();
                 setState(!state);
               }}
             >{`Edit ${type}`}</button>
