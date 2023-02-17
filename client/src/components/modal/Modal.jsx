@@ -72,6 +72,13 @@ const Modal = ({ type }) => {
       </Backdrop>
     );
   }
+  if (type === 'updateTaskModal') {
+    return (
+      <Backdrop>
+        <TaskModal type="updateTask" />
+      </Backdrop>
+    );
+  }
 };
 
 export default memo(Modal);
