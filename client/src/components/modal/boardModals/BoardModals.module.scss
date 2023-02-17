@@ -98,11 +98,17 @@ $inputPadding: rem(12);
   &__arrowUp {
     transform: rotate(180deg);
     transition: var(--generic-transition);
+    path {
+      stroke: var(--main-color);
+    }
   }
 
   &__arrowDown {
     transition: var(--generic-transition);
     transform: rotate(0);
+    path {
+      stroke: var(--main-color);
+    }
   }
 
   &__select-input {
