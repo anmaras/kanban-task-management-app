@@ -30,13 +30,21 @@ const getAllBoards = async (req, res) => {
   //Find the specific user boards
   const boards = await Board.find({ userId: req.user.userId });
 
+  if (!boards) {
+    throw new NotFoundError(`No board with id${req.user.userId}`);
+  }
+
   const activeBoard = boards.find((board) => board.isActive === true);
+
+  if (!activeBoard) {
+    throw new NotFoundError(`No active board found`);
+  }
 
   //return the boards, the amount and the selected created board is the active board Id
   res.status(StatusCodes.OK).json({
     boards,
     totalBoards: boards.length,
-    activeBoardId: boards.length > 0 ? activeBoard._id : '',
+    activeBoardId: boards.length > 0 ? activeBoard?._id : '',
   });
 };
 
@@ -96,6 +104,7 @@ const updateBoard = async (req, res) => {
   res.status(StatusCodes.OK).json(updatedBoard);
 };
 
+/* SET ACTIVE BOARD */
 const selectActive = async (req, res) => {
   const { id } = req.params;
 
@@ -111,9 +120,14 @@ const selectActive = async (req, res) => {
   res.status(StatusCodes.OK).json(updatedBoard);
 };
 
+/* ---------------- */
+/* ---- TASKS ----- */
+/* ---------------- */
+
+/* CREATE BOARD TASK */
 const createBoardTask = async (req, res) => {
   const { id, columnId } = req.params;
-  const { title, description, status, subtasks } = req.body;
+  const { title, description, subtasks } = req.body;
 
   //find the board
   const board = await Board.findOne({ _id: id });
@@ -136,7 +150,6 @@ const createBoardTask = async (req, res) => {
   const task = {
     title,
     description,
-    status,
     subtasks,
   };
 
@@ -149,19 +162,40 @@ const createBoardTask = async (req, res) => {
   res.status(StatusCodes.CREATED).json(board);
 };
 
+/* EDIT SUBTASK */
 const editSubtask = async (req, res) => {
   const { boardId, columnId, taskId, subId } = req.params;
 
+  //Find board
   const board = await Board.findOne({ _id: boardId });
 
   if (!board) {
     throw new NotFoundError(`No board with id ${boardId}`);
   }
 
+  //Find column
   const column = board.columns.find((col) => col._id.toString() === columnId);
+
+  if (!column) {
+    throw new NotFoundError(`No column with id ${columnId}`);
+  }
+
+  //Find task
   const task = column.tasks.find((task) => task._id.toString() === taskId);
+
+  if (!task) {
+    throw new NotFoundError(`No task with id ${taskId}`);
+  }
+
+  //Find subtask
   const subtask = task.subtasks.find((sub) => sub._id.toString() === subId);
 
+  if (!subtask) {
+    throw new NotFoundError(`No subtask with id ${subId}`);
+  }
+
+  //Update subtask value
+  subtask.title = subtask.title;
   subtask.isCompleted = !subtask.isCompleted;
 
   await board.save();
@@ -187,17 +221,13 @@ const moveTask = async (req, res) => {
   //find the column that the task will move out
   const fromColumn = board.columns.find((col) => col._id.toString() === fromId);
   if (!fromColumn) {
-    throw new NotFoundError(`No column with id ${boardId}`);
+    throw new NotFoundError(`No From column with id ${fromId}`);
   }
 
   //find the task index
   const taskIndex = fromColumn.tasks.findIndex(
     (task) => task._id.toString() == taskId
   );
-
-  if (taskIndex < 0) {
-    throw new NotFoundError(`No task with that index`);
-  }
 
   //remove the task from the fromColumn
   fromColumn.tasks.splice(taskIndex, 1)[0];
@@ -206,6 +236,10 @@ const moveTask = async (req, res) => {
   const toColumn = board.columns.find(
     (column) => column._id.toString() === toId
   );
+
+  if (!toColumn) {
+    throw new NotFoundError(`No To column with id ${toId}`);
+  }
 
   //create different task id at the moved column
   // toColumn.tasks = [task, ...toColumn.tasks];
@@ -216,21 +250,95 @@ const moveTask = async (req, res) => {
 
   await board.save();
 
-  res.status(StatusCodes.OK).json(board);
+  res.status(StatusCodes.OK).json({ board, toColumn });
 };
 
+/* DELETE TASK */
 const deleteTask = async (req, res) => {
   const { boardId, columnId, taskId } = req.params;
+
   //find board
   const board = await Board.findOne({ _id: boardId });
+
+  if (!board) {
+    throw new NotFoundError(`No board with id${boardId}`);
+  }
+
   //find column[]
   const column = board.columns.find((col) => col._id.toString() === columnId);
+
+  if (!column) {
+    throw new NotFoundError(`No column with id${columnId}`);
+  }
+
   //find taskIndex in column
   const taskIndex = column.tasks.findIndex(
     (task) => task._id.toString() === taskId
   );
+
   //remove task
   column.tasks.splice(taskIndex, 1);
+
+  await board.save();
+
+  res.status(StatusCodes.OK).json(board);
+};
+
+/* EDIT TASK */
+const editTask = async (req, res) => {
+  const { boardId, columnId, taskId } = req.params;
+  const { title, description, subtasks, columnId: colDestId } = req.body;
+  //find board
+  const board = await Board.findOne({ _id: boardId });
+  if (!board) {
+    throw new NotFoundError(`No board with id${boardId}`);
+  }
+
+  //find source column
+  const sourceColumn = board.columns.find(
+    (col) => col._id.toString() === columnId
+  );
+
+  if (!sourceColumn) {
+    throw new NotFoundError(`No column with id${columnId}`);
+  }
+
+  //find task in source column
+  const taskIndex = sourceColumn.tasks.findIndex(
+    (task) => task._id.toString() === taskId
+  );
+
+  if (taskIndex === -1) {
+    throw new NotFoundError(`No task with id${taskId}`);
+  }
+
+  const task = sourceColumn.tasks[taskIndex];
+
+  const { columnId: id, ...taskRest } = task;
+
+  taskRest.title = title;
+  taskRest.description = description;
+  taskRest.subtasks = subtasks;
+
+  //create new task from task
+
+  //change column of task
+  if (colDestId && columnId !== colDestId) {
+    //find destination column
+    const destColumn = board.columns.find(
+      (col) => col._id.toString() === colDestId
+    );
+
+    if (!destColumn) {
+      throw new NotFoundError(`No destination column with id${colDestId}`);
+    }
+
+    // //remove task from source column
+    sourceColumn.tasks.splice(taskIndex, 1);
+
+    // //add task to destination column
+    destColumn.tasks.push(taskRest);
+  }
 
   await board.save();
 
@@ -247,4 +355,5 @@ export {
   editSubtask,
   moveTask,
   deleteTask,
+  editTask,
 };
