@@ -30,6 +30,10 @@ import {
   DELETE_TASK_BEGIN,
   DELETE_TASK_SUCCESS,
   DELETE_TASK_ERROR,
+  UPDATE_TASK_MODAL_TOGGLE,
+  EDIT_TASK_BEGIN,
+  EDIT_TASK_SUCCESS,
+  EDIT_TASK_ERROR,
 } from '../utils/actions';
 
 const boardReducer = (state, action) => {
@@ -71,6 +75,10 @@ const boardReducer = (state, action) => {
     return { ...state, deleteTaskModalVisible: !state.deleteTaskModalVisible };
   }
 
+  if (action.type === UPDATE_TASK_MODAL_TOGGLE) {
+    return { ...state, updateTaskModalVisible: !state.updateTaskModalVisible };
+  }
+
   if (action.type === CLOSE_MODAL) {
     return {
       ...state,
@@ -82,6 +90,7 @@ const boardReducer = (state, action) => {
       addTaskModalVisible: false,
       viewTaskModalVisible: false,
       deleteTaskModalVisible: false,
+      updateTaskModalVisible: false,
     };
   }
 
@@ -99,6 +108,7 @@ const boardReducer = (state, action) => {
       boards: [...state.boards, action.payload],
       activeBoardId: action.payload._id,
       activeBoard: action.payload,
+      activeColumn: action.payload.columns[0],
     };
   }
 
@@ -113,13 +123,13 @@ const boardReducer = (state, action) => {
 
   if (action.type === GET_USER_BOARD_SUCCESS) {
     const activeBoard = action.payload.boards.find((board) => board.isActive);
-
     return {
       ...state,
       isLoading: false,
       boards: action.payload.boards,
       activeBoardId: activeBoard?._id,
       activeBoard,
+      activeColumn: activeBoard?.columns[0],
     };
   }
 
@@ -134,6 +144,7 @@ const boardReducer = (state, action) => {
       ...state,
       activeBoardId: action.payload?._id,
       activeBoard: action.payload,
+      activeColumn: action.payload.columns[0],
     };
   }
 
@@ -159,6 +170,9 @@ const boardReducer = (state, action) => {
       activeBoard: action.payload.nextBoard || action.payload.previousBoard,
       activeBoardId:
         action.payload.nextBoard?._id || action.payload.previousBoard?._id,
+      activeColumn:
+        action.payload.nextBoard?.columns[0] ||
+        action.payload.previousBoard?.columns[0],
     };
   }
 
@@ -192,6 +206,7 @@ const boardReducer = (state, action) => {
       boards: tempBoardArray,
       activeBoardId: action.payload._id,
       activeBoard: action.payload,
+      activeColumn: action.payload.columns[0],
     };
   }
 
@@ -221,11 +236,14 @@ const boardReducer = (state, action) => {
       boards: tempBoardArray,
       activeBoardId: action.payload._id,
       activeBoard: action.payload,
+      activeColumn: action.payload.columns[0],
     };
   }
   if (action.type === CREATE_COLUMN_TASK_ERROR) {
     return { ...state, isLoading: false };
   }
+
+  /* GET CURRENT TASK */
 
   if (action.type === GET_CURRENT_TASK) {
     const activeColumn = state.activeBoard.columns
@@ -234,6 +252,8 @@ const boardReducer = (state, action) => {
 
     return { ...state, task: action.payload, activeColumn, isLoading: false };
   }
+
+  /* EDIT SUBTASK */
 
   if (action.type === EDIT_SUBTASK) {
     return {
@@ -245,8 +265,10 @@ const boardReducer = (state, action) => {
     };
   }
 
+  /* MOVE TASK */
+
   if (action.type === MOVE_TASK) {
-    const editedBoard = action.payload;
+    const editedBoard = action.payload.board;
     const boards = state.boards;
     const editedBoards = boards.map((board) => {
       if (board._id === editedBoard._id) {
@@ -258,11 +280,13 @@ const boardReducer = (state, action) => {
     return {
       ...state,
       boards: editedBoards,
-      activeBoard: action.payload,
+      activeBoard: editedBoard,
       isLoading: false,
+      activeColumn: action.payload.toColumn,
     };
   }
 
+  /* DELETE TASK */
   if (action.type === DELETE_TASK_BEGIN) {
     return { ...state, isLoading: true };
   }
@@ -284,6 +308,31 @@ const boardReducer = (state, action) => {
   }
 
   if (action.type === DELETE_TASK_ERROR) {
+    return { ...state, isLoading: false };
+  }
+
+  /* EDIT TASK */
+  if (action.type === EDIT_TASK_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === EDIT_TASK_SUCCESS) {
+    const editedBoards = state.boards.map((oldBoard) => {
+      if (oldBoard._id === action.payload._id) {
+        return (oldBoard = action.payload);
+      }
+      return oldBoard;
+    });
+
+    return {
+      ...state,
+      isLoading: false,
+      ...state,
+      activeBoard: action.payload,
+      boards: editedBoards,
+    };
+  }
+  if (action.type === EDIT_TASK_ERROR) {
     return { ...state, isLoading: false };
   }
 

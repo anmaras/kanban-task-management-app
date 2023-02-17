@@ -35,6 +35,10 @@ import {
   DELETE_TASK_SUCCESS,
   DELETE_TASK_ERROR,
   DELETE_TASK_MODAL_TOGGLE,
+  UPDATE_TASK_MODAL_TOGGLE,
+  EDIT_TASK_BEGIN,
+  EDIT_TASK_SUCCESS,
+  EDIT_TASK_ERROR,
 } from '../utils/actions';
 
 export const initialState = {
@@ -49,6 +53,7 @@ export const initialState = {
   addTaskModalVisible: false,
   viewTaskModalVisible: false,
   deleteTaskModalVisible: false,
+  updateTaskModalVisible: false,
   activeBoardId: '',
   activeBoard: {},
   task: {},
@@ -93,6 +98,10 @@ export const BoardProvider = ({ children }) => {
     dispatch({ type: DELETE_TASK_MODAL_TOGGLE });
   };
 
+  const handleEditTaskModal = () => {
+    dispatch({ type: UPDATE_TASK_MODAL_TOGGLE });
+  };
+
   const closeModal = () => {
     dispatch({ type: CLOSE_MODAL });
   };
@@ -110,7 +119,6 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: CREATE_BOARD_ERROR });
-      console.log(error);
     }
   };
 
@@ -125,7 +133,6 @@ export const BoardProvider = ({ children }) => {
       dispatch({ type: GET_USER_BOARD_SUCCESS, payload: data });
     } catch (error) {
       dispatch({ type: GET_USER_BOARD_ERROR });
-      console.log(error);
     }
   };
 
@@ -261,13 +268,29 @@ export const BoardProvider = ({ children }) => {
     }
   };
 
-  console.log(state);
+  const editTask = async (values) => {
+    dispatch({ type: EDIT_TASK_BEGIN });
+    try {
+      const { data } = await axios.patch(
+        `api/v1/boards/board/${state.activeBoardId}/column/${state.activeColumn._id}/task/${state.task._id}/edit`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch({ type: EDIT_TASK_SUCCESS, payload: data });
+      closeModal();
+    } catch (error) {
+      dispatch({ type: EDIT_BOARD_ERROR });
+    }
+  };
 
   useEffect(() => {
     if (user && token) {
       getUserBoards();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, token]);
   return (
     <BoardContext.Provider
@@ -292,6 +315,8 @@ export const BoardProvider = ({ children }) => {
         editSubTaskCheckBox,
         moveTasks,
         deleteTask,
+        handleEditTaskModal,
+        editTask,
       }}
     >
       {children}
