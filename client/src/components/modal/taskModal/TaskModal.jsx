@@ -22,42 +22,42 @@ const validationCreateBoard = yup.object({
   ),
 });
 
-const BoardModals = ({ type }) => {
-  const { isLoading, activeBoard, addNewTask } = useBoardContext();
+const TaskModal = ({ type }) => {
+  const { isLoading, activeBoard, addNewTask, editTask, task, activeColumn } =
+    useBoardContext();
   const [selectListVisible, setSelectVisible] = useState(false);
-  const [status, setStatus] = useState(activeBoard?.columns[0].name);
+  const [status, setStatus] = useState(activeColumn.name);
 
   const initialValues = {
     title: '',
     description: '',
     subtasks: [{ title: '' }],
-    // status: status,
-    columnId: activeBoard?.columns[0]._id,
+    columnId: activeColumn._id,
   };
 
-  // Toggle custom options list visibility
+  const valuesForEdit = {
+    title: task?.title,
+    description: task?.description,
+    subtasks: task?.subtasks,
+    columnId: activeColumn._id,
+  };
 
   const handleSelectList = () => {
     setSelectVisible(!selectListVisible);
   };
-
-  // const valuesForEdit = {
-  //   title: activeBoard?.name,
-  //   columns: activeBoard?.columns,
-  // };
 
   return (
     <article className={style.modal}>
       {/* MODAL TITLE */}
 
       <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
-        Add New Task
+        {type === 'addTask' ? 'Add New Task' : 'Edit Task'}
       </h2>
 
       <Formik
-        initialValues={initialValues}
+        initialValues={type === 'addTask' ? initialValues : valuesForEdit}
         validationSchema={validationCreateBoard}
-        onSubmit={addNewTask}
+        onSubmit={type === 'addTask' ? addNewTask : editTask}
       >
         {/*TITLE AND DESCRIPTION FIELDS  */}
 
@@ -220,11 +220,10 @@ const BoardModals = ({ type }) => {
                       return (
                         <li
                           //field values are passed through formik setValues
-                          //otherwise status field cannot be updated with custom select and options
+                          //column Id can be used as destination id to move task on edit
                           onClick={() => {
                             setValues({
                               ...values,
-                              // status: name,
                               columnId: _id,
                             });
                             setStatus(name);
@@ -260,4 +259,4 @@ const BoardModals = ({ type }) => {
   );
 };
 
-export default BoardModals;
+export default TaskModal;
