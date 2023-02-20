@@ -6,75 +6,45 @@ import useWindowSize from '../../../hooks/useWindowSize';
 import style from './DashboardHeader.module.scss';
 import EditButton from '../../editButton/EditButton';
 import { useBoardContext } from '../../../context/boardsContext';
-import { Modal } from '../../index';
-import { AnimatePresence } from 'framer-motion';
 
 const DashboardHeader = () => {
   const { width } = useWindowSize();
-  const {
-    deleteModalVisible,
-    handleSideBoardModal,
-    sideBoardModalVisible,
-    createBoardVisible,
-    boards,
-    editBoardVisible,
-    addColumnModalVisible,
-    activeBoard,
-    handleAddTaskModal,
-    addTaskModalVisible,
-    viewTaskModalVisible,
-    deleteTaskModalVisible,
-    updateTaskModalVisible,
-  } = useBoardContext();
+  const { handleSideBoardModal, boards, activeBoard, handleAddTaskModal } =
+    useBoardContext();
 
   return (
-    <>
-      <AnimatePresence>
-        {deleteModalVisible && <Modal type="deleteBoardModal" />}
-        {sideBoardModalVisible && width <= 768 && (
-          <Modal type="sideBoardsModal" />
-        )}
-        {createBoardVisible && <Modal type="createBoardModal" />}
-        {editBoardVisible && <Modal type="editBoardModal" />}
-        {addColumnModalVisible && <Modal type="addNewColumn" />}
-        {addTaskModalVisible && <Modal type="addTaskModal" />}
-        {viewTaskModalVisible && <Modal type="viewTaskModal" />}
-        {deleteTaskModalVisible && <Modal type="deleteTaskModal" />}
-        {updateTaskModalVisible && <Modal type="updateTaskModal" />}
-      </AnimatePresence>
-      <header className={style.header}>
-        <div className={style['header__logo']}>
-          <Logo />
-          <h1 className={[style['header__appTitle']]}>kanban</h1>
-        </div>
+    <header className={style.header}>
+      <div className={style['header__logo']}>
+        <Logo />
+        <h1 className={[style['header__appTitle']]}>kanban</h1>
+      </div>
 
-        <div className={style['header__controls']}>
-          <h2 className={[style['header__boardTitle'], 'heading-L'].join(' ')}>
+      <div className={style['header__controls']}>
+        <h2 className={[style['header__boardTitle'], 'heading-L'].join(' ')}>
+          {activeBoard?.name || 'Board List Is Empty'}
+        </h2>
+
+        <button
+          className={style['header__boardBtn']}
+          onClick={handleSideBoardModal}
+        >
+          <span className="heading-L">
             {activeBoard?.name || 'Board List Is Empty'}
-          </h2>
-
+          </span>
+          <CevronDown />
+        </button>
+        <div className={style['header__buttons']}>
           <button
-            className={style['header__boardBtn']}
-            onClick={handleSideBoardModal}
+            onClick={handleAddTaskModal}
+            className="button button--primary-L"
+            disabled={!boards?.length ? true : false}
           >
-            <span className="heading-L">
-              {activeBoard?.name || 'Board List Is Empty'}
-            </span>
-            <CevronDown />
+            {width < 768 ? <AddTaskIcon /> : 'Add New Task'}
           </button>
-          <div className={style['header__buttons']}>
-            <button
-              onClick={handleAddTaskModal}
-              className="button button--primary-L"
-              disabled={!boards?.length ? true : false}
-            >
-              {width < 768 ? <AddTaskIcon /> : 'Add New Task'}
-            </button>
-            <EditButton type="board" />
-          </div>
+          <EditButton type="board" />
         </div>
-      </header>
-    </>
+      </div>
+    </header>
   );
 };
 
