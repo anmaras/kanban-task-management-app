@@ -16,8 +16,8 @@ const DashboardLayout = ({ children }) => {
       <DashboardHeader />
       <ScrollContainer
         component="main"
-        hideScrollbars="false"
         className={style['layout__main']}
+        ignoreElements={'.card'}
       >
         {children}
       </ScrollContainer>
