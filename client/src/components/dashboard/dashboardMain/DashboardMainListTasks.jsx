@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import style from './DashboardMainListTask.module.scss';
 import { useBoardContext } from '../../../context/boardsContext';
 
 const DashboardMainListTasks = ({ tasks }) => {
-  const { handleViewTaskModal, getCurrentTask } = useBoardContext();
+  const { handleViewTaskModal, getCurrentTask, activeBoard, activeColumn } =
+    useBoardContext();
 
   return (
     <ul
@@ -17,7 +18,7 @@ const DashboardMainListTasks = ({ tasks }) => {
 
         return (
           <li
-            className={style['tasksList__item']}
+            className={[style['tasksList__item'], 'card'].join(' ')}
             key={_id}
             onClick={() => {
               getCurrentTask(task);
