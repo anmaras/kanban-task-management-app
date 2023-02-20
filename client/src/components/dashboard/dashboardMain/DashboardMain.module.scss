@@ -4,15 +4,15 @@
   position: absolute;
   min-width: 100%;
   height: 100%;
-  transform: translateX(rem(300));
+  left: 300px;
   transition: var(--sidebar-transition);
 
   @include breakpoint-down(medium) {
-    transform: translateX(0);
+    left: 0;
   }
 }
 
 .board--move {
   @extend .board;
-  transform: translate(0);
+  left: 0;
 }
