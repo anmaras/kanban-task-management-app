@@ -314,11 +314,9 @@ const editTask = async (req, res) => {
 
   const task = sourceColumn.tasks[taskIndex];
 
-  const { columnId: id, ...taskRest } = task;
-
-  taskRest.title = title;
-  taskRest.description = description;
-  taskRest.subtasks = subtasks;
+  task.title = title;
+  task.description = description;
+  task.subtasks = subtasks;
 
   //create new task from task
 
@@ -337,7 +335,7 @@ const editTask = async (req, res) => {
     sourceColumn.tasks.splice(taskIndex, 1);
 
     // //add task to destination column
-    destColumn.tasks.push(taskRest);
+    destColumn.tasks.push(req.body);
   }
 
   await board.save();
