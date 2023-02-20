@@ -118,14 +118,14 @@ const boardReducer = (state, action) => {
 
   /* GET USERS BOARDS */
   if (action.type === GET_USER_BOARD_BEGIN) {
-    return { ...state, isLoading: true };
+    return { ...state, fetchDataLoading: true };
   }
 
   if (action.type === GET_USER_BOARD_SUCCESS) {
     const activeBoard = action.payload.boards.find((board) => board.isActive);
     return {
       ...state,
-      isLoading: false,
+      fetchDataLoading: false,
       boards: action.payload.boards,
       activeBoardId: activeBoard?._id,
       activeBoard,
@@ -134,7 +134,7 @@ const boardReducer = (state, action) => {
   }
 
   if (action.type === GET_USER_BOARD_ERROR) {
-    return { ...state, isLoading: false };
+    return { ...state, fetchDataLoading: false };
   }
 
   /* GET ACTIVE BOARD */
