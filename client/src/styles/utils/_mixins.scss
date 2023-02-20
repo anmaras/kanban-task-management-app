@@ -1,3 +1,5 @@
+@use 'breakpoints' as *;
+
 $scrollBarSize: 8px;
 
 @mixin customScrollBar {
@@ -21,6 +23,11 @@ $scrollBarSize: 8px;
   background-color: var(--dark-grey);
   border-radius: var(--form-input);
   width: min(100% - 1rem, 480px);
+
+  @include breakpoint-down(large) {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
 
   padding-inline: 1.5rem;
   padding-block: 2rem;
