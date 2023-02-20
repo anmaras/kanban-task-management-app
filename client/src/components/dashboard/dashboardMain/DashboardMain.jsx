@@ -7,13 +7,13 @@ import DashboardMainList from './DashboardMainList';
 const DashboardMain = ({ isVisible }) => {
   const { boards } = useBoardContext();
 
-  if (!boards?.length) {
-    return <DashboardMainOptions isVisible={isVisible} />;
-  }
-
   return (
     <div className={isVisible ? style['board'] : style['board--move']}>
-      <DashboardMainList />
+      {boards?.length === 0 ? (
+        <DashboardMainOptions isVisible={isVisible} />
+      ) : (
+        <DashboardMainList />
+      )}
     </div>
   );
 };
