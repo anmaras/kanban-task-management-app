@@ -45,6 +45,7 @@ export const initialState = {
   isLoading: false,
   boards: [],
   totalBoards: 0,
+  fetchDataLoading: false,
   createBoardVisible: false,
   sideBoardModalVisible: false,
   deleteModalVisible: false,
@@ -64,7 +65,7 @@ const BoardContext = React.createContext();
 
 export const BoardProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { token, user } = useUserContext();
+  const { token, user, logoutUser } = useUserContext();
 
   const handleCreateBoardModal = () => {
     dispatch({ type: CREATE_NEW_BOARD_MODAL_TOGGLE });
@@ -119,6 +120,7 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: CREATE_BOARD_ERROR });
+      logoutUser();
     }
   };
 
@@ -133,6 +135,7 @@ export const BoardProvider = ({ children }) => {
       dispatch({ type: GET_USER_BOARD_SUCCESS, payload: data });
     } catch (error) {
       dispatch({ type: GET_USER_BOARD_ERROR });
+      logoutUser();
     }
   };
 
@@ -149,7 +152,7 @@ export const BoardProvider = ({ children }) => {
       );
       dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: data });
     } catch (error) {
-      console.log(error);
+      logoutUser();
     }
   };
 
@@ -168,6 +171,7 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: DELETE_BOARD_ERROR });
+      logoutUser();
     }
   };
 
@@ -187,6 +191,7 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: EDIT_BOARD_ERROR });
+      logoutUser();
     }
   };
 
@@ -211,6 +216,7 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: CREATE_COLUMN_TASK_ERROR });
+      logoutUser();
     }
   };
 
@@ -230,7 +236,9 @@ export const BoardProvider = ({ children }) => {
         }
       );
       dispatch({ type: EDIT_SUBTASK, payload: data });
-    } catch (error) {}
+    } catch (error) {
+      logoutUser();
+    }
   };
 
   const moveTasks = async (from, columnId) => {
@@ -245,7 +253,9 @@ export const BoardProvider = ({ children }) => {
         }
       );
       dispatch({ type: MOVE_TASK, payload: data });
-    } catch (error) {}
+    } catch (error) {
+      logoutUser();
+    }
   };
 
   const deleteTask = async () => {
@@ -265,6 +275,7 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: DELETE_TASK_ERROR });
+      logoutUser();
     }
   };
 
@@ -283,7 +294,8 @@ export const BoardProvider = ({ children }) => {
       dispatch({ type: EDIT_TASK_SUCCESS, payload: data });
       closeModal();
     } catch (error) {
-      dispatch({ type: EDIT_BOARD_ERROR });
+      dispatch({ type: EDIT_TASK_ERROR });
+      logoutUser();
     }
   };
 
