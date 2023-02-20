@@ -120,7 +120,9 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: CREATE_BOARD_ERROR });
-      logoutUser();
+      if (error.request.status === 401) {
+        logoutUser();
+      }
     }
   };
 
@@ -135,7 +137,9 @@ export const BoardProvider = ({ children }) => {
       dispatch({ type: GET_USER_BOARD_SUCCESS, payload: data });
     } catch (error) {
       dispatch({ type: GET_USER_BOARD_ERROR });
-      logoutUser();
+      if (error.request.status === 401) {
+        logoutUser();
+      }
     }
   };
 
@@ -152,7 +156,9 @@ export const BoardProvider = ({ children }) => {
       );
       dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: data });
     } catch (error) {
-      logoutUser();
+      if (error.request.status === 401) {
+        logoutUser();
+      }
     }
   };
 
@@ -171,7 +177,9 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: DELETE_BOARD_ERROR });
-      logoutUser();
+      if (error.request.status === 401) {
+        logoutUser();
+      }
     }
   };
 
@@ -191,7 +199,9 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: EDIT_BOARD_ERROR });
-      logoutUser();
+      if (error.request.status === 401) {
+        logoutUser();
+      }
     }
   };
 
@@ -216,7 +226,9 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: CREATE_COLUMN_TASK_ERROR });
-      logoutUser();
+      if (error.request.status === 401) {
+        logoutUser();
+      }
     }
   };
 
@@ -237,7 +249,9 @@ export const BoardProvider = ({ children }) => {
       );
       dispatch({ type: EDIT_SUBTASK, payload: data });
     } catch (error) {
-      logoutUser();
+      if (error.request.status === 401) {
+        logoutUser();
+      }
     }
   };
 
@@ -254,7 +268,9 @@ export const BoardProvider = ({ children }) => {
       );
       dispatch({ type: MOVE_TASK, payload: data });
     } catch (error) {
-      logoutUser();
+      if (error.request.status === 401) {
+        logoutUser();
+      }
     }
   };
 
@@ -275,7 +291,9 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: DELETE_TASK_ERROR });
-      logoutUser();
+      if (error.request.status === 401) {
+        logoutUser();
+      }
     }
   };
 
@@ -295,7 +313,9 @@ export const BoardProvider = ({ children }) => {
       closeModal();
     } catch (error) {
       dispatch({ type: EDIT_TASK_ERROR });
-      logoutUser();
+      if (error.request.status === 401) {
+        logoutUser();
+      }
     }
   };
 
