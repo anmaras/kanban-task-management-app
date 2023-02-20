@@ -1,5 +1,4 @@
 import React from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { useBoardContext } from '../../context/boardsContext';
 import { Modal } from '../index';
 import useWindowSize from '../../hooks/useWindowSize';
@@ -19,7 +18,7 @@ const PortalComponents = () => {
     updateTaskModalVisible,
   } = useBoardContext();
   return (
-    <AnimatePresence>
+    <>
       {deleteModalVisible && <Modal type="deleteBoardModal" />}
       {sideBoardModalVisible && width <= 768 && (
         <Modal type="sideBoardsModal" />
@@ -31,7 +30,7 @@ const PortalComponents = () => {
       {viewTaskModalVisible && <Modal type="viewTaskModal" />}
       {deleteTaskModalVisible && <Modal type="deleteTaskModal" />}
       {updateTaskModalVisible && <Modal type="updateTaskModal" />}
-    </AnimatePresence>
+    </>
   );
 };
 
