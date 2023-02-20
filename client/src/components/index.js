@@ -9,6 +9,8 @@ import DashboardMain from './dashboard/dashboardMain/DashboardMain';
 import DashboardSideBoards from './dashboard/dashboardSide/DashboardSideBoards';
 import Modal from './modal/Modal';
 import Spinner from './spinner/Spinner';
+import Loader from './loader/Loader';
+import PortalComponents from './portal/PortalComponents';
 export {
   DashboardSideBoards,
   DashboardHeader,
@@ -21,4 +23,6 @@ export {
   HomeLayout,
   Modal,
   Spinner,
+  Loader,
+  PortalComponents,
 };
