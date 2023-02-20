@@ -27,7 +27,8 @@ const validationCreateBoard = yup.object({
 });
 
 const BoardModals = ({ type }) => {
-  const { createBoard, isLoading, activeBoard, editBoard } = useBoardContext();
+  const { createBoard, isLoading, activeBoard, editBoard, closeModal } =
+    useBoardContext();
 
   const valuesForEdit = {
     name: activeBoard?.name,
@@ -36,13 +37,18 @@ const BoardModals = ({ type }) => {
 
   return (
     <article className={style.modal}>
-      <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
-        {type === 'create'
-          ? 'Add New Board'
-          : type === 'addColumn'
-          ? 'Add New Column'
-          : 'Edit Board'}
-      </h2>
+      <div className={style['modal__title-container']}>
+        <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
+          {type === 'create'
+            ? 'Add New Board'
+            : type === 'addColumn'
+            ? 'Add New Column'
+            : 'Edit Board'}
+        </h2>
+        <button className="button--del-icon" type="button" onClick={closeModal}>
+          <DeleteIcon />
+        </button>
+      </div>
 
       <Formik
         initialValues={type === 'create' ? initialValues : valuesForEdit}

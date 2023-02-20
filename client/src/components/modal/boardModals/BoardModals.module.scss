@@ -6,8 +6,11 @@ $inputPadding: rem(12);
 .modal {
   @include modalGlobalContainerStyle;
 
-  &__title {
+  &__title-container {
+    display: flex;
+    align-items: center;
     margin-bottom: rem(30);
+    justify-content: space-between;
   }
 
   &__form {
