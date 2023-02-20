@@ -23,8 +23,15 @@ const validationCreateBoard = yup.object({
 });
 
 const TaskModal = ({ type }) => {
-  const { isLoading, activeBoard, addNewTask, editTask, task, activeColumn } =
-    useBoardContext();
+  const {
+    isLoading,
+    activeBoard,
+    addNewTask,
+    editTask,
+    task,
+    activeColumn,
+    closeModal,
+  } = useBoardContext();
   const [selectListVisible, setSelectVisible] = useState(false);
   const [status, setStatus] = useState(activeColumn.name);
 
@@ -49,10 +56,14 @@ const TaskModal = ({ type }) => {
   return (
     <article className={style.modal}>
       {/* MODAL TITLE */}
-
-      <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
-        {type === 'addTask' ? 'Add New Task' : 'Edit Task'}
-      </h2>
+      <div className={style['modal__title-container']}>
+        <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
+          {type === 'addTask' ? 'Add New Task' : 'Edit Task'}
+        </h2>
+        <button className="button--del-icon" type="button" onClick={closeModal}>
+          <DeleteIcon />
+        </button>
+      </div>
 
       <Formik
         initialValues={type === 'addTask' ? initialValues : valuesForEdit}
