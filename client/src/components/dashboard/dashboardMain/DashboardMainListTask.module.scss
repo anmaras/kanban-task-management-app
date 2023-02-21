@@ -42,4 +42,5 @@
 .list--droppable {
   @extend .list;
   outline: thin solid var(--lines-dark);
+  background: linear-gradient(var(--dark-grey), var(--very-dark-grey));
 }
