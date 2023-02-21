@@ -1,6 +1,6 @@
 import Board from '../models/Boards.js';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, NotFoundError } from '../errors/index.js';
+import { BadRequestError, NotFoundError, NoContent } from '../errors/index.js';
 
 //CREATE BOARD
 const createBoard = async (req, res) => {
@@ -35,10 +35,6 @@ const getAllBoards = async (req, res) => {
   }
 
   const activeBoard = boards.find((board) => board.isActive === true);
-
-  if (!activeBoard) {
-    throw new NotFoundError(`No active board found`);
-  }
 
   //return the boards, the amount and the selected created board is the active board Id
   res.status(StatusCodes.OK).json({
@@ -343,6 +339,86 @@ const editTask = async (req, res) => {
   res.status(StatusCodes.OK).json(board);
 };
 
+/*DND TASKS  */
+const dndTask = async (req, res) => {
+  const { destination, source } = req.body;
+  const { boardId } = req.params;
+
+  const board = await Board.findOne({ _id: boardId });
+
+  if (!board) {
+    throw new NotFoundError(`No board with id ${boardId}`);
+  }
+
+  if (!destination) {
+    throw new NotFoundError(`No destination column found`);
+  }
+
+  if (
+    destination.droppableId === source.droppableId &&
+    destination.index === source.index
+  ) {
+    return;
+  }
+  const sourceCol = board.columns.find(
+    (col) => col._id.toString() === source.droppableId
+  );
+
+  const destinationCol = board.columns.find(
+    (col) => col._id.toString() === destination.droppableId
+  );
+
+  if (!sourceCol || !destinationCol) {
+    throw new NotFoundError('Source or Destination Columns not found');
+  }
+
+  const task = sourceCol.tasks[source.index];
+
+  if (sourceCol._id.toString() === destinationCol._id.toString()) {
+    sourceCol?.tasks?.splice(source.index, 1);
+    sourceCol?.tasks?.splice(destination.index, 0, task);
+
+    const newSourceCol = {
+      ...sourceCol,
+      tasks: sourceCol.tasks,
+    };
+
+    (board.columns = board.columns.map((col) =>
+      col?._id === source.droppableId ? newSourceCol : col
+    )),
+      await board.save();
+
+    res.status(StatusCodes.OK).json(board);
+
+    return;
+  }
+
+  sourceCol.tasks.splice(source.index, 1);
+
+  const newSourceCol = {
+    ...sourceCol,
+    tasks: sourceCol.tasks,
+  };
+
+  destinationCol.tasks.splice(destination.index, 0, task);
+
+  const newDestCol = {
+    ...destinationCol,
+    tasks: destinationCol.tasks,
+  };
+
+  (board.columns = board.columns.map((col) =>
+    col._id === source.droppableId
+      ? newSourceCol
+      : col._id === destination.droppableId
+      ? newDestCol
+      : col
+  )),
+    await board.save();
+
+  res.status(StatusCodes.OK).json(board);
+};
+
 export {
   createBoard,
   getAllBoards,
@@ -354,4 +430,5 @@ export {
   moveTask,
   deleteTask,
   editTask,
+  dndTask,
 };
