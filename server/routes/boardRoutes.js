@@ -11,6 +11,7 @@ import {
   moveTask,
   deleteTask,
   editTask,
+  dndTask,
 } from '../controllers/boardController.js';
 
 router.route('/create-board').post(createBoard);
@@ -36,5 +37,7 @@ router
 router
   .route('/board/:boardId/column/:columnId/task/:taskId/edit')
   .patch(editTask);
+
+router.route('/board/:boardId/tasks/dnd').patch(dndTask);
 
 export default router;
