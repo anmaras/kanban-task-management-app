@@ -1,53 +1,55 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import style from './DashboardMainListTask.module.scss';
 import { useBoardContext } from '../../../context/boardsContext';
 import { Draggable } from 'react-beautiful-dnd';
 import { StrictModeDroppable as Droppable } from '../../../utils/StrictModeDroppable';
 
-const DashboardMainListTasks = ({ tasks, columnId, isVisible }) => {
-  const { handleViewTaskModal, getCurrentTask, activeBoard, activeColumn } =
-    useBoardContext();
+const DashboardMainListTasks = ({ tasks, columnId }) => {
+  const { handleViewTaskModal, getCurrentTask } = useBoardContext();
 
   return (
     <Droppable droppableId={columnId}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <ul
           ref={provided.innerRef}
           {...provided.droppableProps}
           className={
-            tasks.length > 0 ? style['tasksList'] : style['tasksList--empty']
+            tasks?.length > 0 && !snapshot.isDraggingOver
+              ? style['list']
+              : snapshot.isDraggingOver
+              ? style['list--droppable']
+              : style['list--empty']
           }
         >
-          {tasks.map((task, index) => {
+          {tasks?.map((task, index) => {
             const { title, _id, subtasks } = task;
-            const isCompleted = subtasks.filter(
-              (subtask) => subtask.isCompleted
-            );
+            const isCompleted = subtasks.filter((sub) => sub.isCompleted);
 
             return (
               <Draggable draggableId={_id} index={index} key={_id}>
-                {(provided) => (
+                {(provided, snapshot) => (
                   <li
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
-                    className={[style['tasksList__item'], 'card'].join(' ')}
+                    className={[
+                      snapshot.isDragging
+                        ? style['list__item--dragging']
+                        : style['list__item'],
+                      'card',
+                    ].join(' ')}
                     onClick={() => {
                       getCurrentTask(task);
                       handleViewTaskModal();
                     }}
                   >
                     <h3
-                      className={[style['tasksList__title'], 'heading-M'].join(
-                        ' '
-                      )}
+                      className={[style['list__title'], 'heading-M'].join(' ')}
                     >
                       {title}
                     </h3>
                     <p
-                      className={[style['tasksList__subtitle'], 'body-M '].join(
-                        ' '
-                      )}
+                      className={[style['list__subtitle'], 'body-M '].join(' ')}
                     >{`${isCompleted.length} of ${subtasks.length} subtasks`}</p>
                   </li>
                 )}
