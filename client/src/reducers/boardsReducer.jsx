@@ -34,6 +34,9 @@ import {
   EDIT_TASK_BEGIN,
   EDIT_TASK_SUCCESS,
   EDIT_TASK_ERROR,
+  DND_TASK_BEGIN,
+  DND_TASK_SUCCESS,
+  DND_TASK_ERROR,
 } from '../utils/actions';
 
 const boardReducer = (state, action) => {
@@ -327,12 +330,35 @@ const boardReducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      ...state,
       activeBoard: action.payload,
       boards: editedBoards,
     };
   }
   if (action.type === EDIT_TASK_ERROR) {
+    return { ...state, isLoading: false };
+  }
+
+  if (action.type === DND_TASK_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === DND_TASK_SUCCESS) {
+    const editedBoards = state.boards.map((oldBoard) => {
+      if (oldBoard._id === action.payload._id) {
+        return (oldBoard = action.payload);
+      }
+      return oldBoard;
+    });
+
+    return {
+      ...state,
+      isLoading: false,
+      activeBoard: action.payload,
+      boards: editedBoards,
+    };
+  }
+
+  if (action.type === DND_TASK_ERROR) {
     return { ...state, isLoading: false };
   }
 

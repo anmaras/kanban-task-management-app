@@ -39,6 +39,9 @@ import {
   EDIT_TASK_BEGIN,
   EDIT_TASK_SUCCESS,
   EDIT_TASK_ERROR,
+  DND_TASK_BEGIN,
+  DND_TASK_SUCCESS,
+  DND_TASK_ERROR,
 } from '../utils/actions';
 
 export const initialState = {
@@ -319,6 +322,27 @@ export const BoardProvider = ({ children }) => {
     }
   };
 
+  const dndTask = async (values) => {
+    dispatch({ type: DND_TASK_BEGIN });
+    try {
+      const { data } = await axios.patch(
+        `api/v1/boards/board/${state.activeBoardId}/tasks/dnd`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch({ type: DND_TASK_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: DND_TASK_ERROR });
+      if (error.request.status === 401) {
+        logoutUser();
+      }
+    }
+  };
+
   useEffect(() => {
     if (user && token) {
       getUserBoards();
@@ -349,6 +373,7 @@ export const BoardProvider = ({ children }) => {
         deleteTask,
         handleEditTaskModal,
         editTask,
+        dndTask,
       }}
     >
       {children}
