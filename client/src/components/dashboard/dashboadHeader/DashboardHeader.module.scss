@@ -87,7 +87,8 @@
   }
 
   &__buttons {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto;
     gap: rem(16);
   }
 }
