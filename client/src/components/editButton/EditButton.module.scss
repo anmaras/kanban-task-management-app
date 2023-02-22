@@ -11,6 +11,9 @@
     svg {
       min-width: 5px;
       max-height: 20px;
+      path {
+        fill: var(--medium-grey);
+      }
     }
 
     cursor: pointer;
