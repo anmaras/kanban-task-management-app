@@ -13,6 +13,7 @@ const TaskSchema = new mongoose.Schema({
 
 const ColumnSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
+  color: { type: String, require: true },
   tasks: [TaskSchema],
 });
 
@@ -25,6 +26,14 @@ const BoardSchema = new mongoose.Schema({
     required: true,
   },
   isActive: { type: Boolean },
+});
+
+ColumnSchema.pre('save', function (next) {
+  if (!this.color) {
+    this.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  }
+
+  next();
 });
 
 export default mongoose.model('Board', BoardSchema);
