@@ -1,6 +1,6 @@
 import Board from '../models/Boards.js';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, NotFoundError, NoContent } from '../errors/index.js';
+import { BadRequestError, NotFoundError } from '../errors/index.js';
 
 //CREATE BOARD
 const createBoard = async (req, res) => {
@@ -12,7 +12,10 @@ const createBoard = async (req, res) => {
   }
 
   //the newest board is set to active and the rest to false
-  await Board.updateMany({ isActive: true }, { $set: { isActive: false } });
+  await Board.updateMany(
+    { userId: req.user.userId },
+    { $set: { isActive: false } }
+  );
 
   // create the main board
   const board = await Board.create({
@@ -36,10 +39,6 @@ const getAllBoards = async (req, res) => {
 
   const activeBoard = boards.find((board) => board.isActive === true);
 
-  if (!activeBoard) {
-    boards[0].isActive = true;
-  }
-
   //return the boards, the amount and the selected created board is the active board Id
   res.status(StatusCodes.OK).json({
     boards,
@@ -53,9 +52,15 @@ const deleteBoard = async (req, res) => {
   const { id } = req.params;
 
   //find current next and previous boards
-  const board = await Board.findOne({ _id: id });
-  const nextBoard = await Board.findOne({ _id: { $gt: id } });
-  const previousBoard = await Board.findOne({ _id: { $lt: id } }).sort({
+  const board = await Board.findOne({ _id: id, userId: req.user.userId });
+  const nextBoard = await Board.findOne({
+    _id: { $gt: id },
+    userId: req.user.userId,
+  });
+  const previousBoard = await Board.findOne({
+    _id: { $lt: id },
+    userId: req.user.userId,
+  }).sort({
     _id: -1,
   });
 
@@ -89,17 +94,31 @@ const updateBoard = async (req, res) => {
   }
 
   //Find the selected board
-  const board = await Board.findOne({ _id: id });
+  const board = await Board.findOne({ _id: id, userId: req.user.userId });
 
   //if board doesn't exist throw error
   if (!board) {
     throw new NotFoundError(`No board with id ${id}`);
   }
 
-  const updatedBoard = await Board.findOneAndUpdate({ _id: id }, req.body, {
-    new: true,
-    runValidators: true,
+  const updatedColumns = columns.map((column) => {
+    //If column does not have a property color
+    if (!column.color) {
+      // Add color property to column with a random color
+      const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+      return { ...column, color };
+    }
+    return column;
   });
+
+  const updatedBoard = await Board.findOneAndUpdate(
+    { _id: id, userId: req.user.userId },
+    { name, columns: updatedColumns },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   res.status(StatusCodes.OK).json(updatedBoard);
 };
@@ -109,13 +128,20 @@ const selectActive = async (req, res) => {
   const { id } = req.params;
 
   //set all todos to is active false
-  await Board.updateMany({ isActive: true }, { $set: { isActive: false } });
+  await Board.updateMany(
+    { userId: req.user.userId },
+    { $set: { isActive: false } }
+  );
 
   //update the current todo to isActive true
-  const updatedBoard = await Board.findOneAndUpdate({ _id: id }, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  const updatedBoard = await Board.findOneAndUpdate(
+    { _id: id, userId: req.user.userId },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   res.status(StatusCodes.OK).json(updatedBoard);
 };
