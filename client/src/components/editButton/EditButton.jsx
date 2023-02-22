@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { ReactComponent as Dots } from '../../assets/icon-vertical-ellipsis.svg';
+import { ReactComponent as Account } from '../../assets/icon-user-account.svg';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBoardContext } from '../../context/boardsContext';
+import { useUserContext } from '../../context/userContext';
 import style from './EditButton.module.scss';
 import PropTypes from 'prop-types';
 import useCloseOnOutsideClick from '../../hooks/useCloseOnOutsideClick';
@@ -14,10 +16,11 @@ const EditButton = ({ type }) => {
     handleDeleteBoardModal,
     boards,
     handleEditBoardModal,
-    handleViewTaskModal,
     handleDeleteTaskModal,
     handleEditTaskModal,
+    closeModal,
   } = useBoardContext();
+  const { logoutUser } = useUserContext();
 
   const handleState = () => {
     setState(!state);
@@ -29,7 +32,7 @@ const EditButton = ({ type }) => {
         onClick={boards?.length > 0 ? handleState : null}
         className={style['editButton__dots-container']}
       >
-        <Dots />
+        {type !== 'account' ? <Dots /> : <Account />}
       </div>
       <AnimatePresence>
         {state && (
@@ -44,9 +47,10 @@ const EditButton = ({ type }) => {
               className={style['editButton__button']}
               onClick={() => {
                 if (type === 'task') {
-                  handleViewTaskModal();
+                  closeModal();
                   handleEditTaskModal();
                 } else if (type === 'board') {
+                  closeModal();
                   handleEditBoardModal();
                 }
                 setState(!state);
@@ -55,15 +59,20 @@ const EditButton = ({ type }) => {
             <button
               onClick={() => {
                 if (type === 'task') {
-                  handleViewTaskModal();
+                  closeModal();
                   handleDeleteTaskModal();
                 } else if (type === 'board') {
+                  closeModal();
                   handleDeleteBoardModal();
+                } else if (type === 'account') {
+                  logoutUser();
                 }
                 setState(!state);
               }}
               className={style['editButton__button']}
-            >{`Delete ${type}`}</button>
+            >
+              {type !== 'account' ? `Delete ${type}` : 'Logout'}
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
