@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import style from './ViewTaskModal.module.scss';
 import { useBoardContext } from '../../../context/boardsContext';
 import { ReactComponent as ArrowUp } from '../../../assets/icon-chevron-down.svg';
+import { ReactComponent as DeleteIcon } from '../../../assets/icon-cross.svg';
 import { EditButton } from '../../index';
 
 const ViewTaskModal = () => {
-  const { task, activeBoard, editSubTaskCheckBox, moveTasks } =
+  const { task, activeBoard, editSubTaskCheckBox, moveTasks, closeModal } =
     useBoardContext();
   const { title, description, subtasks, _id } = task;
   const [selectListVisible, setSelectVisible] = useState(false);
@@ -59,6 +60,9 @@ const ViewTaskModal = () => {
 
   return (
     <article className={style.modal}>
+      <button className="button--del-icon" type="button" onClick={closeModal}>
+        <DeleteIcon />
+      </button>
       <div className={style['modal__title-container']}>
         <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
           {title}
