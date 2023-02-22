@@ -41,7 +41,8 @@ const DashboardHeader = () => {
           >
             {width < 768 ? <AddTaskIcon /> : 'Add New Task'}
           </button>
-          <EditButton type="board" />
+          {/* <EditButton type="board" /> */}
+          <EditButton type="account" />
         </div>
       </div>
     </header>
