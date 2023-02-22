@@ -92,7 +92,10 @@ const DashboardMainList = () => {
           return (
             <li className={style['list__item']} key={column._id}>
               <div className={style['list__title-container']}>
-                <div className={style['list__color']}></div>
+                <div
+                  className={style['list__color']}
+                  style={{ backgroundColor: `${column.color}` }}
+                ></div>
                 <div className={[style['list__name'], 'heading-S'].join(' ')}>
                   {column?.name} ({column?.tasks?.length})
                 </div>
