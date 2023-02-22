@@ -1,0 +1,17 @@
+{
+  "name": "kanban-task-management-app",
+  "version": "1.0.0",
+  "description": "A visual system for managing work by using boards columns and cards",
+  "main": "./server/server.js",
+  "type": "module",
+  "scripts": {
+    "setup-production": "npm run install-client && npm run build-client && npm run install-server",
+    "install-client": "cd ./client && npm install",
+    "build-client": "cd ./client && npm run build",
+    "install-server": "cd ./server && npm install",
+    "start": "cd ./server && node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
