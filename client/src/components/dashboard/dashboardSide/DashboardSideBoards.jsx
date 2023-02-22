@@ -2,6 +2,7 @@ import React from 'react';
 import style from './DashboardSideBoards.module.scss';
 import { ReactComponent as BoardIcon } from '../../../assets/icon-board.svg';
 import { useBoardContext } from '../../../context/boardsContext';
+import { EditButton } from '../../index';
 
 const DashboardSideBoards = () => {
   const {
@@ -14,9 +15,14 @@ const DashboardSideBoards = () => {
 
   return (
     <div className={style.boards}>
-      <h3 className={[style['boards__title'], 'heading-S'].join(' ')}>
-        ALL BOARDS ({boards?.length})
-      </h3>
+      <div className={style['boards__title-container']}>
+        <h3 className={[style['boards__title'], 'heading-S'].join(' ')}>
+          ALL BOARDS ({boards?.length})
+        </h3>
+        <div className={style['boards__edit-btn-container']}>
+          <EditButton type="board" />
+        </div>
+      </div>
       <ul className={style['boards__list']}>
         {boards?.map((board) => {
           const { name, _id: id } = board;
