@@ -36,6 +36,10 @@ const getAllBoards = async (req, res) => {
 
   const activeBoard = boards.find((board) => board.isActive === true);
 
+  if (!activeBoard) {
+    boards[0].isActive = true;
+  }
+
   //return the boards, the amount and the selected created board is the active board Id
   res.status(StatusCodes.OK).json({
     boards,
