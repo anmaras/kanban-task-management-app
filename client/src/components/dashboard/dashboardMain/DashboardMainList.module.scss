@@ -1,22 +1,4 @@
 @use '../../../styles/utils/' as *;
-$red: #fc5545;
-$pink: #fcccd1;
-$green: #005e61;
-$greenLight: #42ba80;
-$yellow: #ffcf6f;
-$orange: #f57859;
-$orangeLight: #fabd91;
-$greyLight: #ebebeb;
-$blue: #29a8bf;
-$blueLight: #b8e3eb;
-
-$colors: $pink, $green, $greenLight, $yellow, $orange, $orangeLight, $blue,
-  $blueLight;
-
-$key: random(length($colors));
-$nth: nth($colors, $key);
-
-$random: $nth !default;
 
 .list {
   display: grid;
@@ -51,7 +33,6 @@ $random: $nth !default;
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: $random;
   }
 
   &__name {
