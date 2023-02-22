@@ -344,9 +344,7 @@ export const BoardProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user && token) {
-      getUserBoards();
-    }
+    getUserBoards();
   }, [user, token]);
   return (
     <BoardContext.Provider
