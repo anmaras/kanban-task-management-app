@@ -8,6 +8,11 @@ $inputPadding: rem(12);
   display: grid;
   gap: rem(30);
 
+  button:first-child {
+    justify-self: end;
+    padding-right: rem(2.5);
+  }
+
   &__title-container {
     display: flex;
     align-items: center;
