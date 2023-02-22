@@ -9,6 +9,18 @@ $padding: rem(16);
   background-color: var(--dark-grey);
   min-width: rem(280);
   border-radius: var(--form-input);
+  padding-block: rem(10);
+
+  &__title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: rem(10);
+  }
+
+  &__edit-btn-container {
+    margin-right: rem(15);
+  }
 
   &__title {
     padding: $padding;
