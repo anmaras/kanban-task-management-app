@@ -1,5 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import path from 'path';
 const app = express();
 dotenv.config();
@@ -28,19 +30,20 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 app.use(express.json());
 
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/boards', authenticateUser, boardRouter);
+
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../client/build'));
+  app.use(express.static(path.resolve(__dirname, '../client/build')));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve('../client', 'build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
   });
 }
-
-app.use('/api/v1/auth', authRouter);
-//authentication pass from here
-app.use('/api/v1/boards', authenticateUser, boardRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
