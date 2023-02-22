@@ -7,7 +7,8 @@
 
   &__main {
     position: relative;
-    overflow-x: scroll;
+
+    overflow: auto !important;
     background-color: var(--very-dark-grey);
     @include customScrollBar;
   }
