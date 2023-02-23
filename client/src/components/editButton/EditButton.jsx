@@ -29,7 +29,7 @@ const EditButton = ({ type }) => {
   return (
     <div className={style.editButton} ref={editRef}>
       <div
-        onClick={boards?.length > 0 ? handleState : null}
+        onClick={boards?.length > 0 || type === 'account' ? handleState : null}
         className={style['editButton__dots-container']}
       >
         {type !== 'account' ? <Dots /> : <Account />}
@@ -43,19 +43,21 @@ const EditButton = ({ type }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <button
-              className={style['editButton__button']}
-              onClick={() => {
-                if (type === 'task') {
-                  closeModal();
-                  handleEditTaskModal();
-                } else if (type === 'board') {
-                  closeModal();
-                  handleEditBoardModal();
-                }
-                setState(!state);
-              }}
-            >{`Edit ${type}`}</button>
+            {type !== 'account' ? (
+              <button
+                className={style['editButton__button']}
+                onClick={() => {
+                  if (type === 'task') {
+                    closeModal();
+                    handleEditTaskModal();
+                  } else if (type === 'board') {
+                    closeModal();
+                    handleEditBoardModal();
+                  }
+                  setState(!state);
+                }}
+              >{`Edit ${type}`}</button>
+            ) : null}
             <button
               onClick={() => {
                 if (type === 'task') {
