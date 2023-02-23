@@ -16,7 +16,7 @@ const initialValues = {
 };
 
 //schema for register
-const validationSchemaRegister = yup.object({
+const registerSchema = yup.object({
   name: yup
     .string()
     .trim()
@@ -31,7 +31,7 @@ const validationSchemaRegister = yup.object({
 });
 
 //schema for login
-const validationSchemaLogin = yup.object({
+const loginSchema = yup.object({
   name: yup.string().notRequired(),
   email: yup.string().email('Invalid email format').required('Required'),
   password: yup
@@ -40,9 +40,15 @@ const validationSchemaLogin = yup.object({
     .required('Required'),
 });
 
-const Form = ({ formType }) => {
+const Form = ({ type }) => {
   const { registerUser, loginUser, user, isLoading } = useUserContext();
   const navigate = useNavigate();
+  const title = type === 'register' ? 'Register to Kanban' : 'Login to Kanban';
+  const schema = type === 'register' ? registerSchema : loginSchema;
+  const onSubmit = type === 'register' ? registerUser : loginUser;
+  const toPath = type === 'register' ? '/login' : '/register';
+  const linkTitle = type === 'register' ? 'Login' : 'Register';
+  const message = type === 'register' ? 'Have an account?' : 'Need an account?';
 
   //after user register or login navigate to the dashboard
   useEffect(() => {
@@ -56,42 +62,31 @@ const Form = ({ formType }) => {
     <motion.article
       initial={{ x: '100%' }}
       animate={{ x: 0 }}
-      className={style.formContainer}
+      className={style.article}
     >
-      <h2 className={[style['formContainer__title']].join(' ')}>
-        {formType === 'register' ? 'Register to Kanban' : 'Login to Kanban'}
-      </h2>
+      <h2 className={[style['article__title']].join(' ')}>{title}</h2>
       <Formik
         initialValues={initialValues}
-        validationSchema={
-          formType === 'register'
-            ? validationSchemaRegister
-            : validationSchemaLogin
-        }
-        onSubmit={formType === 'register' ? registerUser : loginUser}
+        validationSchema={schema}
+        onSubmit={onSubmit}
       >
         {({ touched, errors }) => (
-          <FormikForm className={style['formContainer__form']}>
+          <FormikForm className={style['article__form']}>
             {formInputs
               .filter((input) => {
-                /* If the formType is register then return the form input array
+                /* If the type is register then return the form input array
            as it is, if not then filter it so it return only the email and password input */
-                if (formType === 'register') {
+                if (type === 'register') {
                   return input;
                 }
                 return input.name !== 'name';
               })
               .map((input) => {
                 const { name, label, type, placeholder } = input;
+                const notValid = touched[name] && errors[name];
                 return (
-                  <div
-                    key={name}
-                    className={style['formContainer__form-control']}
-                  >
-                    <label
-                      className={style['formContainer__label']}
-                      htmlFor={name}
-                    >
+                  <div key={name} className={style['article__form-control']}>
+                    <label className={style['article__label']} htmlFor={name}>
                       {label}
                     </label>
                     <Field
@@ -100,12 +95,12 @@ const Form = ({ formType }) => {
                       name={name}
                       id={name}
                       className={
-                        touched[name] && errors[name]
-                          ? style['formContainer__input--invalid']
-                          : style['formContainer__input']
+                        notValid
+                          ? style['article__input--invalid']
+                          : style['article__input']
                       }
                     />
-                    <div className={style['formContainer__error']}>
+                    <div className={style['article__error']}>
                       <ErrorMessage name={name} component="div" />
                     </div>
                   </div>
@@ -116,22 +111,15 @@ const Form = ({ formType }) => {
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? <Spinner /> : formType}
+              {isLoading ? <Spinner /> : type}
             </button>
           </FormikForm>
         )}
       </Formik>
-      <div className={style['formContainer__redirect-container']}>
-        <p className={style['formContainer__redirect-text']}>
-          {formType === 'register'
-            ? 'Already have an account?'
-            : 'Need an account?'}
-        </p>
-        <Link
-          to={formType === 'register' ? '/login' : '/register'}
-          className={style['formContainer__redirect-link']}
-        >
-          {formType === 'register' ? 'Login' : 'Register'}
+      <div className={style['article__redirect-container']}>
+        <p className={style['article__redirect-text']}>{message}</p>
+        <Link to={toPath} className={style['article__redirect-link']}>
+          {linkTitle}
         </Link>
       </div>
     </motion.article>
@@ -139,7 +127,7 @@ const Form = ({ formType }) => {
 };
 
 Form.propTypes = {
-  formType: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default Form;
