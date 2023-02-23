@@ -4,7 +4,7 @@ import { Form, AuthLayout } from '../components';
 const RegisterPage = () => {
   return (
     <AuthLayout>
-      <Form formType="register" />
+      <Form type="register" />
     </AuthLayout>
   );
 };
