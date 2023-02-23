@@ -3,7 +3,7 @@
 $gap: rem(32);
 $transition: 0.25s;
 
-.formContainer {
+.article {
   padding-block: rem(32);
   display: grid;
   gap: $gap;
@@ -57,7 +57,7 @@ $transition: 0.25s;
   }
 
   &__input--invalid {
-    @extend .formContainer__input;
+    @extend .article__input;
     outline: thin solid var(--warning-color);
 
     &:focus {
