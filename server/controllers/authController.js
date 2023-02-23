@@ -13,11 +13,17 @@ const register = async (req, res) => {
   const userExist = await User.findOne({ email });
   //if email exist then throw the error
   if (userExist) {
-    throw new BadRequestError('Ooops! that email already exist ');
+    throw new BadRequestError(
+      JSON.stringify({ email: 'That email already exist ' })
+    );
   }
 
   //create user
-  const user = await User.create({ name, email, password });
+  const user = await User.create({
+    name,
+    email: email.toLowerCase(),
+    password,
+  });
 
   //create token/ method comes from user model check there.
   const token = user.createJWT();
@@ -40,14 +46,16 @@ const login = async (req, res) => {
 
   //if user doesn't exist throw custom error
   if (!user) {
-    throw new UnauthenticatedError('Invalid email');
+    throw new UnauthenticatedError(JSON.stringify({ email: 'Invalid email' }));
   }
   //compare passwords, method is created at user model
   const isPasswordCorrect = await user.comparePassword(password);
 
   // if password not match throw custom error
   if (!isPasswordCorrect) {
-    throw new UnauthenticatedError('Invalid Password');
+    throw new UnauthenticatedError(
+      JSON.stringify({ password: 'Invalid password' })
+    );
   }
 
   //create token/ method comes from user model check there.
