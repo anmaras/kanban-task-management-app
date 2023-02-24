@@ -70,29 +70,35 @@ const ViewTaskModal = () => {
         <EditButton type="task" />
       </div>
       <p className={[style['modal__description'], 'body-L-dark'].join(' ')}>
-        {description}
+        {description ? description : 'No description'}
       </p>
       <div className={style['modal__controller']}>
         <h3 className={[style['modal__label'], 'body-M '].join(' ')}>
           SubTasks ({isCompleted.length} of {task.subtasks.length})
         </h3>
-        <ul className={style['modal__list-container']}>
-          {subtasks.map((subtask) => {
-            const { title, _id, isCompleted } = subtask;
-            return (
-              <li className={style['modal__list-item']} key={_id}>
-                <input
-                  type="checkbox"
-                  checked={isCompleted}
-                  onChange={() => {
-                    editSubTaskCheckBox(_id, currentColumn.id);
-                  }}
-                />
-                <p className="body-M">{title}</p>
-              </li>
-            );
-          })}
-        </ul>
+        {subtasks.length > 0 ? (
+          <ul className={style['modal__list-container']}>
+            {subtasks.map((subtask) => {
+              const { title, _id, isCompleted } = subtask;
+              return (
+                <li className={style['modal__list-item']} key={_id}>
+                  <input
+                    type="checkbox"
+                    checked={isCompleted}
+                    onChange={() => {
+                      editSubTaskCheckBox(_id, currentColumn.id);
+                    }}
+                  />
+                  <p className="body-M">{title}</p>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className={[style['modal__noSubtask-text'], 'body-M '].join(' ')}>
+            No Subtasks
+          </p>
+        )}
       </div>
 
       {/* DROPDOWN  SELECT*/}
