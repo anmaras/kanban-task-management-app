@@ -41,7 +41,14 @@ const loginSchema = yup.object({
 });
 
 const Form = ({ type }) => {
-  const { registerUser, loginUser, user, isLoading } = useUserContext();
+  const {
+    registerUser,
+    loginUser,
+    user,
+    isLoading,
+    loginTestUser,
+    demoIsLoading,
+  } = useUserContext();
   const navigate = useNavigate();
   const title = type === 'register' ? 'Register to Kanban' : 'Login to Kanban';
   const schema = type === 'register' ? registerSchema : loginSchema;
@@ -112,6 +119,14 @@ const Form = ({ type }) => {
               disabled={isLoading}
             >
               {isLoading ? <Spinner /> : type}
+            </button>
+            <button
+              className="button button--auth-demo"
+              type="button"
+              disabled={isLoading}
+              onClick={loginTestUser}
+            >
+              {demoIsLoading ? <Spinner color="#5fc7a8" /> : 'Test The App'}
             </button>
           </FormikForm>
         )}
