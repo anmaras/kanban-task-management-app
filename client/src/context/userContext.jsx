@@ -9,6 +9,9 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  LOGIN_TEST_USER_BEGIN,
+  LOGIN_TEST_USER_SUCCESS,
+  LOGIN_TEST_USER_ERROR,
 } from '../utils/actions';
 
 const user = localStorage.getItem('user');
@@ -16,6 +19,7 @@ const token = localStorage.getItem('token');
 
 export const initialState = {
   isLoading: false,
+  demoIsLoading: false,
   user: user ? JSON.parse(user) : null,
   token: token || null,
 };
@@ -75,6 +79,25 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  //login Test User
+  const loginTestUser = async () => {
+    const value = {
+      email: 'testurerprofile@email.com',
+      password: '123123',
+    };
+    dispatch({ type: LOGIN_TEST_USER_BEGIN });
+    try {
+      const response = await axios.post('/api/v1/auth/login', value);
+      const { user, token } = response.data;
+      dispatch({ type: LOGIN_TEST_USER_SUCCESS, payload: { user, token } });
+      saveUserAtStorage({ user, token });
+    } catch (error) {
+      dispatch({
+        type: LOGIN_TEST_USER_ERROR,
+      });
+    }
+  };
+
   //logout user
   const logoutUser = () => {
     dispatch({ type: LOGOUT_USER });
@@ -88,6 +111,7 @@ export const UserProvider = ({ children }) => {
         registerUser,
         loginUser,
         logoutUser,
+        loginTestUser,
       }}
     >
       {children}
