@@ -1,12 +1,12 @@
 import React from 'react';
 import { PulseLoader, PropagateLoader } from 'react-spinners';
 
-const Spinner = ({ type }) => {
+const Spinner = ({ type, color = '#ffffff' }) => {
   if (type === 'big') {
     return <PropagateLoader color="#ffffff" size={15} />;
   }
 
-  return <PulseLoader color="#ffffff" size={5} />;
+  return <PulseLoader color={color} size={5} />;
 };
 
 export default Spinner;
