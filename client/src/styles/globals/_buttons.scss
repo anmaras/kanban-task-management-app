@@ -45,6 +45,21 @@
   font-weight: 700;
 }
 
+.button--auth-demo {
+  background-color: var(--white);
+  color: var(--main-color);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 700;
+
+  &:hover {
+    background-color: var(--light-grey);
+  }
+  &:focus {
+    outline: 2px solid var(--main-color);
+  }
+}
+
 .button--del-icon {
   background-color: transparent;
   border: 0;
