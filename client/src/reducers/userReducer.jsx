@@ -6,6 +6,9 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  LOGIN_TEST_USER_BEGIN,
+  LOGIN_TEST_USER_SUCCESS,
+  LOGIN_TEST_USER_ERROR,
 } from '../utils/actions';
 
 import { initialState } from '../context/userContext';
@@ -48,6 +51,25 @@ const userReducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
+    };
+  }
+  if (action.type === LOGIN_TEST_USER_BEGIN) {
+    return { ...state, demoIsLoading: true };
+  }
+
+  if (action.type === LOGIN_TEST_USER_SUCCESS) {
+    return {
+      ...state,
+      user: action.payload.user,
+      token: action.payload.token,
+      demoIsLoading: false,
+    };
+  }
+
+  if (action.type === LOGIN_TEST_USER_ERROR) {
+    return {
+      ...state,
+      demoIsLoading: false,
     };
   }
   if (action.type === LOGOUT_USER) {
