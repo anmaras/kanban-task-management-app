@@ -343,9 +343,27 @@ export const BoardProvider = ({ children }) => {
     }
   };
 
+  const clearDemoData = async () => {
+    try {
+      await axios.get('api/v1/boards/clearDemo', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (error) {
+      if (error.request.status === 401) {
+        logoutUser();
+      }
+    }
+  };
+
   useEffect(() => {
-    getUserBoards();
+    if (user && token) {
+      getUserBoards();
+    } else {
+      logoutUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, token]);
+
   return (
     <BoardContext.Provider
       value={{
@@ -372,6 +390,7 @@ export const BoardProvider = ({ children }) => {
         handleEditTaskModal,
         editTask,
         dndTask,
+        clearDemoData,
       }}
     >
       {children}
