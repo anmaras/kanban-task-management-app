@@ -1,6 +1,7 @@
 import Board from '../models/Boards.js';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, NotFoundError } from '../errors/index.js';
+import cron from 'node-cron';
 
 //CREATE BOARD
 const createBoard = async (req, res) => {
@@ -448,6 +449,12 @@ const dndTask = async (req, res) => {
 
   res.status(StatusCodes.OK).json(board);
 };
+
+cron.schedule('*/10 * * * *', async () => {
+  const demoUserId = '63f88a6ae8c7c7546afe1fae';
+
+  await Board.deleteMany({ userId: demoUserId });
+});
 
 export {
   createBoard,
