@@ -36,7 +36,7 @@ const LandingPage = () => {
           Kanban will provide a simple yet effective solution for managing
           projects and tasks.
         </p>
-        <Link to="/register" className="button button--auth">
+        <Link to="/login" className="button button--auth">
           Get Started
         </Link>
       </div>
