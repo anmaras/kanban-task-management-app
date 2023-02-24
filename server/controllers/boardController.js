@@ -450,12 +450,6 @@ const dndTask = async (req, res) => {
   res.status(StatusCodes.OK).json(board);
 };
 
-cron.schedule('*/10 * * * *', async () => {
-  const demoUserId = '63f88a6ae8c7c7546afe1fae';
-
-  await Board.deleteMany({ userId: demoUserId });
-});
-
 export {
   createBoard,
   getAllBoards,
