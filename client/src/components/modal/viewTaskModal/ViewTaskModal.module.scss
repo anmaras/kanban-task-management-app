@@ -9,17 +9,23 @@ $inputPadding: rem(12);
   gap: rem(30);
 
   button[type='button']:first-child {
-    justify-self: end;
-    padding-right: rem(2.5);
+    display: none;
+    @include breakpoint-down(medium) {
+      display: block;
+      justify-self: end;
+      padding-right: rem(2.5);
+    }
   }
 
   &__title-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: rem(12);
   }
 
-  &__description {
+  &__description,
+  &__noSubtask-text {
     color: var(--medium-grey);
   }
 
