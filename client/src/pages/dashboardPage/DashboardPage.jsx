@@ -1,41 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
+import { useBoardContext } from '../../context/boardsContext';
 import {
   DashboardLayout,
-  DashboardMain,
-  DashboardSide,
   PortalComponents,
-} from '../../components';
-import { ReactComponent as Eye } from '../../assets/icon-show-sidebar.svg';
-import { motion, AnimatePresence } from 'framer-motion';
+  Loader,
+  Aside,
+  Table,
+} from '../../components/index';
 
 const DashboardPage = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const { fetchDataLoading: isLoading } = useBoardContext();
 
-  const setVisibility = () => {
-    setIsVisible(!isVisible);
-  };
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
       {createPortal(<PortalComponents />, document.body)}
       <DashboardLayout>
-        <DashboardSide isVisible={isVisible} setVisibility={setVisibility} />
-        <DashboardMain isVisible={isVisible} />
-        <AnimatePresence>
-          {!isVisible && (
-            <motion.button
-              onClick={setVisibility}
-              className="button-showSide"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.1 }}
-            >
-              <Eye />
-            </motion.button>
-          )}
-        </AnimatePresence>
+        <Aside />
+        <Table />
       </DashboardLayout>
     </>
   );
