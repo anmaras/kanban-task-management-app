@@ -1,13 +1,14 @@
 import React from 'react';
 import { useBoardContext } from '../../../context/boardsContext';
 import { useModalContext } from '../../../context/modalsContext';
-import Spinner from '../../spinner/Spinner';
+import { Spinner } from '../../index';
 import style from './DeleteModal.module.scss';
 
 const DeleteModal = ({ type }) => {
   const { activeBoard, deleteBoard, isLoading, task, deleteTask } =
     useBoardContext();
   const { closeModals } = useModalContext();
+  const buttonContent = isLoading ? <Spinner /> : 'Delete';
   return (
     <article className={style.modal}>
       <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
@@ -30,7 +31,7 @@ const DeleteModal = ({ type }) => {
           className="button button--secondary--delete"
           onClick={type === 'board' ? deleteBoard : deleteTask}
         >
-          {isLoading ? <Spinner /> : 'Delete'}
+          {buttonContent}
         </button>
         <button className="button button--secondary" onClick={closeModals}>
           Cancel

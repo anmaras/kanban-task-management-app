@@ -8,7 +8,7 @@ import {
 } from 'formik';
 import { useBoardContext } from '../../../context/boardsContext';
 import * as yup from 'yup';
-import Spinner from '../../spinner/Spinner';
+import { Spinner } from '../../index';
 import style from '../boardModals/BoardModals.module.scss';
 import { ReactComponent as DeleteIcon } from '../../../assets/icon-cross.svg';
 import { ReactComponent as ArrowUp } from '../../../assets/icon-chevron-down.svg';

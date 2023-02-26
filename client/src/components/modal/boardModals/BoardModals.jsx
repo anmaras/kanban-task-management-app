@@ -9,7 +9,7 @@ import {
 import { useBoardContext } from '../../../context/boardsContext';
 import { useModalContext } from '../../../context/modalsContext';
 import * as yup from 'yup';
-import Spinner from '../../spinner/Spinner';
+import { Spinner } from '../../index';
 import style from './BoardModals.module.scss';
 import { ReactComponent as DeleteIcon } from '../../../assets/icon-cross.svg';
 
