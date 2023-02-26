@@ -1,10 +1,10 @@
-import Form from './form/Form';
+import AuthForm from './authForm/AuthForm';
 import AuthLayout from './layouts/authLayout/AuthLayout';
 import HomeLayout from './layouts/homeLayout/HomeLayout';
 import DashboardLayout from './layouts/dashboardLayout/DashboardLayout';
 import EditButton from './editButton/EditButton';
 import Modal from './modal/Modal';
-import Spinner from './spinner/Spinner';
+import Spinner from './loader/spinner/Spinner';
 import Loader from './loader/Loader';
 import PortalComponents from './portal/PortalComponents';
 import Header from './dashboard/header/Header';
@@ -23,7 +23,7 @@ export {
   Aside,
   AsideBoardsCard,
   DashboardLayout,
-  Form,
+  AuthForm,
   EditButton,
   AuthLayout,
   HomeLayout,
