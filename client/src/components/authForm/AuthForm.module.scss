@@ -1,0 +1,108 @@
+@use '../../styles/utils/' as *;
+
+$gap: rem(32);
+$transition: 0.25s;
+
+.article {
+  padding-block: rem(32);
+  display: grid;
+  gap: $gap;
+  width: min(100% - rem(32), 384px);
+  margin-inline: auto;
+
+  &__title {
+    color: var(--white);
+    text-align: center;
+    margin-inline: auto;
+    font-size: rem(32);
+    line-height: 1.3;
+    margin-bottom: rem(32);
+  }
+
+  &__form {
+    display: grid;
+    gap: $gap;
+  }
+
+  &__form-control {
+    display: grid;
+    gap: rem(8);
+  }
+
+  &__label {
+    color: var(--white);
+  }
+
+  &__input {
+    padding-inline: rem(12);
+    padding-block: rem(14);
+    border-radius: var(--form-input);
+    border: 0;
+    outline: thin solid var(--lines-dark);
+    background-color: transparent;
+    caret-color: var(--white);
+    color: var(--white);
+    font-weight: 500;
+    font-size: rem(14);
+
+    transition: $transition;
+
+    &:focus {
+      outline: thin solid var(--main-color);
+    }
+
+    &::placeholder {
+      color: var(--lines-dark);
+    }
+  }
+
+  &__input--invalid {
+    @extend .article__input;
+    outline: thin solid var(--warning-color);
+
+    &:focus {
+      outline-color: var(--warning-color);
+    }
+  }
+
+  &__error {
+    min-height: 16px;
+    font-size: rem(14);
+    text-align: end;
+    color: var(--warning-color);
+  }
+
+  &__redirect-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    align-items: center;
+  }
+
+  &__redirect-text {
+    color: var(--medium-grey);
+  }
+
+  &__redirect-link {
+    text-decoration: none;
+    color: var(--white);
+    outline: thin solid var(--white);
+    padding: rem(8);
+    border-radius: var(--form-input);
+    border: 0;
+    transition: $transition;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &:focus {
+      outline-color: var(--main-color);
+    }
+  }
+}
