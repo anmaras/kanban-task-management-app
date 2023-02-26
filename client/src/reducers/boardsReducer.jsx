@@ -2,10 +2,6 @@ import {
   CREATE_BOARD_BEGIN,
   CREATE_BOARD_SUCCESS,
   CREATE_BOARD_ERROR,
-  SIDE_CREATE_MODAL_TOGGLE,
-  CREATE_NEW_BOARD_MODAL_TOGGLE,
-  DELETE_MODAL_TOGGLE,
-  CLOSE_MODAL,
   GET_USER_BOARD_BEGIN,
   GET_USER_BOARD_SUCCESS,
   GET_USER_BOARD_ERROR,
@@ -19,18 +15,12 @@ import {
   CREATE_COLUMN_TASK_BEGIN,
   CREATE_COLUMN_TASK_SUCCESS,
   CREATE_COLUMN_TASK_ERROR,
-  EDIT_BOARD_MODAL_TOGGLE,
-  ADD_COLUMN_MODAL_TOGGLE,
-  ADD_TASK_MODAL_TOGGLE,
-  VIEW_TASK_MODAL_TOGGLE,
   GET_CURRENT_TASK,
   EDIT_SUBTASK,
   MOVE_TASK,
-  DELETE_TASK_MODAL_TOGGLE,
   DELETE_TASK_BEGIN,
   DELETE_TASK_SUCCESS,
   DELETE_TASK_ERROR,
-  UPDATE_TASK_MODAL_TOGGLE,
   EDIT_TASK_BEGIN,
   EDIT_TASK_SUCCESS,
   EDIT_TASK_ERROR,
@@ -40,63 +30,6 @@ import {
 } from '../utils/actions';
 
 const boardReducer = (state, action) => {
-  /* MODALS */
-
-  if (action.type === SIDE_CREATE_MODAL_TOGGLE) {
-    return { ...state, sideBoardModalVisible: !state.sideBoardModalVisible };
-  }
-
-  if (action.type === CREATE_NEW_BOARD_MODAL_TOGGLE) {
-    return {
-      ...state,
-      sideBoardModalVisible: false,
-      createBoardVisible: !state.createBoardVisible,
-    };
-  }
-
-  if (action.type === EDIT_BOARD_MODAL_TOGGLE) {
-    return { ...state, editBoardVisible: !state.editBoardVisible };
-  }
-
-  if (action.type === DELETE_MODAL_TOGGLE) {
-    return { ...state, deleteModalVisible: !state.deleteModalVisible };
-  }
-
-  if (action.type === ADD_COLUMN_MODAL_TOGGLE) {
-    return { ...state, addColumnModalVisible: !state.addColumnModalVisible };
-  }
-
-  if (action.type === ADD_TASK_MODAL_TOGGLE) {
-    return { ...state, addTaskModalVisible: !state.addTaskModalVisible };
-  }
-
-  if (action.type === VIEW_TASK_MODAL_TOGGLE) {
-    return { ...state, viewTaskModalVisible: !state.viewTaskModalVisible };
-  }
-
-  if (action.type === DELETE_TASK_MODAL_TOGGLE) {
-    return { ...state, deleteTaskModalVisible: !state.deleteTaskModalVisible };
-  }
-
-  if (action.type === UPDATE_TASK_MODAL_TOGGLE) {
-    return { ...state, updateTaskModalVisible: !state.updateTaskModalVisible };
-  }
-
-  if (action.type === CLOSE_MODAL) {
-    return {
-      ...state,
-      createBoardVisible: false,
-      sideBoardModalVisible: false,
-      deleteModalVisible: false,
-      editBoardVisible: false,
-      addColumnModalVisible: false,
-      addTaskModalVisible: false,
-      viewTaskModalVisible: false,
-      deleteTaskModalVisible: false,
-      updateTaskModalVisible: false,
-    };
-  }
-
   /* CRUD BOARDS */
 
   /* CREATE */
