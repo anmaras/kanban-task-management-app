@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import DashboardSideBoards from '../dashboard/dashboardSide/DashboardSideBoards';
+import { AsideBoardsCard } from '../index';
 import {
   Backdrop,
   BoardModals,
@@ -12,7 +12,7 @@ const Modal = ({ type }) => {
   if (type === 'sideBoardsModal') {
     return (
       <Backdrop>
-        <DashboardSideBoards />
+        <AsideBoardsCard />
       </Backdrop>
     );
   }

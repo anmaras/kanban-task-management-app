@@ -1,10 +1,10 @@
 import React from 'react';
-import { useBoardContext } from '../../../context/boardsContext';
+import { useModalContext } from '../../../context/modalsContext';
 import style from './Backdrop.module.scss';
 import { motion } from 'framer-motion';
 
 const Backdrop = ({ children }) => {
-  const { closeModal } = useBoardContext();
+  const { closeModals } = useModalContext();
   return (
     <motion.div
       className={style.backdrop}
@@ -15,9 +15,9 @@ const Backdrop = ({ children }) => {
       transition={{ duration: 0.2 }}
       onClick={(e) => {
         if (e.target === e.currentTarget) {
-          //need to stop the bubble so modals to work
+          //need to stop further propagation so modals to work
           e.stopPropagation();
-          closeModal();
+          closeModals();
         }
       }}
     >

@@ -2,21 +2,27 @@ import Form from './form/Form';
 import AuthLayout from './layouts/authLayout/AuthLayout';
 import HomeLayout from './layouts/homeLayout/HomeLayout';
 import DashboardLayout from './layouts/dashboardLayout/DashboardLayout';
-import DashboardHeader from './dashboard/dashboadHeader/DashboardHeader';
 import EditButton from './editButton/EditButton';
-import DashboardSide from './dashboard/dashboardSide/DashboardSide';
-import DashboardMain from './dashboard/dashboardMain/DashboardMain';
-import DashboardSideBoards from './dashboard/dashboardSide/DashboardSideBoards';
 import Modal from './modal/Modal';
 import Spinner from './spinner/Spinner';
 import Loader from './loader/Loader';
 import PortalComponents from './portal/PortalComponents';
+import Header from '../components/dashboard/header/Header';
+import Aside from './dashboard/aside/Aside';
+import AsideBoardsCard from './dashboard/aside/asideBoardsCard/AsideBoardsCard';
+import Options from './dashboard/options/Options';
+import List from '../components/dashboard/columns/list/List';
+import Tasks from './dashboard/tasks/Tasks';
+import Table from './dashboard/columns/table/Table';
+
 export {
-  DashboardSideBoards,
-  DashboardHeader,
+  Table,
+  Tasks,
+  List,
+  Options,
+  Aside,
+  AsideBoardsCard,
   DashboardLayout,
-  DashboardSide,
-  DashboardMain,
   Form,
   EditButton,
   AuthLayout,
@@ -25,4 +31,5 @@ export {
   Spinner,
   Loader,
   PortalComponents,
+  Header,
 };

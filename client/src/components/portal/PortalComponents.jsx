@@ -1,5 +1,5 @@
 import React from 'react';
-import { useBoardContext } from '../../context/boardsContext';
+import { useModalContext } from '../../context/modalsContext';
 import { Modal } from '../index';
 import useWindowSize from '../../hooks/useWindowSize';
 
@@ -7,16 +7,16 @@ const PortalComponents = () => {
   const { width } = useWindowSize();
 
   const {
-    deleteModalVisible,
-    sideBoardModalVisible,
     createBoardVisible,
+    sideBoardModalVisible,
     editBoardVisible,
+    deleteModalVisible,
     addColumnModalVisible,
     addTaskModalVisible,
     viewTaskModalVisible,
     deleteTaskModalVisible,
     updateTaskModalVisible,
-  } = useBoardContext();
+  } = useModalContext();
   return (
     <>
       {deleteModalVisible && <Modal type="deleteBoardModal" />}

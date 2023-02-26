@@ -12,6 +12,7 @@ import Spinner from '../../spinner/Spinner';
 import style from '../boardModals/BoardModals.module.scss';
 import { ReactComponent as DeleteIcon } from '../../../assets/icon-cross.svg';
 import { ReactComponent as ArrowUp } from '../../../assets/icon-chevron-down.svg';
+import { useModalContext } from '../../../context/modalsContext';
 
 const validationCreateBoard = yup.object({
   title: yup.string().trim().required('Required!'),
@@ -23,15 +24,9 @@ const validationCreateBoard = yup.object({
 });
 
 const TaskModal = ({ type }) => {
-  const {
-    isLoading,
-    activeBoard,
-    addNewTask,
-    editTask,
-    task,
-    activeColumn,
-    closeModal,
-  } = useBoardContext();
+  const { isLoading, activeBoard, addNewTask, editTask, task, activeColumn } =
+    useBoardContext();
+  const { closeModals } = useModalContext();
   const [selectListVisible, setSelectVisible] = useState(false);
   const [status, setStatus] = useState(activeColumn.name);
 
@@ -60,7 +55,11 @@ const TaskModal = ({ type }) => {
         <h2 className={[style['modal__title'], 'heading-L'].join(' ')}>
           {type === 'addTask' ? 'Add New Task' : 'Edit Task'}
         </h2>
-        <button className="button--del-icon" type="button" onClick={closeModal}>
+        <button
+          className="button--del-icon"
+          type="button"
+          onClick={closeModals}
+        >
           <DeleteIcon />
         </button>
       </div>

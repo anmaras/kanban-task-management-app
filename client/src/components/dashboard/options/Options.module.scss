@@ -1,0 +1,26 @@
+@use '../../../styles/utils/' as *;
+
+.options {
+  text-align: center;
+  height: 100%;
+  width: min(100% - rem(32));
+  margin-inline: auto;
+  display: grid;
+  place-content: center;
+  gap: rem(32);
+  transition: var(--sidebar-transition);
+
+  @include breakpoint(medium) {
+    padding-left: rem(300);
+  }
+
+  button {
+    width: fit-content;
+    justify-self: center;
+  }
+}
+
+.options--move {
+  @extend .options;
+  padding-left: 0;
+}

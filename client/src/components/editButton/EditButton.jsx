@@ -4,6 +4,7 @@ import { ReactComponent as Account } from '../../assets/icon-user-account.svg';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBoardContext } from '../../context/boardsContext';
 import { useUserContext } from '../../context/userContext';
+import { useModalContext } from '../../context/modalsContext';
 import style from './EditButton.module.scss';
 import PropTypes from 'prop-types';
 import useCloseOnOutsideClick from '../../hooks/useCloseOnOutsideClick';
@@ -12,15 +13,14 @@ const EditButton = ({ type }) => {
   const [state, setState] = useState(false);
   const editRef = useRef(null);
   useCloseOnOutsideClick(editRef, setState);
-  const {
-    handleDeleteBoardModal,
-    boards,
-    handleEditBoardModal,
-    handleDeleteTaskModal,
-    handleEditTaskModal,
-    closeModal,
-  } = useBoardContext();
+  const { boards } = useBoardContext();
   const { logoutUser } = useUserContext();
+  const {
+    editBoardsModalToggle,
+    deleteBoardsModalToggle,
+    deleteTaskModalToggle,
+    editTaskModalToggle,
+  } = useModalContext();
 
   const handleState = () => {
     setState(!state);
@@ -48,11 +48,9 @@ const EditButton = ({ type }) => {
                 className={style['editButton__button']}
                 onClick={() => {
                   if (type === 'task') {
-                    closeModal();
-                    handleEditTaskModal();
+                    editTaskModalToggle();
                   } else if (type === 'board') {
-                    closeModal();
-                    handleEditBoardModal();
+                    editBoardsModalToggle();
                   }
                   setState(!state);
                 }}
@@ -61,11 +59,9 @@ const EditButton = ({ type }) => {
             <button
               onClick={() => {
                 if (type === 'task') {
-                  closeModal();
-                  handleDeleteTaskModal();
+                  deleteTaskModalToggle();
                 } else if (type === 'board') {
-                  closeModal();
-                  handleDeleteBoardModal();
+                  deleteBoardsModalToggle();
                 } else if (type === 'account') {
                   logoutUser();
                 }

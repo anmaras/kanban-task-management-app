@@ -7,6 +7,7 @@ import {
   FieldArray,
 } from 'formik';
 import { useBoardContext } from '../../../context/boardsContext';
+import { useModalContext } from '../../../context/modalsContext';
 import * as yup from 'yup';
 import Spinner from '../../spinner/Spinner';
 import style from './BoardModals.module.scss';
@@ -27,8 +28,8 @@ const validationCreateBoard = yup.object({
 });
 
 const BoardModals = ({ type }) => {
-  const { createBoard, isLoading, activeBoard, editBoard, closeModal } =
-    useBoardContext();
+  const { createBoard, isLoading, activeBoard, editBoard } = useBoardContext();
+  const { closeModals } = useModalContext();
 
   const valuesForEdit = {
     name: activeBoard?.name,
@@ -45,7 +46,11 @@ const BoardModals = ({ type }) => {
             ? 'Add New Column'
             : 'Edit Board'}
         </h2>
-        <button className="button--del-icon" type="button" onClick={closeModal}>
+        <button
+          className="button--del-icon"
+          type="button"
+          onClick={closeModals}
+        >
           <DeleteIcon />
         </button>
       </div>

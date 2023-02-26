@@ -1,19 +1,12 @@
 import React from 'react';
 import style from './DashboardLayout.module.scss';
-import { DashboardHeader, Loader } from '../../index';
+import { Header } from '../../index';
 import ScrollContainer from 'react-indiana-drag-scroll';
-import { useBoardContext } from '../../../context/boardsContext';
 
 const DashboardLayout = ({ children }) => {
-  const { fetchDataLoading } = useBoardContext();
-
-  if (fetchDataLoading) {
-    return <Loader />;
-  }
-
   return (
     <section className={style.layout}>
-      <DashboardHeader />
+      <Header />
       <ScrollContainer
         component="main"
         className={style['layout__main']}
