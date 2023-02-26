@@ -39,11 +39,15 @@ export const UserProvider = ({ children }) => {
     localStorage.removeItem('token');
   };
 
+  const axiosInstance = axios.create({
+    baseURL: '/api/v1/auth',
+  });
+
   //register user
   const registerUser = async (values, { setFieldError }) => {
     dispatch({ type: REGISTER_USER_BEGIN });
     try {
-      const response = await axios.post('/api/v1/auth/register', values);
+      const response = await axiosInstance.post('/register', values);
       const { user, token } = response.data;
       dispatch({ type: REGISTER_USER_SUCCESS, payload: { user, token } });
       saveUserAtStorage({ user, token });
@@ -63,7 +67,7 @@ export const UserProvider = ({ children }) => {
   const loginUser = async (values, { setFieldError }) => {
     dispatch({ type: LOGIN_USER_BEGIN });
     try {
-      const response = await axios.post('/api/v1/auth/login', values);
+      const response = await axiosInstance.post('/login', values);
       const { user, token } = response.data;
       dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
       saveUserAtStorage({ user, token });
@@ -87,7 +91,7 @@ export const UserProvider = ({ children }) => {
     };
     dispatch({ type: LOGIN_TEST_USER_BEGIN });
     try {
-      const response = await axios.post('/api/v1/auth/login', value);
+      const response = await axiosInstance.post('/login', value);
       const { user, token } = response.data;
       dispatch({ type: LOGIN_TEST_USER_SUCCESS, payload: { user, token } });
       saveUserAtStorage({ user, token });
