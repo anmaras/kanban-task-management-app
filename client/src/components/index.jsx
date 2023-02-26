@@ -7,11 +7,11 @@ import Modal from './modal/Modal';
 import Spinner from './spinner/Spinner';
 import Loader from './loader/Loader';
 import PortalComponents from './portal/PortalComponents';
-import Header from '../components/dashboard/header/Header';
+import Header from './dashboard/header/Header';
 import Aside from './dashboard/aside/Aside';
 import AsideBoardsCard from './dashboard/aside/asideBoardsCard/AsideBoardsCard';
 import Options from './dashboard/options/Options';
-import List from '../components/dashboard/columns/list/List';
+import List from './dashboard/columns/list/List';
 import Tasks from './dashboard/tasks/Tasks';
 import Table from './dashboard/columns/table/Table';
 
