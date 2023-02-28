@@ -26,13 +26,39 @@ const EditButton = ({ type }) => {
     setState(!state);
   };
 
+  const editStateHandler =
+    boards?.length > 0 || type === 'account' ? handleState : null;
+
+  const editIcon = type !== 'account' ? <Dots /> : <Account />;
+  const logoutIcon = type !== 'account' ? `Delete ${type}` : 'Logout';
+
+  const editFunction = () => {
+    if (type === 'task') {
+      editTaskModalToggle();
+    } else if (type === 'board') {
+      editBoardsModalToggle();
+    }
+    setState(!state);
+  };
+
+  const editDeleteFunction = () => {
+    if (type === 'task') {
+      deleteTaskModalToggle();
+    } else if (type === 'board') {
+      deleteBoardsModalToggle();
+    } else if (type === 'account') {
+      logoutUser();
+    }
+    setState(!state);
+  };
+
   return (
     <div className={style.editButton} ref={editRef}>
       <div
-        onClick={boards?.length > 0 || type === 'account' ? handleState : null}
+        onClick={editStateHandler}
         className={style['editButton__dots-container']}
       >
-        {type !== 'account' ? <Dots /> : <Account />}
+        {editIcon}
       </div>
       <AnimatePresence>
         {state && (
@@ -46,30 +72,14 @@ const EditButton = ({ type }) => {
             {type !== 'account' ? (
               <button
                 className={style['editButton__button']}
-                onClick={() => {
-                  if (type === 'task') {
-                    editTaskModalToggle();
-                  } else if (type === 'board') {
-                    editBoardsModalToggle();
-                  }
-                  setState(!state);
-                }}
+                onClick={editFunction}
               >{`Edit ${type}`}</button>
             ) : null}
             <button
-              onClick={() => {
-                if (type === 'task') {
-                  deleteTaskModalToggle();
-                } else if (type === 'board') {
-                  deleteBoardsModalToggle();
-                } else if (type === 'account') {
-                  logoutUser();
-                }
-                setState(!state);
-              }}
+              onClick={editDeleteFunction}
               className={style['editButton__button']}
             >
-              {type !== 'account' ? `Delete ${type}` : 'Logout'}
+              {logoutIcon}
             </button>
           </motion.div>
         )}
