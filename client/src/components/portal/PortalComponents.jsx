@@ -16,6 +16,7 @@ const PortalComponents = () => {
     viewTaskModalVisible,
     deleteTaskModalVisible,
     updateTaskModalVisible,
+    editAccountModalVisible,
   } = useModalContext();
   return (
     <>
@@ -30,6 +31,7 @@ const PortalComponents = () => {
       {viewTaskModalVisible && <Modal type="viewTaskModal" />}
       {deleteTaskModalVisible && <Modal type="deleteTaskModal" />}
       {updateTaskModalVisible && <Modal type="updateTaskModal" />}
+      {editAccountModalVisible && <Modal type="editAccount" />}
     </>
   );
 };
