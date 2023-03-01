@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
-import { useBoardContext } from '../../../context/boardsContext';
 import { useModalContext } from '../../../context/modalsContext';
 import * as yup from 'yup';
 import { Spinner } from '../../index';
@@ -19,9 +18,8 @@ const schema = yup.object({
 });
 
 const EditAccountModal = () => {
-  const { isLoading } = useBoardContext();
-  const { user, updateUser, isLoading: loading } = useUserContext();
-  const { closeModals } = useModalContext();
+  const { user, updateUser, isLoading } = useUserContext();
+  const { closeModals, deleteAccountModalToggle } = useModalContext();
 
   const valuesForEdit = {
     name: user.name,
@@ -111,7 +109,14 @@ const EditAccountModal = () => {
               </div>
             </div>
             <button className="button button--primary-S" type="submit">
-              {loading ? <Spinner /> : 'Save Changes'}
+              {isLoading ? <Spinner /> : 'Save Changes'}
+            </button>
+            <button
+              className="button button--secondary--delete "
+              type="button"
+              onClick={deleteAccountModalToggle}
+            >
+              {'Delete account'}
             </button>
           </FormikForm>
         )}
