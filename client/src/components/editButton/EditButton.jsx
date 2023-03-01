@@ -10,22 +10,19 @@ import PropTypes from 'prop-types';
 import useCloseOnOutsideClick from '../../hooks/useCloseOnOutsideClick';
 
 const EditButton = ({ type }) => {
-  const [state, setState] = useState(false);
-  const editRef = useRef(null);
-  useCloseOnOutsideClick(editRef, setState);
-  const { boards } = useBoardContext();
-  const { logoutUser } = useUserContext();
   const {
     editBoardsModalToggle,
     deleteBoardsModalToggle,
     deleteTaskModalToggle,
     editTaskModalToggle,
+    editAccountTaskModalToggle,
   } = useModalContext();
-
-  const handleState = () => {
-    setState(!state);
-  };
-
+  const { boards } = useBoardContext();
+  const { logoutUser } = useUserContext();
+  const [state, setState] = useState(false);
+  const editRef = useRef(null);
+  useCloseOnOutsideClick(editRef, setState);
+  const handleState = () => setState(!state);
   const editStateHandler =
     boards?.length > 0 || type === 'account' ? handleState : null;
 
@@ -37,6 +34,8 @@ const EditButton = ({ type }) => {
       editTaskModalToggle();
     } else if (type === 'board') {
       editBoardsModalToggle();
+    } else if (type === 'account') {
+      editAccountTaskModalToggle();
     }
     setState(!state);
   };
@@ -69,12 +68,10 @@ const EditButton = ({ type }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            {type !== 'account' ? (
-              <button
-                className={style['editButton__button']}
-                onClick={editFunction}
-              >{`Edit ${type}`}</button>
-            ) : null}
+            <button
+              className={style['editButton__button']}
+              onClick={editFunction}
+            >{`Edit ${type}`}</button>
             <button
               onClick={editDeleteFunction}
               className={style['editButton__button']}
