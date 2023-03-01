@@ -9,6 +9,12 @@ import {
   LOGIN_TEST_USER_BEGIN,
   LOGIN_TEST_USER_SUCCESS,
   LOGIN_TEST_USER_ERROR,
+  UPDATE_USER_BEGIN,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
+  DELETE_USER_ACCOUNT_BEGIN,
+  DELETE_USER_ACCOUNT_SUCCESS,
+  DELETE_USER_ACCOUNT_ERROR,
 } from '../utils/actions';
 
 import { initialState } from '../context/userContext';
@@ -72,6 +78,45 @@ const userReducer = (state, action) => {
       demoIsLoading: false,
     };
   }
+
+  if (action.type === UPDATE_USER_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === UPDATE_USER_SUCCESS) {
+    return {
+      ...state,
+      user: action.payload.user,
+      token: action.payload.token,
+      isLoading: false,
+    };
+  }
+
+  if (action.type === UPDATE_USER_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+    };
+  }
+
+  if (action.type === DELETE_USER_ACCOUNT_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === DELETE_USER_ACCOUNT_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+    };
+  }
+
+  if (action.type === DELETE_USER_ACCOUNT_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+    };
+  }
+
   if (action.type === LOGOUT_USER) {
     return { ...initialState, user: null, token: null };
   }
