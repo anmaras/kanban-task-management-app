@@ -69,12 +69,21 @@ const login = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { name, email } = req.body;
+  const userExist = await User.findOne({ email });
+  const user = await User.findOne({ _id: req.user.userId });
 
   if (!name || !email) {
     throw new BadRequestError('All values needed');
   }
-  //find user req.user.userId comes from middleware auth
-  const user = await User.findOne({ _id: req.user.userId });
+
+  //if a user with the specific email input exist an this users email
+  //is not the same with current logged user throw error so that logged
+  //user cannot use that email
+  if (userExist && userExist.email !== user.email) {
+    throw new BadRequestError(
+      JSON.stringify({ email: 'That email already exist ' })
+    );
+  }
 
   //add the new properties
   user.name = name;
