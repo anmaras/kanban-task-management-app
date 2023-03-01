@@ -1,4 +1,6 @@
 import User from '../models/Users.js';
+import Board from '../models/Boards.js';
+
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, UnauthenticatedError } from '../errors/index.js';
 
@@ -46,7 +48,9 @@ const login = async (req, res) => {
 
   //if user doesn't exist throw custom error
   if (!user) {
-    throw new UnauthenticatedError(JSON.stringify({ email: 'Invalid email' }));
+    throw new UnauthenticatedError(
+      JSON.stringify({ email: 'Cant find any user with that email' })
+    );
   }
   //compare passwords, method is created at user model
   const isPasswordCorrect = await user.comparePassword(password);
@@ -98,4 +102,13 @@ const updateUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token });
 };
 
-export { register, login, updateUser };
+const deleteAccount = async (req, res) => {
+  const { userId } = req.params;
+
+  await Board.deleteMany({ userId });
+  await User.findOneAndDelete({ _id: userId });
+
+  res.status(StatusCodes.OK).send('account deleted');
+};
+
+export { register, login, updateUser, deleteAccount };
