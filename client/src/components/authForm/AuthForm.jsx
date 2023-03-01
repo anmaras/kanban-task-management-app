@@ -41,14 +41,7 @@ const loginSchema = yup.object({
 });
 
 const AuthForm = ({ type }) => {
-  const {
-    registerUser,
-    loginUser,
-    user,
-    isLoading,
-    loginTestUser,
-    demoIsLoading,
-  } = useUserContext();
+  const { registerUser, loginUser, user, isLoading } = useUserContext();
   const navigate = useNavigate();
   const title = type === 'register' ? 'Register to Kanban' : 'Login to Kanban';
   const schema = type === 'register' ? registerSchema : loginSchema;
@@ -57,11 +50,6 @@ const AuthForm = ({ type }) => {
   const linkTitle = type === 'register' ? 'Login' : 'Register';
   const message = type === 'register' ? 'Have an account?' : 'Need an account?';
   const loginBtnContent = isLoading ? <Spinner /> : type;
-  const demoLoginBtnContext = demoIsLoading ? (
-    <Spinner color="#5fc7a8" />
-  ) : (
-    'Test The App'
-  );
 
   //after user register or login navigate to the dashboard
   useEffect(() => {
@@ -125,14 +113,6 @@ const AuthForm = ({ type }) => {
               disabled={isLoading}
             >
               {loginBtnContent}
-            </button>
-            <button
-              className="button button--auth-demo"
-              type="button"
-              disabled={isLoading}
-              onClick={loginTestUser}
-            >
-              {demoLoginBtnContext}
             </button>
           </FormikForm>
         )}
