@@ -4,8 +4,9 @@ import {
   Backdrop,
   BoardModals,
   DeleteModal,
-  TaskModal,
+  CreateTaskModal,
   ViewTaskModal,
+  EditAccountModal,
 } from './index';
 
 const Modal = ({ type }) => {
@@ -60,7 +61,7 @@ const Modal = ({ type }) => {
   if (type === 'addTaskModal') {
     return (
       <Backdrop>
-        <TaskModal type="addTask" />
+        <CreateTaskModal type="addTask" />
       </Backdrop>
     );
   }
@@ -75,7 +76,14 @@ const Modal = ({ type }) => {
   if (type === 'updateTaskModal') {
     return (
       <Backdrop>
-        <TaskModal type="updateTask" />
+        <CreateTaskModal type="updateTask" />
+      </Backdrop>
+    );
+  }
+  if (type === 'editAccount') {
+    return (
+      <Backdrop>
+        <EditAccountModal />
       </Backdrop>
     );
   }
