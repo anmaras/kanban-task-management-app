@@ -13,7 +13,7 @@ const Backdrop = ({ children }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      onClick={(e) => {
+      onDoubleClick={(e) => {
         if (e.target === e.currentTarget) {
           //need to stop further propagation so modals to work
           e.stopPropagation();
