@@ -12,6 +12,7 @@ const initialState = {
   deleteTaskModalVisible: false,
   updateTaskModalVisible: false,
   editAccountModalVisible: false,
+  deleteAccountModalVisible: false,
 };
 
 const ModalsContext = React.createContext();
@@ -82,6 +83,14 @@ export const ModalProvider = ({ children }) => {
     });
   };
 
+  const deleteAccountModalToggle = () => {
+    setState({
+      ...state,
+      deleteAccountModalVisible: !state.deleteAccountModalVisible,
+      editAccountModalVisible: false,
+    });
+  };
+
   const closeModals = () => {
     setState({
       ...state,
@@ -95,6 +104,7 @@ export const ModalProvider = ({ children }) => {
       deleteTaskModalVisible: false,
       updateTaskModalVisible: false,
       editAccountModalVisible: false,
+      deleteAccountModalVisible: false,
     });
   };
 
@@ -114,6 +124,7 @@ export const ModalProvider = ({ children }) => {
         deleteTaskModalToggle,
         editTaskModalToggle,
         editAccountTaskModalToggle,
+        deleteAccountModalToggle,
       }}
     >
       {children}
