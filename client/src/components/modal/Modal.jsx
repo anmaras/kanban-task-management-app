@@ -87,6 +87,14 @@ const Modal = ({ type }) => {
       </Backdrop>
     );
   }
+
+  if (type === 'deleteAccount') {
+    return (
+      <Backdrop>
+        <DeleteModal type="account" />
+      </Backdrop>
+    );
+  }
 };
 
 export default memo(Modal);
