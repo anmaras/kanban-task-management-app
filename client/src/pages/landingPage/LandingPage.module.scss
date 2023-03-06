@@ -4,12 +4,13 @@
   display: grid;
   gap: rem(32);
   padding-inline: rem(32);
-  // width: min(100%, 900px);
-  max-width: 800px;
   margin-inline: auto;
+  margin-block: rem(64);
+  width: 100%;
+  max-width: 800px;
+  justify-items: center;
 
   &__title {
-    text-align: left;
     div {
       display: inline-block;
     }
@@ -18,17 +19,41 @@
     }
   }
 
-  &__typingText {
-    color: red;
+  &__features {
+    display: grid;
+    gap: rem(32);
+    margin-block: rem(30);
+  }
+
+  &__feature {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    align-items: center;
+    border-radius: var(--form-input);
+    background-color: var(--dark-grey);
+    padding-block: rem(24);
+    padding-inline: rem(16);
+    gap: rem(8);
+
+    p {
+      line-height: 1.5;
+      color: var(--medium-grey);
+    }
   }
 
   &__subtitle {
     color: var(--white);
-    line-height: 1.8;
+    line-height: 1.5;
     max-width: 400px;
+    justify-self: center;
+    text-align: center;
+    @include breakpoint(large) {
+      font-size: 18px;
+    }
   }
 
-  a {
-    width: fit-content;
+  &__btn-container {
+    display: grid;
+    gap: rem(32);
   }
 }
