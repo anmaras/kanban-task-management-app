@@ -7,7 +7,7 @@ const Backdrop = ({ children }) => {
   return (
     <div
       className={style.backdrop}
-      onDoubleClick={(e) => {
+      onClick={(e) => {
         if (e.target === e.currentTarget) {
           //need to stop further propagation so modals to work
           e.stopPropagation();
