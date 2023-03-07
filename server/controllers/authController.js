@@ -31,7 +31,10 @@ const register = async (req, res) => {
   const token = user.createJWT();
   res
     .status(StatusCodes.CREATED)
-    .json({ user: { name: user.name, email: user.email }, token });
+    .json({
+      user: { name: user.name, email: user.email, _id: user._id },
+      token,
+    });
 };
 
 const login = async (req, res) => {
@@ -104,6 +107,8 @@ const updateUser = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
   const { userId } = req.params;
+
+  console.log(userId);
 
   await Board.deleteMany({ userId });
   await User.findOneAndDelete({ _id: userId });
