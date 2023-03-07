@@ -88,7 +88,7 @@ export const BoardProvider = ({ children }) => {
   };
 
   /* CREATE BOARD */
-  const createBoard = async (values) => {
+  const createBoard = async (values, { setFieldError }) => {
     dispatch({ type: CREATE_BOARD_BEGIN });
 
     try {
@@ -96,6 +96,16 @@ export const BoardProvider = ({ children }) => {
       dispatch({ type: CREATE_BOARD_SUCCESS, payload: data });
       closeModals();
     } catch (error) {
+      const response = JSON.parse(error.response.data.msg);
+      const [obj] = Object.entries(response);
+
+      if (obj[0] === 'name') {
+        setFieldError(obj[0], obj[1]);
+        dispatch({ type: CREATE_BOARD_ERROR });
+      }
+      response.array.forEach((resp) => {
+        setFieldError(`columns[${resp}].name`, 'Column name is already in use');
+      });
       dispatch({ type: CREATE_BOARD_ERROR });
     }
   };
@@ -107,9 +117,7 @@ export const BoardProvider = ({ children }) => {
         isActive: true,
       });
       dispatch({ type: GET_USER_BOARD_COLUMN_SUCCESS, payload: data });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   /* DELETE BOARD */
@@ -125,7 +133,7 @@ export const BoardProvider = ({ children }) => {
   };
 
   /* EDIT BOARD */
-  const editBoard = async (values) => {
+  const editBoard = async (values, { setFieldError }) => {
     dispatch({ type: EDIT_BOARD_BEGIN });
     try {
       const { data } = await axiosInstance.patch(
@@ -135,6 +143,11 @@ export const BoardProvider = ({ children }) => {
       dispatch({ type: EDIT_BOARD_SUCCESS, payload: data });
       closeModals();
     } catch (error) {
+      const response = JSON.parse(error.response.data.msg);
+
+      response.array.forEach((resp) => {
+        setFieldError(`columns[${resp}].name`, 'Column name is already in use');
+      });
       dispatch({ type: EDIT_BOARD_ERROR });
     }
   };
