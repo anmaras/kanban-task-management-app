@@ -1,7 +1,7 @@
 import Board from '../models/Boards.js';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, NotFoundError } from '../errors/index.js';
-import cron from 'node-cron';
+import { checkForDuplicateInputs } from '../utils/helpers.js';
 
 //CREATE BOARD
 const createBoard = async (req, res) => {
@@ -17,6 +17,24 @@ const createBoard = async (req, res) => {
     { userId: req.user.userId },
     { $set: { isActive: false } }
   );
+
+  const boards = await Board.find({ userId: req.user.userId });
+
+  //check if there is a board with the same name
+  const isNameUnique = boards.find((board) => board.name === name);
+
+  //check if column names are unique and return the indexes that contain the error
+  const { isColumnUnique, indexes } = checkForDuplicateInputs(columns);
+
+  if (isNameUnique) {
+    throw new BadRequestError(
+      JSON.stringify({ name: 'Board name already in use!' })
+    );
+  }
+
+  if (!isColumnUnique) {
+    throw new BadRequestError(JSON.stringify({ array: indexes }));
+  }
 
   // create the main board
   const board = await Board.create({
@@ -68,8 +86,8 @@ const deleteBoard = async (req, res) => {
   if (!board) {
     throw new NotFoundError(`No board with id${id}`);
   }
-  //delete selected board
 
+  //delete selected board
   await board.remove();
 
   //when current board is deleted check if there is one after to set it active.
@@ -96,10 +114,27 @@ const updateBoard = async (req, res) => {
 
   //Find the selected board
   const board = await Board.findOne({ _id: id, userId: req.user.userId });
+  // const boards = await Board.find({ userId: req.user.userId });
 
   //if board doesn't exist throw error
   if (!board) {
     throw new NotFoundError(`No board with id ${id}`);
+  }
+
+  //check if there is a board with the same name
+  // const isNameUnique = boards.find((board) => board.name === name);
+
+  //check if column names are unique and return the indexes that contain the error
+  const { isColumnUnique, indexes } = checkForDuplicateInputs(columns);
+
+  // if (isNameUnique && name !== ) {
+  //   throw new BadRequestError(
+  //     JSON.stringify({ name: 'Board name already in use!' })
+  //   );
+  // }
+
+  if (!isColumnUnique) {
+    throw new BadRequestError(JSON.stringify({ array: indexes }));
   }
 
   const updatedColumns = columns.map((column) => {
@@ -235,10 +270,6 @@ const moveTask = async (req, res) => {
   const { boardId, fromId, taskId } = req.params;
   const { toId, activeTask } = req.body;
 
-  if (fromId === toId) {
-    return;
-  }
-
   //find board
   const board = await Board.findOne({ _id: boardId });
   if (!board) {
@@ -256,8 +287,7 @@ const moveTask = async (req, res) => {
     (task) => task._id.toString() == taskId
   );
 
-  //remove the task from the fromColumn
-  fromColumn.tasks.splice(taskIndex, 1)[0];
+  const task = fromColumn.tasks[taskIndex];
 
   //find the toColumn that the task will go
   const toColumn = board.columns.find(
@@ -268,12 +298,13 @@ const moveTask = async (req, res) => {
     throw new NotFoundError(`No To column with id ${toId}`);
   }
 
-  //create different task id at the moved column
-  // toColumn.tasks = [task, ...toColumn.tasks];
+  if (fromColumn._id.toString() === toColumn._id.toString()) {
+    res.status(StatusCodes.OK).json({ board, fromColumn });
+    return;
+  }
 
-  //keep the same task id and push it to toColumn
-  //--- might change that push the spliced task throw error for the moment
-  toColumn.tasks.push(activeTask);
+  fromColumn.tasks.splice(taskIndex, 1);
+  toColumn.tasks.splice(toColumn.tasks.length, 0, task);
 
   await board.save();
 
