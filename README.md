@@ -1,6 +1,6 @@
 # Kanban Task Management App
 
-Kanban app is an incredibly useful tool for individuals to manage their workflow. The app enables users to create boards with customizable columns, representing different stages of their work process. With the drag and drop functionality, users can easily move cards representing individual tasks between columns. The app also offers the option to edit everything and save them in a secure database. This way, users can organize and track their work efficiently, increasing productivity and saving time. The flexible nature of the Kanban app allows users to tailor it to their unique needs and preferences, making it an ideal solution for individuals to optimize their workflow management.
+The Kanban app enables users to create boards with customizable columns, representing different stages of their work process. With the drag and drop functionality, users can easily move cards representing individual tasks between columns. The app also offers the option to edit everything and save them in a secure database. This way, users can organize and track their work efficiently, increasing productivity and saving time. The flexible nature of the Kanban app allows users to tailor it to their unique needs and preferences, making it an ideal solution for individuals to optimize their workflow management.
 
 ## Table of contents
 
