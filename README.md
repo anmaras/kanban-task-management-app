@@ -31,7 +31,7 @@ Users should be able to:
 
 ### Screenshot
 
-![](./client/src/assets/kanban-github-img.jpg){:target="\_blank" rel="noopener"}
+![](./client/src/assets/kanban-github-img.jpg)
 
 ### Live
 
