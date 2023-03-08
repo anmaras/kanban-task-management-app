@@ -34,6 +34,6 @@ export const features = [
   {
     id: 2,
     title: 'Save on Database',
-    content: 'Save your boards and tasks on a secure database',
+    content: 'Save your boards and tasks on a secure database.',
   },
 ];
