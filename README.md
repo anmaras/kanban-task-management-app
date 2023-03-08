@@ -31,7 +31,7 @@ Users should be able to:
 
 ### Screenshot
 
-![](./src/assets/kanban-github-img.jpg)
+![](client\src\assets\kanban-github-img.jpg)
 
 ### Live
 
